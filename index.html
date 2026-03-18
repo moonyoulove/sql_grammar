@@ -432,3 +432,45 @@ EXPLAIN SELECT NAME, COUNT(*) FROM TEST GROUP BY NAME HAVING COUNT(*) &gt; 2;<br
 <p class=notranslate>// This is a comment</p>
 </div>
 <div id=my-extension-installed style=visibility:hidden></div><div id=crypto_context_tip style="display:none;position:fixed!important;z-index:999999!important;color:rgb(255,255,255)!important;background:rgba(0,0,0,0.8)!important;border:1px solid rgb(102,102,102);border-radius:2px;padding:0px 6px 0px 12px!important;font-family:sans-serif!important;font-size:13px!important;height:28px!important;line-height:26px!important;white-space:nowrap!important"></div><div id=simple-copy-menu style=display:none>🔗 複製連結</div><div id=kiss-translator-box class=notranslate><template shadowrootmode=open><div class="kiss-translator-box_wrapper notranslate"></div></template></div>
+<button id="scrollToTopBtn" title="回到頂部">Top</button>
+<style>
+  #scrollToTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    background-color: #0000bb;
+    color: white;
+    cursor: pointer;
+    padding: 12px 18px;
+    border-radius: 50px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  #scrollToTopBtn:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+  }
+</style>
+<script>
+  var mybutton = document.getElementById("scrollToTopBtn");
+
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  mybutton.onclick = function() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+</script>
