@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns=http://www.w3.org/1999/xhtml lang=en xml:lang=en class="bnpfdljj idc0_350" style><!--
+ Page saved with SingleFile 
+ url: functions.html 
+ saved date: Wed Mar 18 2026 13:40:55 GMT+0800 (台北標準時間)
+--><meta charset=utf-8><title>
+Functions
+</title><style>td,body,code,pre,td{font:13px/1.4 Arial,sans-serif;font-weight:normal}p{margin:0.4em 0 0.6em 0}h3{margin:0.8em 0 0.5em 0;border-bottom-color:#999;border-bottom-style:solid;border-bottom-width:1px}td,body,code,pre{font-size:13px}pre{background-color:#ece9d8;border:1px solid #aca899;padding:6px;-moz-border-radius:4px;-webkit-border-radius:4px;-khtml-border-radius:4px;border-radius:4px;-moz-box-shadow:2px 2px 2px #aca899;-webkit-box-shadow:2px 2px 2px #aca899;-khtml-box-shadow:2px 2px 2px #aca899;-o-box-shadow:2px 2px 2px #aca899;box-shadow:2px 2px 2px #aca899}code{background-color:#ece9d8;padding:0px 4px;-moz-border-radius:4px;-webkit-border-radius:4px;-khtml-border-radius:4px;border-radius:4px}body{max-width:800px;clear:both;width:800px;margin:0 auto}.pageTitle{text-align:center;margin-top:10px;margin-bottom:10px;font-size:28px;line-height:normal;font-weight:bold;padding:4px 0px 4px 0px}h3{font-size:16px}table{background-color:#ffffff}td{background-color:#ffffff;text-align:left}a{text-decoration:none;color:#0000ff}a:visited{color:#0000bb}a:hover{text-decoration:underline}a.activeTab{background-color:#0000bb;color:white;padding:4px 8px 0px 8px;margin-top:11px;font-size:22px;line-height:normal;font-weight:bold;text-decoration:none;border-top-right-radius:10px;border-top-left-radius:10px}a.inactiveTab{background-color:white;color:#736F6E;padding:4px 8px 0px 8px;margin-top:11px;font-size:22px;line-height:normal;font-weight:normal;text-decoration:none}.menu{border-collapse:collapse;border-bottom:1px solid blue;padding-top:0px}td.searchKeyword a:hover{text-decoration:underline}td.searchLink a:hover{text-decoration:underline}.content{margin:10px 10px 10px 0px}table.index{width:100%;padding:0px;margin:0px;border:0px none;border-collapse:collapse}td.index{width:33%;padding:0px;margin:0px;border:0px none;border-collapse:collapse;vertical-align:top}.railroad{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top}.c{padding:1px 3px;margin:0px 0px;border:2px solid;-moz-border-radius:0.4em;-webkit-border-radius:0.4em;-khtml-border-radius:0.4em;border-radius:0.4em;background-color:#fff}.ts{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAACnklEQVR42u3VAQrDIAwF0B7No3kzj+ZwMNgktd2oFcYLCEVKeSS/um1KKaVWV601r1wNsLTWA3LOdeV6xmDxWgxIKR2+1N6ZNoL3QLw2I1Tbu/UvKKWE3Wj7VwOGX4y6EdTvB9HOqTjsRjCOfPXxnPrO9IhgFGnWPfER0sEoyqzLKu1loh/FzBuznBxFnokIR9Gep4+hz8MAMCeMURcGYcx/DSjR33BnEM/kAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOArwAOuO+CC1w/wHgAAAABJRU5ErkJggg==);background-size:16px 512px}.ls{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAABU0lEQVR42u3WgWrCMBQF0HxaPy1/lk/LDGu2miWbMl8VOQcK0oLe3JcUU7pDrTXXXSmltlvt2ratHpQU5fLlV7/UA3w+urqfIkO8ToCc81eA9vn46K0D3LIRm+30jdgCnXUavpd5WflqM4aN4jiGsYUzR1Fne2EyiphxjC2Mo5iEePxI2spWo5gczR+t/DvQeCLGUfQ9sWjjMW/NMcRsHL2NWSMh74ZVG2Mz+5s0hYVYtTFcKTxEa6OPIDTA6oj+Fir6z0v5K0g6w95IeVqASTO5XwkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgGf7ABbs3lVSQZrbAAAAAElFTkSuQmCC);background-size:16px 512px}.ks{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAACvklEQVR42u3UC2rEIBAA0BzNo3kzj2aRmt1gE7OhOyll34CQj5GXGZ1luRC11lx75Jxre9RGSqluoixRcQT4fvWMzwS0+03kzwMMG7FFuhXQRikl9jScAcbN+PZSvAIILcWsEU1K8b5yHAHa9QuI35dkBugNaHY0f2TlMugM0P56b08cZON61zwDPHbdUI51zl5GQgBH2Rgz09eIAcyyMYxYwJqNtQR3APJ23hkqBNDnpn7UphEG2Pmu/BlgWCNtypRvB4S2YgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAfwn4Amf23QUWMIP2AAAAAElFTkSuQmCC);background-size:16px 512px}.te{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAACqklEQVR42u3WbQ6DIAwAUI/G0bgZR2PBfWQuVZcosiyvCX+IGa+1lk2TEEKI0VFrzSNXAwyN8YCccx255jYYvAYDepU2pbR7+PxMj8aKDm97T1y3r6CUEmba9rc+wyODZPljQdZ75qMTdLXsK1nfp98J4zttlT44vG2kM++Pslb6zyY7JeMAEJY+eOep1+35TelLr+v7dcpjloel73X4osYbgNzzz0vYfN2z/znAewN+dH+5BHD5+wcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPhbwA2mqOCCmIVZtgAAAABJRU5ErkJggg==);background-size:16px 512px}.le{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAABSklEQVR42u3WUQqDMBAFQI/m0XKzHC0lpYoNm0ppYqGdAUH8ee5LDC7LG0opuTys61rqo3rlvD+u0jLLMWULbx7f3+2rLzAzPO0dp7SH1/vff4G6rk+LfPUGPO7+GnjpBjxW326+2sTU+l9VH0yfptUeVd+sfZlWeRTeVv/R9I/AXDqOn1yn+jzsdGunbtc8qv7jnR9NHE0d1D7ms6th0aQnUw/95rvBnamHHzhPodsSdKYef9qdhF1yzp/Jl/1kNKHzfq2Cg2i71gUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgH9zA8hG3lUZOXhDAAAAAElFTkSuQmCC);background-size:16px 512px}.ke{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAACwklEQVR42u3WSQ7DIAwAwDwtT+NnPI3WUlNRBK26OJeOJS6RgsdmSbbtjWit1XaLfd9bPIpRSmldlC0r+ixH8v8BxMT3DNeE/wWIPddn6DfgWYD77q+1PiRPB/StHzdfOuBV61MBfdtnrU+7iMaWr5L3J+ErwC1hbYsYj9xxH/0SMI2oerbm8TwVEJPNqg7MqjNfAeLl1e4eq04BPEs8Vn0K4FiCWdVpS/Aq2THx6oOUcgr6AxGX4LMvYgagzibKApRu7J/8E5z5SwYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBzwAUV9d0Fer5EBwAAAABJRU5ErkJggg==);background-size:16px 512px}.d{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;min-width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACAAAAAQACAYAAAB1B7lEAAAgKElEQVR42uzdwQ0AIQwDwZSezs3Rw32MZqRtgLcVZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPhbkpUkSZIkSZIkSZIkSd3dAQAAAAAAAAAAUM4AAAAAAAAAAAAeMLsbSZIkSZIkSZIkSZLU3XwiSZIkSZIkSZIkSZLq8wiSJEmSJEmSJEmSJNXnDIIkSZIkSZIkSZIkSQ98ARAAAAAAAAAAoJ4BAAAAAAAAAAA84A4AVpIkSZIkSZIkSZIkdTcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHDagwMBAAAAAEH+1guMUAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwAjKMPgJSWLJxAAAAAElFTkSuQmCC);background-size:1024px 512px}</style>
+<style id=mmvmd58r.6cg>#simple-copy-menu{position:fixed;z-index:2147483647;background:#ffffff;color:#333;border:1px solid #ccc;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.15);padding:8px 12px;font-size:14px;font-family:system-ui,-apple-system,sans-serif;cursor:pointer;user-select:none;transition:background 0.1s,transform 0.05s;white-space:nowrap}#simple-copy-menu:hover{background:#f5f5f5}#simple-copy-menu:active{transform:scale(0.98);background:#e8e8e8}@media (prefers-color-scheme:dark){#simple-copy-menu{background:#2d2d2d;color:#e0e0e0;border-color:#444}#simple-copy-menu:hover{background:#3d3d3d}}</style><style id=mmvmtrv9.gi>:root{--danmaku-font-family:"Source Han Sans VF"}</style><style id=mmvuew8i.2w>a{white-space:normal}</style><style data-emotion=css data-s>@keyframes animation-xykzx5{100%{background-position:200%center}}@keyframes animation-xykzx5{100%{background-position:200%center}}@keyframes animation-13a8dyy{0%,100%{opacity:1}50%{opacity:0}}@keyframes animation-13a8dyy{0%,100%{opacity:1}50%{opacity:0}}@keyframes animation-1vov3o0{0%{text-shadow:rgb(255,255,255) 0px 0px 10px,rgb(255,255,255) 0px 0px 20px,rgb(0,115,230) 0px 0px 30px,rgb(0,115,230) 0px 0px 40px}100%{text-shadow:rgb(255,255,255) 0px 0px 20px,rgb(255,77,166) 0px 0px 30px,rgb(255,77,166) 0px 0px 40px,rgb(255,77,166) 0px 0px 50px}}@keyframes animation-1vov3o0{0%{text-shadow:rgb(255,255,255) 0px 0px 10px,rgb(255,255,255) 0px 0px 20px,rgb(0,115,230) 0px 0px 30px,rgb(0,115,230) 0px 0px 40px}100%{text-shadow:rgb(255,255,255) 0px 0px 20px,rgb(255,77,166) 0px 0px 30px,rgb(255,77,166) 0px 0px 40px,rgb(255,77,166) 0px 0px 50px}}.css-1k4tc3p:hover{opacity:1}.css-12up2q2:hover{opacity:1}.css-11kdih3:hover{opacity:1}.css-1dhccbn:hover{opacity:1}.css-jbo0az:hover{opacity:1}.css-1pr7501:hover{opacity:1}.css-1s8uj7k:hover{filter:none}.css-4nbftc:hover{opacity:1}.css-ut3274:hover{color:rgb(17,17,17)}</style><meta name=referrer content=no-referrer><style>.sf-hidden{display:none!important}</style><link rel=canonical href=functions.html><meta http-equiv=content-security-policy content="default-src 'none'; font-src 'self' data:; img-src 'self' data:; style-src 'unsafe-inline'; media-src 'self' data:; script-src 'unsafe-inline' data:; object-src 'self' data:; frame-src 'self' data:;"><body>
+<div class=pageTitle>Phoenix 語言參考</div>
+<div>
+<p>Phoenix 是一個建構在 HBase 之上的 SQL 層，以嵌入式 JDBC 驅動程式的形式提供。
+頂層命令、SQL 語法、內建函數和支援的資料類型都記錄在下方的獨立分頁中。
+</p>
+<br>
+</div>
+<div class=menu>
+<a id=grammarTab class=inactiveTab href=index.html>SQL 語法</a>
+<a id=functionsTab class=activeTab href=functions.html>函數</a>
+<a id=dataTypesTab class=inactiveTab href=datatypes.html>資料類型</a>
+</div>
+<div id=content class=content>
+<h3 id=functions>聚合函數 (Aggregate Functions)</h3>
+<table class="notranslate index">
+ <tbody><tr>
+ <td class=index>
+ 
+ <a href=#avg>AVG</a><br>
+ 
+ <a href=#count>COUNT</a><br>
+ 
+ <a href=#max>MAX</a><br>
+ 
+ <a href=#min>MIN</a><br>
+ <td class=index>
+ 
+ <a href=#sum>SUM</a><br>
+ 
+ <a href=#percentile_cont>PERCENTILE_CONT</a><br>
+ 
+ <a href=#percentile_disc>PERCENTILE_DISC</a><br>
+ 
+ <a href=#percent_rank>PERCENT_RANK</a><br>
+ <td class=index>
+ 
+ <a href=#stddev_pop>STDDEV_POP</a><br>
+ 
+ <a href=#stddev_samp>STDDEV_SAMP</a><br>
+ </td>
+ </tr>
+</table>
+<h3>字串函數 (String Functions)</h3>
+<table class="notranslate index">
+ <tbody><tr>
+ <td class=index>
+ 
+ <a href=#substr>SUBSTR</a><br>
+ 
+ <a href=#trim>TRIM</a><br>
+ 
+ <a href=#ltrim>LTRIM</a><br>
+ 
+ <a href=#rtrim>RTRIM</a><br>
+ <td class=index>
+ 
+ <a href=#length>LENGTH</a><br>
+ 
+ <a href=#regexp_substr>REGEXP_SUBSTR</a><br>
+ 
+ <a href=#regexp_replace>REGEXP_REPLACE</a><br>
+ 
+ <a href=#upper>UPPER</a><br>
+ <td class=index>
+ 
+ <a href=#lower>LOWER</a><br>
+ 
+ <a href=#reverse>REVERSE</a><br>
+ 
+ <a href=#to_char>TO_CHAR</a><br>
+ </td>
+ </tr>
+</table>
+<h3>時間與日期函數 (Time and Date Functions)</h3>
+<table class="notranslate index">
+ <tbody><tr>
+ <td class=index>
+ 
+ <a href=#round>ROUND</a><br>
+ 
+ <a href=#truncate>TRUNCATE</a><br>
+ <td class=index>
+ 
+ <a href=#to_date>TO_DATE</a><br>
+ 
+ <a href=#current_date>CURRENT_DATE</a><br>
+ <td class=index>
+ 
+ <a href=#current_time>CURRENT_TIME</a><br>
+ </td>
+ </tr>
+</table>
+<h3>其他函數 (Other Functions)</h3>
+<table class="notranslate index">
+ <tbody><tr>
+ <td class=index>
+ 
+ <a href=#md5>MD5</a><br>
+ 
+ <a href=#invert>INVERT</a><br>
+ <td class=index>
+ 
+ <a href=#to_number>TO_NUMBER</a><br>
+ 
+ <a href=#coalesce>COALESCE</a><br>
+ <td class=index>
+ </td>
+ </tr>
+</table>
+<h3 id=avg class=notranslate>AVG</h3>
+<pre name=bnf style=display:none>AVG ( {  } )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>AVG ( <a href=index.html#term>numericTerm</a> )</code></table>
+</div>
+<p>平均值。如果沒有選取任何資料列，結果為 <code>NULL</code>。聚合僅允許在 SELECT 敘述中使用。傳回值的資料類型與參數相同。</p>
+<p>範例：</p>
+<p class=notranslate>AVG(X)</p>
+<h3 id=count class=notranslate>COUNT</h3>
+<pre name=bnf style=display:none>COUNT( [ DISTINCT ] { * | {  } } )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>COUNT (</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>DISTINCT</code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>*</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=index.html#term>term</a></code><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>所有資料列的計數，或是非空值的計數。此方法傳回一個 long 類型值。當使用 <code>DISTINCT</code> 時，它僅計算不重複的值。如果沒有選取任何資料列，結果為 0。聚合僅允許在 SELECT 敘述中使用。</p>
+<p>範例：</p>
+<p class=notranslate>COUNT(*)</p>
+<h3 id=max class=notranslate>MAX</h3>
+<pre name=bnf style=display:none>MAX()
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>MAX ( <a href=index.html#term>term</a> )</code></table>
+</div>
+<p>最高值。如果沒有選取任何資料列，結果為 <code>NULL</code>。聚合僅允許在 SELECT 敘述中使用。傳回值的資料類型與參數相同。</p>
+<p>範例：</p>
+<p class=notranslate>MAX(NAME)</p>
+<h3 id=min class=notranslate>MIN</h3>
+<pre name=bnf style=display:none>MIN()
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>MIN ( <a href=index.html#term>term</a> )</code></table>
+</div>
+<p>最低值。如果沒有選取任何資料列，結果為 <code>NULL</code>。聚合僅允許在 SELECT 敘述中使用。傳回值的資料類型與參數相同。</p>
+<p>範例：</p>
+<p class=notranslate>MIN(NAME)</p>
+<h3 id=sum class=notranslate>SUM</h3>
+<pre name=bnf style=display:none>SUM( {  } )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>SUM ( <a href=index.html#term>numericTerm</a> )</code></table>
+</div>
+<p>所有值的總和。如果沒有選取任何資料列，結果為 <code>NULL</code>。聚合僅允許在 SELECT 敘述中使用。傳回值的資料類型與參數相同。</p>
+<p>範例：</p>
+<p class=notranslate>SUM(X)</p>
+<h3 id=percentile_cont class=notranslate>PERCENTILE_CONT</h3>
+<pre name=bnf style=display:none>PERCENTILE_CONT( {  } ) WITHIN GROUP (ORDER BY {  } { ASC | DESC } )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>PERCENTILE_CONT ( <a href=index.html#numeric>numeric</a> ) WITHIN GROUP ( ORDER BY <a href=index.html#term>numericTerm</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>ASC</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>DESC</code><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>資料行中值的第 n 個百分位數。百分位數值可介於 0 到 1 之間（包含 0 和 1）。聚合僅允許在 SELECT 敘述中使用。傳回值的資料類型為 decimal。</p>
+<p>範例：</p>
+<p class=notranslate>PERCENTILE_CONT( 0.9 ) WITHIN GROUP (ORDER BY X ASC)</p>
+<h3 id=percentile_disc class=notranslate>PERCENTILE_DISC</h3>
+<pre name=bnf style=display:none>PERCENTILE_DIST( {  } ) WITHIN GROUP (ORDER BY {  } { ASC | DESC } )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>PERCENTILE_DIST ( <a href=index.html#numeric>numeric</a> ) WITHIN GROUP ( ORDER BY <a href=index.html#term>numericTerm</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>ASC</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>DESC</code><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p><code>PERCENTILE_DISC</code> 是一個假設為離散分佈模型的反分佈函數。它需要一個百分位數值和排序規範，並從集合中傳回一個元素。計數中會忽略 Null 值。</p>
+<p>範例：</p>
+<p class=notranslate>PERCENTILE_DISC( 0.9 ) WITHIN GROUP (ORDER BY X DESC)</p>
+<h3 id=percent_rank class=notranslate>PERCENT_RANK</h3>
+<pre name=bnf style=display:none>PERCENT_RANK( {  } ) WITHIN GROUP (ORDER BY {  } { ASC | DESC } )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>PERCENT_RANK ( <a href=index.html#numeric>numeric</a> ) WITHIN GROUP ( ORDER BY <a href=index.html#term>numericTerm</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>ASC</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>DESC</code><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>如果插入欄位中，一個假設數值的百分位數等級。聚合僅允許在 SELECT 敘述中使用。傳回值的資料類型為 decimal。</p>
+<p>範例：</p>
+<p class=notranslate>PERCENT_RANK( 100 ) WITHIN GROUP (ORDER BY X ASC)</p>
+<h3 id=stddev_pop class=notranslate>STDDEV_POP</h3>
+<pre name=bnf style=display:none>STDDEV_POP( {  } )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>STDDEV_POP ( <a href=index.html#term>numericTerm</a> )</code></table>
+</div>
+<p>所有值的母體標準差。聚合僅允許在 SELECT 敘述中使用。傳回值的資料類型為 decimal。</p>
+<p>範例：</p>
+<p class=notranslate>STDDEV_POP( X )</p>
+<h3 id=stddev_samp class=notranslate>STDDEV_SAMP</h3>
+<pre name=bnf style=display:none>STDDEV_SAMP( {  } )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>STDDEV_SAMP ( <a href=index.html#term>numericTerm</a> )</code></table>
+</div>
+<p>所有值的樣本標準差。聚合僅允許在 SELECT 敘述中使用。傳回值的資料類型為 decimal。</p>
+<p>範例：</p>
+<p class=notranslate>STDDEV_SAMP( X )</p>
+<h3 id=md5 class=notranslate>MD5</h3>
+<pre name=bnf style=display:none>MD5(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>MD5 ( <a href=index.html#term>term</a> )</code></table>
+</div>
+<p>計算參數的 <code>MD5</code> 雜湊值，並以 <code>BINARY</code>(16) 的形式傳回結果。</p>
+<p>範例：</p>
+<p class=notranslate>MD5(my_column)</p>
+<h3 id=invert class=notranslate>INVERT</h3>
+<pre name=bnf style=display:none>INVERT(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>INVERT ( <a href=index.html#term>term</a> )</code></table>
+</div>
+<p>反轉參數的位元。傳回類型將與參數相同。</p>
+<p>範例：</p>
+<p class=notranslate>INVERT(my_column)</p>
+<h3 id=to_number class=notranslate>TO_NUMBER</h3>
+<pre name=bnf style=display:none>TO_NUMBER(  |  [, ] )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>TO_NUMBER ( <a href=index.html#term>stringTerm</a></code></table><td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=index.html#term>timeStampTerm</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>, <a href=index.html#string>formatString</a></code></table><td class=le></table><td class=d><code class=c>)</code></table><td class=le></table>
+</div>
+<p>將字串或 date/time/timeStamp 格式化為數字，並可選擇性接受一個格式化字串。關於格式的詳細資訊，請參閱 <code>java.text.DecimalFormat</code>。對於 date、time 和 timeStamp 用語，結果為自 epoch 起計算的毫秒時間。此方法會傳回一個小數 (decimal number)。</p>
+<p>範例：</p>
+<p class=notranslate>TO_NUMBER('$123.33', '\u00A4###.##')</p>
+<h3 id=coalesce class=notranslate>COALESCE</h3>
+<pre name=bnf style=display:none>COALESCE( ,  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>COALESCE ( <a href=index.html#term>firstTerm</a> , <a href=index.html#term>secondTerm</a> )</code></table>
+</div>
+<p>如果第一個參數非 null 則傳回該值，否則傳回第二個參數的值。可用於確保 <code>UPSERT SELECT</code> 命令中的資料行會被評估為非 null 值。</p>
+<p>範例：</p>
+<p class=notranslate>COALESCE(last_update_date, CURRENT_DATE())</p>
+<h3 id=substr class=notranslate>SUBSTR</h3>
+<pre name=bnf style=display:none>SUBSTR( ,  [,  ] )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>SUBSTR ( <a href=index.html#term>stringTerm</a> , <a href=index.html#int>startInt</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>, <a href=index.html#int>lengthInt</a></code></table><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>傳回從 1 為基底 (one-based) 位置開始的子字串。如果使用 0，則位置是以 0 為基底 (zero-based)。如果起始索引為負數，則起始索引是相對於字串的結尾。長度是選填的，如果未提供，將傳回字串的剩餘部分。</p>
+<p>範例：</p>
+<p class=notranslate>SUBSTR('[Hello]', 2, 5)<br>SUBSTR('Hello World', -5)</p>
+<h3 id=trim class=notranslate>TRIM</h3>
+<pre name=bnf style=display:none>TRIM(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>TRIM ( <a href=index.html#term>stringTerm</a> )</code></table>
+</div>
+<p>移除輸入字串開頭與結尾的空格。</p>
+<p>範例：</p>
+<p class=notranslate>TRIM(' &nbsp;Hello &nbsp;')</p>
+<h3 id=ltrim class=notranslate>LTRIM</h3>
+<pre name=bnf style=display:none>LTRIM(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>LTRIM ( <a href=index.html#term>stringTerm</a> )</code></table>
+</div>
+<p>移除輸入字串開頭的空格。</p>
+<p>範例：</p>
+<p class=notranslate>LTRIM(' &nbsp;Hello')</p>
+<h3 id=rtrim class=notranslate>RTRIM</h3>
+<pre name=bnf style=display:none>RTRIM(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>RTRIM ( <a href=index.html#term>stringTerm</a> )</code></table>
+</div>
+<p>移除輸入字串結尾的空格。</p>
+<p>範例：</p>
+<p class=notranslate>RTRIM('Hello &nbsp;&nbsp;')</p>
+<h3 id=length class=notranslate>LENGTH</h3>
+<pre name=bnf style=display:none>LENGTH(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>LENGTH ( <a href=index.html#term>stringTerm</a> )</code></table>
+</div>
+<p>傳回字串的字元長度。</p>
+<p>範例：</p>
+<p class=notranslate>LENGTH('Hello')</p>
+<h3 id=regexp_substr class=notranslate>REGEXP_SUBSTR</h3>
+<pre name=bnf style=display:none>REGEXP_SUBSTR( ,  [,  ] )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>REGEXP_SUBSTR ( <a href=index.html#term>stringTerm</a> , <a href=index.html#string>patternString</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>, <a href=index.html#int>startInt</a></code></table><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>套用正則表達式，自以 1 為基底的偏移位置開始傳回子字串。就像 <code>SUBSTR</code> 一樣，如果起始索引為負數，則它是相對於字串的結尾。如果不指定，起始索引預設為 1。</p>
+<p>範例：</p>
+<p class=notranslate>REGEXP_SUBSTR('na1-appsrv35-sj35', '[^-]+') evaluates to 'na1'</p>
+<h3 id=regexp_replace class=notranslate>REGEXP_REPLACE</h3>
+<pre name=bnf style=display:none>REGEXP_REPLACE( ,  [,  ] )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>REGEXP_REPLACE ( <a href=index.html#term>stringTerm</a> , <a href=index.html#string>patternString</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>, <a href=index.html#string>replacementString</a></code></table><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>套用正則表達式並將符合的部分取代為替換字串，然後傳回一個字串。如果未指定替換字串，則預設為空字串。</p>
+<p>範例：</p>
+<p class=notranslate>REGEXP_REPLACE('abc123ABC', '[0-9]+', '#') evaluates to 'abc#ABC'</p>
+<h3 id=upper class=notranslate>UPPER</h3>
+<pre name=bnf style=display:none>UPPER(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>UPPER ( <a href=index.html#term>stringTerm</a> )</code></table>
+</div>
+<p>傳回字串參數的大寫字串。</p>
+<p>範例：</p>
+<p class=notranslate>UPPER('Hello')</p>
+<h3 id=lower class=notranslate>LOWER</h3>
+<pre name=bnf style=display:none>LOWER(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>LOWER ( <a href=index.html#term>stringTerm</a> )</code></table>
+</div>
+<p>傳回字串參數的小寫字串。</p>
+<p>範例：</p>
+<p class=notranslate>LOWER('HELLO')</p>
+<h3 id=reverse class=notranslate>REVERSE</h3>
+<pre name=bnf style=display:none>REVERSE(  )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>REVERSE ( <a href=index.html#term>stringTerm</a> )</code></table>
+</div>
+<p>傳回字串參數的反轉字串。</p>
+<p>範例：</p>
+<p class=notranslate>REVERSE('Hello')</p>
+<h3 id=to_char class=notranslate>TO_CHAR</h3>
+<pre name=bnf style=display:none>TO_CHAR(  |  [, ] )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>TO_CHAR ( <a href=index.html#term>timestampTerm</a></code></table><td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=index.html#term>numberTerm</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>, <a href=index.html#string>formatString</a></code></table><td class=le></table><td class=d><code class=c>)</code></table><td class=le></table>
+</div>
+<p>將 date、time、timestamp 或數字格式化為字串。預設的日期格式是 <code>yyyy-MM-dd HH:mm:ss</code> 並且預設的數字格式是 <code>#,##0.###</code>。詳細資訊請參閱對於日期/時間值的 <code>java.text.SimpleDateFormat</code> 以及對於數字的 <code>java.text.DecimalFormat</code>。此方法會傳回一個字串。</p>
+<p>範例：</p>
+<p class=notranslate>TO_CHAR(myDate, '2001-02-03 04:05:06')<br>TO_CHAR(myDecimal, '#,##0.###')</p>
+<h3 id=round class=notranslate>ROUND</h3>
+<pre name=bnf style=display:none>ROUND(, {'DAY' | 'HOUR' | 'MINUTE' | 'SECOND' | 'MILLISECOND'} [, ])
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ROUND ( <a href=index.html#term>timestampTerm</a> ,</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' DAY '</code></table><td class=te><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' HOUR '</code></table><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' MINUTE '</code></table><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' SECOND '</code></table><td class=ke><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' MILLISECOND '</code></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>, <a href=index.html#number>multiplierNumber</a></code></table><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>將時間戳記四捨五入到最近的指定時間單位。乘數用於四捨五入到時間單位的倍數（例如：10 分鐘），如果未指定則預設為 1。此方法會傳回一個 date。</p>
+<p>範例：</p>
+<p class=notranslate>ROUND(date, 'MINUTE', 30)<br>ROUND(time, 'HOUR')</p>
+<h3 id=truncate class=notranslate>TRUNCATE</h3>
+<pre name=bnf style=display:none>TRUNC(, {'DAY' | 'HOUR' | 'MINUTE' | 'SECOND' | 'MILLISECOND'} [, ])
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>TRUNC ( <a href=index.html#term>timestampTerm</a> ,</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' DAY '</code></table><td class=te><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' HOUR '</code></table><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' MINUTE '</code></table><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' SECOND '</code></table><td class=ke><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' MILLISECOND '</code></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>, <a href=index.html#int>multiplierInt</a></code></table><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>將時間戳記截斷到更接近 0 的下一個時間單位。乘數用於截斷至時間單位的倍數（例如：10 分鐘），如果未指定則預設為 1。此方法會傳回一個 date。</p>
+<p>範例：</p>
+<p class=notranslate>TRUNCATE(timestamp, 'SECOND', 30)<br>TRUNCATE(date, 'DAY', 7)</p>
+<h3 id=to_date class=notranslate>TO_DATE</h3>
+<pre name=bnf style=display:none>TO_DATE(  [, ] )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>TO_DATE ( <a href=index.html#term>stringTerm</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>, <a href=index.html#string>formatString</a></code></table><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>解析字串並傳回 date。最重要的格式字元為：y 年，M 月，d 日，H 時，m 分，s 秒。預設格式字串為 <code>yyyy-MM-dd HH:mm:ss</code>。格式詳細資訊請參見 <code>java.text.SimpleDateFormat</code>。</p>
+<p>範例：</p>
+<p class=notranslate>TO_DATE('Sat, 3 Feb 2001 03:05:06 GMT', 'EEE, d MMM yyyy HH:mm:ss z')</p>
+<h3 id=current_date class=notranslate>CURRENT_DATE</h3>
+<pre name=bnf style=display:none>CURRENT_DATE()
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>CURRENT_DATE ( )</code></table>
+</div>
+<p>傳回目前的伺服器端日期，此時間是在查詢執行開始時綁定的，並且是基於擁有正在被查詢的資料表中繼資料的區域伺服器上的當前時間。</p>
+<p>範例：</p>
+<p class=notranslate>CURRENT_DATE()</p>
+<h3 id=current_time class=notranslate>CURRENT_TIME</h3>
+<pre name=bnf style=display:none>CURRENT_TIME()
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>CURRENT_TIME ( )</code></table>
+</div>
+<p>除了傳回類型為 <code>TIME</code> 以外，其餘同 <code>CURRENT_DATE</code>()。在任一種情況中，底層表示形式皆為作為長整數值的 epoch 時間。</p>
+<p>範例：</p>
+<p class=notranslate>CURRENT_TIME()</p>
+</div>
+<div id=my-extension-installed style=visibility:hidden></div><div id=simple-copy-menu style=display:none>🔗 複製連結</div><div id=crypto_context_tip style="display:none;position:fixed!important;z-index:999999!important;color:rgb(255,255,255)!important;background:rgba(0,0,0,0.8)!important;border:1px solid rgb(102,102,102);border-radius:2px;padding:0px 6px 0px 12px!important;font-family:sans-serif!important;font-size:13px!important;height:28px!important;line-height:26px!important;white-space:nowrap!important"></div><div id=kiss-translator-box class=notranslate><template shadowrootmode=open><div class="kiss-translator-box_wrapper notranslate"></div></template></div>

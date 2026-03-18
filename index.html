@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns=http://www.w3.org/1999/xhtml lang=en xml:lang=en class="gmagbiol idc0_350"><!--
+ Page saved with SingleFile 
+ url: index.html#name 
+ saved date: Wed Mar 18 2026 13:32:32 GMT+0800 (台北標準時間)
+--><meta charset=utf-8><title>
+SQL Grammar
+</title><style>td,body,code,pre,td{font:13px/1.4 Arial,sans-serif;font-weight:normal}p{margin:0.4em 0 0.6em 0}h3{margin:0.8em 0 0.5em 0;border-bottom-color:#999;border-bottom-style:solid;border-bottom-width:1px}td,body,code,pre{font-size:13px}pre{background-color:#ece9d8;border:1px solid #aca899;padding:6px;-moz-border-radius:4px;-webkit-border-radius:4px;-khtml-border-radius:4px;border-radius:4px;-moz-box-shadow:2px 2px 2px #aca899;-webkit-box-shadow:2px 2px 2px #aca899;-khtml-box-shadow:2px 2px 2px #aca899;-o-box-shadow:2px 2px 2px #aca899;box-shadow:2px 2px 2px #aca899}code{background-color:#ece9d8;padding:0px 4px;-moz-border-radius:4px;-webkit-border-radius:4px;-khtml-border-radius:4px;border-radius:4px}body{max-width:800px;clear:both;width:800px;margin:0 auto}.pageTitle{text-align:center;margin-top:10px;margin-bottom:10px;font-size:28px;line-height:normal;font-weight:bold;padding:4px 0px 4px 0px}h3{font-size:16px}table{background-color:#ffffff}td{background-color:#ffffff;text-align:left}a{text-decoration:none;color:#0000ff}a:visited{color:#0000bb}a:hover{text-decoration:underline}a.activeTab{background-color:#0000bb;color:white;padding:4px 8px 0px 8px;margin-top:11px;font-size:22px;line-height:normal;font-weight:bold;text-decoration:none;border-top-right-radius:10px;border-top-left-radius:10px}a.inactiveTab{background-color:white;color:#736F6E;padding:4px 8px 0px 8px;margin-top:11px;font-size:22px;line-height:normal;font-weight:normal;text-decoration:none}.menu{border-collapse:collapse;border-bottom:1px solid blue;padding-top:0px}td.searchKeyword a:hover{text-decoration:underline}td.searchLink a:hover{text-decoration:underline}.content{margin:10px 10px 10px 0px}table.index{width:100%;padding:0px;margin:0px;border:0px none;border-collapse:collapse}td.index{width:33%;padding:0px;margin:0px;border:0px none;border-collapse:collapse;vertical-align:top}.railroad{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top}.c{padding:1px 3px;margin:0px 0px;border:2px solid;-moz-border-radius:0.4em;-webkit-border-radius:0.4em;-khtml-border-radius:0.4em;border-radius:0.4em;background-color:#fff}.ts{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAACnklEQVR42u3VAQrDIAwF0B7No3kzj+ZwMNgktd2oFcYLCEVKeSS/um1KKaVWV601r1wNsLTWA3LOdeV6xmDxWgxIKR2+1N6ZNoL3QLw2I1Tbu/UvKKWE3Wj7VwOGX4y6EdTvB9HOqTjsRjCOfPXxnPrO9IhgFGnWPfER0sEoyqzLKu1loh/FzBuznBxFnokIR9Gep4+hz8MAMCeMURcGYcx/DSjR33BnEM/kAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOArwAOuO+CC1w/wHgAAAABJRU5ErkJggg==);background-size:16px 512px}.ls{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAABU0lEQVR42u3WgWrCMBQF0HxaPy1/lk/LDGu2miWbMl8VOQcK0oLe3JcUU7pDrTXXXSmltlvt2ratHpQU5fLlV7/UA3w+urqfIkO8ToCc81eA9vn46K0D3LIRm+30jdgCnXUavpd5WflqM4aN4jiGsYUzR1Fne2EyiphxjC2Mo5iEePxI2spWo5gczR+t/DvQeCLGUfQ9sWjjMW/NMcRsHL2NWSMh74ZVG2Mz+5s0hYVYtTFcKTxEa6OPIDTA6oj+Fir6z0v5K0g6w95IeVqASTO5XwkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgGf7ABbs3lVSQZrbAAAAAElFTkSuQmCC);background-size:16px 512px}.ks{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAACvklEQVR42u3UC2rEIBAA0BzNo3kzj2aRmt1gE7OhOyll34CQj5GXGZ1luRC11lx75Jxre9RGSqluoixRcQT4fvWMzwS0+03kzwMMG7FFuhXQRikl9jScAcbN+PZSvAIILcWsEU1K8b5yHAHa9QuI35dkBugNaHY0f2TlMugM0P56b08cZON61zwDPHbdUI51zl5GQgBH2Rgz09eIAcyyMYxYwJqNtQR3APJ23hkqBNDnpn7UphEG2Pmu/BlgWCNtypRvB4S2YgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAfwn4Amf23QUWMIP2AAAAAElFTkSuQmCC);background-size:16px 512px}.te{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAACqklEQVR42u3WbQ6DIAwAUI/G0bgZR2PBfWQuVZcosiyvCX+IGa+1lk2TEEKI0VFrzSNXAwyN8YCccx255jYYvAYDepU2pbR7+PxMj8aKDm97T1y3r6CUEmba9rc+wyODZPljQdZ75qMTdLXsK1nfp98J4zttlT44vG2kM++Pslb6zyY7JeMAEJY+eOep1+35TelLr+v7dcpjloel73X4osYbgNzzz0vYfN2z/znAewN+dH+5BHD5+wcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPhbwA2mqOCCmIVZtgAAAABJRU5ErkJggg==);background-size:16px 512px}.le{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAABSklEQVR42u3WUQqDMBAFQI/m0XKzHC0lpYoNm0ppYqGdAUH8ee5LDC7LG0opuTys61rqo3rlvD+u0jLLMWULbx7f3+2rLzAzPO0dp7SH1/vff4G6rk+LfPUGPO7+GnjpBjxW326+2sTU+l9VH0yfptUeVd+sfZlWeRTeVv/R9I/AXDqOn1yn+jzsdGunbtc8qv7jnR9NHE0d1D7ms6th0aQnUw/95rvBnamHHzhPodsSdKYef9qdhF1yzp/Jl/1kNKHzfq2Cg2i71gUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgH9zA8hG3lUZOXhDAAAAAElFTkSuQmCC);background-size:16px 512px}.ke{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAQACAYAAACAmVvRAAACwklEQVR42u3WSQ7DIAwAwDwtT+NnPI3WUlNRBK26OJeOJS6RgsdmSbbtjWit1XaLfd9bPIpRSmldlC0r+ixH8v8BxMT3DNeE/wWIPddn6DfgWYD77q+1PiRPB/StHzdfOuBV61MBfdtnrU+7iMaWr5L3J+ErwC1hbYsYj9xxH/0SMI2oerbm8TwVEJPNqg7MqjNfAeLl1e4eq04BPEs8Vn0K4FiCWdVpS/Aq2THx6oOUcgr6AxGX4LMvYgagzibKApRu7J/8E5z5SwYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBzwAUV9d0Fer5EBwAAAABJRU5ErkJggg==);background-size:16px 512px}.d{border:0px;padding:0px;margin:0px;border-collapse:collapse;vertical-align:top;min-width:16px;height:24px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACAAAAAQACAYAAAB1B7lEAAAgKElEQVR42uzdwQ0AIQwDwZSezs3Rw32MZqRtgLcVZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPhbkpUkSZIkSZIkSZIkSd3dAQAAAAAAAAAAUM4AAAAAAAAAAAAeMLsbSZIkSZIkSZIkSZLU3XwiSZIkSZIkSZIkSZLq8wiSJEmSJEmSJEmSJNXnDIIkSZIkSZIkSZIkSQ98ARAAAAAAAAAAoJ4BAAAAAAAAAAA84A4AVpIkSZIkSZIkSZIkdTcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHDagwMBAAAAAEH+1guMUAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwAjKMPgJSWLJxAAAAAElFTkSuQmCC);background-size:1024px 512px}</style>
+<style data-emotion=css data-s>@keyframes animation-xykzx5{100%{background-position:200%center}}@keyframes animation-xykzx5{100%{background-position:200%center}}@keyframes animation-13a8dyy{0%,100%{opacity:1}50%{opacity:0}}@keyframes animation-13a8dyy{0%,100%{opacity:1}50%{opacity:0}}@keyframes animation-1vov3o0{0%{text-shadow:rgb(255,255,255) 0px 0px 10px,rgb(255,255,255) 0px 0px 20px,rgb(0,115,230) 0px 0px 30px,rgb(0,115,230) 0px 0px 40px}100%{text-shadow:rgb(255,255,255) 0px 0px 20px,rgb(255,77,166) 0px 0px 30px,rgb(255,77,166) 0px 0px 40px,rgb(255,77,166) 0px 0px 50px}}@keyframes animation-1vov3o0{0%{text-shadow:rgb(255,255,255) 0px 0px 10px,rgb(255,255,255) 0px 0px 20px,rgb(0,115,230) 0px 0px 30px,rgb(0,115,230) 0px 0px 40px}100%{text-shadow:rgb(255,255,255) 0px 0px 20px,rgb(255,77,166) 0px 0px 30px,rgb(255,77,166) 0px 0px 40px,rgb(255,77,166) 0px 0px 50px}}.css-1k4tc3p:hover{opacity:1}.css-12up2q2:hover{opacity:1}.css-11kdih3:hover{opacity:1}.css-1dhccbn:hover{opacity:1}.css-jbo0az:hover{opacity:1}.css-1pr7501:hover{opacity:1}.css-1s8uj7k:hover{filter:none}.css-4nbftc:hover{opacity:1}.css-ut3274:hover{color:rgb(17,17,17)}</style><style id=mmvxg3zz.rvn>#simple-copy-menu{position:fixed;z-index:2147483647;background:#ffffff;color:#333;border:1px solid #ccc;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.15);padding:8px 12px;font-size:14px;font-family:system-ui,-apple-system,sans-serif;cursor:pointer;user-select:none;transition:background 0.1s,transform 0.05s;white-space:nowrap}#simple-copy-menu:hover{background:#f5f5f5}#simple-copy-menu:active{transform:scale(0.98);background:#e8e8e8}@media (prefers-color-scheme:dark){#simple-copy-menu{background:#2d2d2d;color:#e0e0e0;border-color:#444}#simple-copy-menu:hover{background:#3d3d3d}}</style><style id=mmvt63rc.rbe>:root{--danmaku-font-family:"Source Han Sans VF"}</style><style id=mmvs1yxo.mq8>a{white-space:normal}</style><meta name=referrer content=no-referrer><style>.sf-hidden{display:none!important}</style><link rel=canonical href=index.html#name><meta http-equiv=content-security-policy content="default-src 'none'; font-src 'self' data:; img-src 'self' data:; style-src 'unsafe-inline'; media-src 'self' data:; script-src 'unsafe-inline' data:; object-src 'self' data:; frame-src 'self' data:;"><body>
+<div class=pageTitle>Phoenix 語言參考</div>
+<div>
+<p>Phoenix 是一個建構在 HBase 之上的 SQL 層，以嵌入式 JDBC 驅動程式的形式提供。
+頂層命令、SQL 語法、內建函數和支援的資料類型都記錄在下方的獨立分頁中。
+</p>
+<br>
+</div>
+<div class=menu>
+<a id=grammarTab class=activeTab href=index.html>SQL 語法</a>
+<a id=functionsTab class=inactiveTab href=functions.html>函數</a>
+<a id=dataTypesTab class=inactiveTab href=datatypes.html>資料類型</a>
+</div>
+<div id=content class=content>
+<h3 id=grammar>命令 (Commands)</h3>
+<table class="notranslate index">
+ <tbody><tr>
+ <td class=index>
+ 
+ <a href=#select>SELECT</a><br>
+ 
+ <a href=#upsert_values>UPSERT VALUES</a><br>
+ 
+ <a href=#upsert_select>UPSERT SELECT</a><br>
+ 
+ <a href=#delete>DELETE</a><br>
+ <td class=index>
+ 
+ <a href=#create>CREATE</a><br>
+ 
+ <a href=#drop>DROP</a><br>
+ 
+ <a href=#alter_table>ALTER TABLE</a><br>
+ 
+ <a href=#create_index>CREATE INDEX</a><br>
+ <td class=index>
+ 
+ <a href=#drop_index>DROP INDEX</a><br>
+ 
+ <a href=#alter_index>ALTER INDEX</a><br>
+ 
+ <a href=#explain>EXPLAIN</a><br>
+ </td>
+ </tr>
+</table>
+<h3>其他語法 (Other Grammar)</h3>
+<table class="notranslate index">
+ <tbody><tr>
+ <td class=index>
+ 
+ <a href=#constraint>Constraint</a><br>
+ 
+ <a href=#options>Options</a><br>
+ 
+ <a href=#hint>Hint</a><br>
+ 
+ <a href=#column_def>Column Def</a><br>
+ 
+ <a href=#table_ref>Table Ref</a><br>
+ 
+ <a href=#column_ref>Column Ref</a><br>
+ 
+ <a href=#select_expression>Select Expression</a><br>
+ 
+ <a href=#split_point>Split Point</a><br>
+ 
+ <a href=#table_expression>Table Expression</a><br>
+ 
+ <a href=#order>Order</a><br>
+ 
+ <a href=#expression>Expression</a><br>
+ 
+ <a href=#and_condition>And Condition</a><br>
+ <td class=index>
+ 
+ <a href=#condition>Condition</a><br>
+ 
+ <a href=#compare>Compare</a><br>
+ 
+ <a href=#operand>Operand</a><br>
+ 
+ <a href=#summand>Summand</a><br>
+ 
+ <a href=#factor>Factor</a><br>
+ 
+ <a href=#term>Term</a><br>
+ 
+ <a href=#row_value_constructor>Row Value Constructor</a><br>
+ 
+ <a href=#bind_parameter>Bind Parameter</a><br>
+ 
+ <a href=#value>Value</a><br>
+ 
+ <a href=#case>Case</a><br>
+ 
+ <a href=#case_when>Case When</a><br>
+ 
+ <a href=#name>Name</a><br>
+ <td class=index>
+ 
+ <a href=#quoted_name>Quoted Name</a><br>
+ 
+ <a href=#alias>Alias</a><br>
+ 
+ <a href=#null>Null</a><br>
+ 
+ <a href=#data_type>Data Type</a><br>
+ 
+ <a href=#string>String</a><br>
+ 
+ <a href=#boolean>Boolean</a><br>
+ 
+ <a href=#numeric>Numeric</a><br>
+ 
+ <a href=#int>Int</a><br>
+ 
+ <a href=#long>Long</a><br>
+ 
+ <a href=#decimal>Decimal</a><br>
+ 
+ <a href=#number>Number</a><br>
+ 
+ <a href=#comments>Comments</a><br>
+ </td>
+ </tr>
+</table>
+<h3 id=select class=notranslate>SELECT</h3>
+<pre name=bnf style=display:none>SELECT [/*+  */] [DISTINCT | ALL]  [,...]
+FROM  [(  [,...] )] [ WHERE  ]
+[ GROUP BY  [,...] ] [ HAVING  ]
+[ ORDER BY  [,...] ] [ LIMIT { | } ]
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>SELECT</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>/ * + <a href=#hint>hint</a> * /</code></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>DISTINCT</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>ALL</code><td class=le></table><td class=le></table><td class=d><code class=c><a href=#select_expression>selectExpression</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table></table><br><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>FROM <a href=#table_expression>tableExpression</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>( <a href=#column_def>columnDef</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>WHERE <a href=#expression>expression</a></code></table><td class=le></table></table><br><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>GROUP BY <a href=#expression>expression</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>HAVING <a href=#expression>expression</a></code></table><td class=le></table></table><br><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ORDER BY <a href=#order>order</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>LIMIT</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#bind_parameter>bindParameter</a></code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#number>number</a></code><td class=le></table></table><td class=le></table></table>
+</div>
+<p>從資料表中選取資料。<code>DISTINCT</code> 會過濾掉重複的結果，而預設的 <code>ALL</code> 則包含所有結果。<code>FROM</code> 識別要查詢的資料表（目前僅支援單一資料表 - 尚未支援 JOIN 或衍生資料表）。未在建立時宣告的動態資料行可以在資料表名稱後面的括號中定義，然後在查詢中使用。<code>GROUP BY</code> 根據給定的表達式對結果進行分組。<code>HAVING</code> 在分組後過濾資料列。<code>ORDER BY</code> 根據給定的資料行或表達式對結果進行排序，且僅允許用於聚合查詢或帶有 <code>LIMIT</code> 子句的查詢。<code>LIMIT</code> 限制查詢傳回的資料列數量，如果指定為 null 或小於零則不套用任何限制。<code>LIMIT</code> 子句在 <code>ORDER BY</code> 子句之後執行，以支援 TopN 類型的查詢。可選的 hint (提示) 會覆寫預設的查詢計畫。</p>
+<p>範例：</p>
+<p class=notranslate>
+SELECT * FROM TEST;<br>SELECT a.* FROM TEST;<br>SELECT DISTINCT NAME FROM TEST;<br>SELECT ID, COUNT(1) FROM TEST GROUP BY ID;<br>SELECT NAME, SUM(VAL) FROM TEST GROUP BY NAME HAVING COUNT(1) &gt; 2;<br>SELECT 'ID' COL, MAX(ID) AS MAX FROM TEST;<br>SELECT * FROM TEST LIMIT 1000;</p>
+<h3 id=upsert_values class=notranslate>UPSERT VALUES</h3>
+<pre name=bnf style=display:none>UPSERT INTO  [( {  |  } [,...] )] VALUES (  [,...] )
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>UPSERT INTO <a href=#name>tableName</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>(</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#column_ref>columnRef</a></code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#column_def>columnDef</a></code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table><td class=le></table><td class=d><code class=c>VALUES ( <a href=#term>constantTerm</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table>
+</div>
+<p>如果資料不存在則插入，否則更新資料表中的值。資料行清單是可選的，如果未提供，值將按照它們在結構描述中宣告的順序對應到資料行。這些值必須評估為常數。</p>
+<p>範例：</p>
+<p class=notranslate>
+UPSERT INTO TEST VALUES('foo','bar',3);<br>UPSERT INTO TEST(NAME,ID) VALUES('foo',123);</p>
+<h3 id=upsert_select class=notranslate>UPSERT SELECT</h3>
+<pre name=bnf style=display:none>UPSERT [/*+  */] INTO  [( {  |  } [,...] )] 
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>UPSERT</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>/ * + <a href=#hint>hint</a> * /</code></table><td class=le></table><td class=d><code class=c>INTO <a href=#name>tableName</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>(</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#column_ref>columnRef</a></code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#column_def>columnDef</a></code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table><td class=le></table><td class=d><code class=c><a href=#select>select</a></code></table>
+</div>
+<p>根據執行另一個查詢的結果，如果資料不存在則插入，否則更新資料表中的資料列。這些值是根據來源資料表和目標資料表之間的對應位置設定的。資料行清單是可選的，如果未提供，將按照它們在結構描述中宣告的順序對應到資料行。如果開啟了自動提交 (auto commit)，並且 a) 目標資料表符合來源資料表，以及 b) SELECT 不執行聚合，則目標資料表的填入將完全在伺服器端完成（違反約束的情況會被記錄，但除此之外會被忽略）。否則，資料會在用戶端被緩衝，如果開啟了自動提交，則會按照 UpsertBatchSize 連線屬性（或預設為 10000 列的 phoenix.mutate.upsertBatchSize <code>HBase</code> 設定屬性）指定的分批資料列進行提交。</p>
+<p>範例：</p>
+<p class=notranslate>
+UPSERT INTO test.targetTable(col1, col2) SELECT col3, col4 FROM test.sourceTable WHERE col5 &lt; 100<br>UPSERT INTO foo SELECT * FROM bar;</p>
+<h3 id=delete class=notranslate>DELETE</h3>
+<pre name=bnf style=display:none>DELETE [/*+  */] FROM  [ WHERE  ]
+[ ORDER BY  [,...] ] [ LIMIT { | } ]
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>DELETE</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>/ * + <a href=#hint>hint</a> * /</code></table><td class=le></table><td class=d><code class=c>FROM <a href=#name>tableName</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>WHERE <a href=#expression>expression</a></code></table><td class=le></table></table><br><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ORDER BY <a href=#order>order</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>LIMIT</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#bind_parameter>bindParameter</a></code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#number>number</a></code><td class=le></table></table><td class=le></table></table>
+</div>
+<p>刪除由 where 子句選取的資料列。如果開啟了自動提交，刪除操作將完全在伺服器端執行。</p>
+<p>範例：</p>
+<p class=notranslate>
+DELETE FROM TEST;<br>DELETE FROM TEST WHERE ID=123;<br>DELETE FROM TEST WHERE NAME LIKE 'foo%';</p>
+<h3 id=create class=notranslate>CREATE</h3>
+<pre name=bnf style=display:none>CREATE { TABLE | VIEW } [IF NOT EXISTS] 
+(  [,...] [] )
+[] [ SPLIT ON (  [,...] ) ]
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>CREATE</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>TABLE</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>VIEW</code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>IF NOT EXISTS</code></table><td class=le></table><td class=d><code class=c><a href=#table_ref>tableRef</a></code></table><br><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>( <a href=#column_def>columnDef</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#constraint>constraint</a></code><td class=le></table><td class=d><code class=c>)</code></table><br><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#options>tableOptions</a></code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>SPLIT ON ( <a href=#split_point>splitPoint</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table><td class=le></table></table>
+</div>
+<p>建立一個新的資料表或檢視表。建立資料表時，如果引用的 <code>HBase</code> 資料表和任何資料行族群 (column families) 不存在，則會建立它們（除非使用雙引號引起來才會區分大小寫，否則使用大寫名稱）。未列出的資料行族群不受影響。在建立時，會向任何現有資料列的第一個資料行族群加入一個空的鍵值 (key value)。Upsert 操作也會加入這個空的鍵值。這樣做是為了透過提供一個我們能保證始終存在的鍵值列來提高查詢效能（最小化必須投影的資料量）。或者，如果建立的是檢視表，則 <code>HBase</code> 資料表和資料行族群必須已經存在。不會向現有資料列加入空的鍵值，也不允許進行資料修改 - 檢視表是唯讀的。檢視表的查詢效能將不如真實的資料表。僅對於資料表而言，<code>HBase</code> 資料表和資料行設定選項可以作為鍵/值對傳遞，以便根據需要設定 <code>HBase</code> 資料表。</p>
+<p>範例：</p>
+<p class=notranslate>
+CREATE TABLE my_schema.my_table ( id BIGINT not null primary key, date DATE not null)<br>CREATE TABLE my_table ( id INTEGER not null primary key desc, date DATE not null,<br>&nbsp;&nbsp;&nbsp;&nbsp;m.db_utilization DECIMAL, i.db_utilization)<br>&nbsp;&nbsp;&nbsp;&nbsp;m.DATA_BLOCK_ENCODING='DIFF'<br>CREATE TABLE stats.prod_metrics ( host char(50) not null, created_date date not null,<br>&nbsp;&nbsp;&nbsp;&nbsp;txn_count bigint CONSTRAINT pk PRIMARY KEY (host, created_date) )<br>CREATE TABLE IF NOT EXISTS my_table ( id char(10) not null primary key, value integer)<br>&nbsp;&nbsp;&nbsp;&nbsp;DATA_BLOCK_ENCODING='NONE',VERSIONS=?,MAX_FILESIZE=2000000 split on (?, ?, ?)</p>
+<h3 id=drop class=notranslate>DROP</h3>
+<pre name=bnf style=display:none>DROP {TABLE | VIEW} [IF EXISTS] 
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>DROP</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>TABLE</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>VIEW</code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>IF EXISTS</code></table><td class=le></table><td class=d><code class=c><a href=#table_ref>tableRef</a></code></table>
+</div>
+<p>卸除資料表或檢視表。卸除資料表時，資料表中的資料也會被刪除。另一方而，對於檢視表，底層資料不受影響。請注意，結構描述有版本控制，因此在較早時間戳記連線的快照查詢可能仍能查詢已卸除的資料表，因為底層的 <code>HBase</code> 資料表本身並未被刪除。</p>
+<p>範例：</p>
+<p class=notranslate>
+DROP TABLE my_schema.my_table<br>DROP VIEW my_view</p>
+<h3 id=alter_table class=notranslate>ALTER TABLE</h3>
+<pre name=bnf style=display:none>ALTER TABLE  { { ADD [IF NOT EXISTS]  [] } | { DROP COLUMN [IF EXISTS]  } | { SET  } }
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ALTER TABLE <a href=#table_ref>tableRef</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ADD</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>IF NOT EXISTS</code></table><td class=le></table><td class=d><code class=c><a href=#column_def>columnDef</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#options>options</a></code><td class=le></table></table><td class=te><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>DROP COLUMN</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>IF EXISTS</code></table><td class=le></table><td class=d><code class=c><a href=#column_ref>columnRef</a></code></table><td class=ke><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>SET <a href=#options>options</a></code></table><td class=le></table></table>
+</div>
+<p>透過新增或移除資料行或更新資料表選項來修改現有資料表。當從資料表中卸除資料行時，該資料行中的資料也會被刪除。主鍵 (<code>PK</code>) 資料行不能被卸除，且只能新增允許 null 值的 <code>PK</code> 資料行。對於檢視表，卸除資料行時資料不受影響。請注意，建立或卸除資料行僅影響後續的查詢和資料修改。在較早時間戳記連線的快照查詢仍會使用資料寫入時有效的舊結構描述。</p>
+<p>範例：</p>
+<p class=notranslate>
+ALTER TABLE my_schema.my_table ADD d.dept_id char(10) VERSIONS=10<br>ALTER TABLE my_table ADD dept_name char(50)<br>ALTER TABLE my_table ADD parent_id char(15) null primary key<br>ALTER TABLE my_table DROP COLUMN d.dept_id<br>ALTER TABLE my_table DROP COLUMN dept_name<br>ALTER TABLE my_table DROP COLUMN parent_id<br>ALTER TABLE my_table SET IMMUTABLE_ROWS=true</p>
+<h3 id=create_index class=notranslate>CREATE INDEX</h3>
+<pre name=bnf style=display:none>CREATE INDEX [IF NOT EXISTS] 
+ON  (  [ASC | DESC] [,...] )
+[ INCLUDE (  [,...] ) ]
+[] [ SPLIT ON (  [,...] ) ]
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>CREATE INDEX</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>IF NOT EXISTS</code></table><td class=le></table><td class=d><code class=c><a href=#name>indexName</a></code></table><br><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ON <a href=#table_ref>tableRef</a> ( <a href=#column_ref>columnRef</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>ASC</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>DESC</code><td class=le></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table><br><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>INCLUDE ( <a href=#column_ref>columnRef</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table><td class=le></table><br><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#options>indexOptions</a></code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>SPLIT ON ( <a href=#split_point>splitPoint</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table><td class=le></table></table>
+</div>
+<p>在資料表或檢視表上建立新的二級索引。隨者資料的變更，索引會自動與資料表保持同步。在查詢時，如果該索引包含查詢中引用的所有資料行，並且能產生最有效率的執行計畫，最佳化工具就會使用該索引。如果資料表具有「只寫一次」且「僅附加」的資料列，那麼資料表可以將 <code>IMMUTABLE_ROWS</code> 屬性設為 true（在 <code>CREATE TABLE</code> 敘述中預先設定，或事後藉由 <code>ALTER TABLE</code> 敘述設定）。這減少了維護索引時的寫入負擔。否則，如果資料表上沒有設定此屬性，那麼當資料更改時，伺服器端將會執行增量的索引維護作業。</p>
+<p>範例：</p>
+<p class=notranslate>
+CREATE INDEX my_idx ON sales.opportunity(last_updated_date DESC)<br>CREATE INDEX my_idx ON log.event(created_date DESC) INCLUDE (name, payload) SALT_BUCKETS=10<br>CREATE INDEX IF NOT EXISTS my_comp_idx ON server_metrics ( gc_time DESC, created_date DESC )<br>&nbsp;&nbsp;&nbsp;&nbsp;DATA_BLOCK_ENCODING='NONE',VERSIONS=?,MAX_FILESIZE=2000000 split on (?, ?, ?)</p>
+<h3 id=drop_index class=notranslate>DROP INDEX</h3>
+<pre name=bnf style=display:none>DROP INDEX [IF EXISTS]  ON 
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>DROP INDEX</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>IF EXISTS</code></table><td class=le></table><td class=d><code class=c><a href=#name>indexName</a> ON <a href=#table_ref>tableRef</a></code></table>
+</div>
+<p>從資料表中卸除索引。卸除索引時，索引中的資料也會被刪除。請注意，由於中繼資料有版本控制，所以在較早時間戳記連線的快照查詢可能仍能使用該索引，因為支援該索引的 <code>HBase</code> 資料表未被刪除。</p>
+<p>範例：</p>
+<p class=notranslate>
+DROP INDEX my_idx ON sales.opportunity<br>DROP INDEX IF EXISTS my_idx ON server_metrics</p>
+<h3 id=alter_index class=notranslate>ALTER INDEX</h3>
+<pre name=bnf style=display:none>ALTER INDEX [IF EXISTS]  ON  { DISABLE | REBUILD | UNUSABLE | USABLE }
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ALTER INDEX</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>IF EXISTS</code></table><td class=le></table><td class=d><code class=c><a href=#name>indexName</a> ON <a href=#table_ref>tableRef</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>DISABLE</code><td class=te><tr class=railroad><td class=ks><td class=d><code class=c>REBUILD</code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c>UNUSABLE</code><td class=ke><tr class=railroad><td class=ls><td class=d><code class=c>USABLE</code><td class=le></table></table>
+</div>
+<p>修改現有索引的狀態。&nbsp;<code>DISABLE</code> 將導致不再對該索引執行進一步的維護，且它將不再被考慮用於查詢。<code>REBUILD</code> 將完全重建該索引，並在完成後使該索引再次可用於查詢中。<code>UNUSABLE</code> 將導致該索引不再被考慮用於查詢中，然而索引維護仍將繼續執行。<code>USABLE</code> 將導致該索引再次被考慮用於查詢中。請注意，被停用的索引必須重建，且無法直接設為 <code>USABLE</code>。</p>
+<p>範例：</p>
+<p class=notranslate>
+ALTER INDEX my_idx ON sales.opportunity DISABLE<br>ALTER INDEX IF EXISTS my_idx ON server_metrics REBUILD</p>
+<h3 id=explain class=notranslate>EXPLAIN</h3>
+<pre name=bnf style=display:none>EXPLAIN {||}
+</pre>
+<div name=railroad>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>EXPLAIN</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#select>select</a></code><td class=te><tr class=railroad><td class=ks><td class=d><code class=c><a href=#upsert_select>upsertSelect</a></code><td class=ke><tr class=railroad><td class=ls><td class=d><code class=c><a href=#delete>delete</a></code><td class=le></table></table>
+</div>
+<p>計算執行給定命令所需的邏輯步驟。每個步驟均表示為單欄結果集資料列中的字串。</p>
+<p>範例：</p>
+<p class=notranslate>
+EXPLAIN SELECT NAME, COUNT(*) FROM TEST GROUP BY NAME HAVING COUNT(*) &gt; 2;<br>EXPLAIN SELECT entity_id FROM CORE.CUSTOM_ENTITY_DATA WHERE organization_id='00D300000000XHP' AND SUBSTR(entity_id,1,3) = '002' AND created_date &lt; CURRENT_DATE()-1;</p>
+<h3 id=constraint class=notranslate>Constraint</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>CONSTRAINT <a href=#name>constraintName</a> PRIMARY KEY ( <a href=#name>columnName</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>ASC</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>DESC</code><td class=le></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table>
+<p>定義一個多部分的主鍵約束。可以宣告每個資料行按遞增或遞減排序。預設為遞增。</p>
+<p>範例：</p>
+<p class=notranslate>CONSTRAINT my_pk PRIMARY KEY (host,created_date)<br>CONSTRAINT my_pk PRIMARY KEY (host ASC,created_date DESC)</p>
+<h3 id=options class=notranslate>Options</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#name>familyName</a> .</code></table><td class=le></table><td class=d><code class=c><a href=#name>name</a> =</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#value>value</a></code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#bind_parameter>bindParameter</a></code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table></table>
+<p>透過修改相應的 <code>HBase</code> 中繼資料來設定 <code>HBase</code> 資料表或資料行的選項。此選項套用於命名的族群，如果省略且名稱參考了 <code>HColumnDescriptor</code> 屬性，則套用於所有族群。否則，此選項將套用於 <code>HTableDescriptor</code>。<p>一個內建的選項是 <code>SALT_BUCKETS</code>。此選項會在透明的情況下將一個額外的位元組前置到每個 row key 中，以確保跨所有區域伺服器的寫入負載均勻分佈。這當您的 row key 總是單調遞增，導致在單一區域伺服器上產生熱點時非常有用。此位元組是透過雜湊 row key 並用 <code>SALT_BUCKETS</code> 值求餘數來決定的。該值可以是 1 到 256 之間。如果資料表未定義拆分點 (split points)，那麼它將自動在每個可能的 salt bucket 值處被預先拆分。關於此技術的精彩說明，請參見 http://blog.sematext.com/2012/04/09/hbasewd-avoid-regionserver-hotspotting-despite-writing-records-with-sequential-keys/<p>另一個內建選項是 <code>IMMUTABLE_ROWS</code>。只有具備不可變資料列的資料表才允許擁有索引。預期不可變資料列只會在完整建立時插入一次，之後永遠不會被更新。一旦實作了漸進式索引維護，這個限制將會被移除。目前的實作在插入資料列時也會一併插入索引列。</p>
+<p>範例：</p>
+<p class=notranslate>IMMUTABLE_ROWS=true<br>SALT_BUCKETS=10<br>DATA_BLOCK_ENCODING='NONE',a.VERSIONS=10<br>MAX_FILESIZE=2000000000,MEMSTORE_FLUSHSIZE=80000000</p>
+<h3 id=hint class=notranslate>Hint</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#name>name</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table></table>
+<p>用以覆寫預設查詢處理行為的進階功能。支援的 hint 包括：1) <code>SKIP_SCAN</code> 強制對查詢執行略過掃描 (skip scan)，即使原先不會這麼做。如果查詢不包含前端的主要鍵資料行，但包含其他高選擇性的主要鍵資料行時，此選項可提高效能。2) <code>RANGE_SCAN</code> 強制對查詢執行範圍掃描。如果查詢對於非選擇性的前端主要鍵資料行及其他主要鍵資料行一起篩選範圍時，此選項可提高效能。3) <code>NO_INTRA_REGION_PARALLELIZATION</code> 用於防止在單一區域內產生多個執行緒來處理資料。當已知被查詢的整體資料集很小時，此選項很有用。4) <code>NO_INDEX</code> 強制查詢使用原始的資料表。以及 5) <code>INDEX</code>(&lt;table_name&gt; &lt;index_name&gt;...) 用於建議特定查詢該使用哪一個索引。雙引號可用於包圍區分大小寫的 table_name 和 / 或 index_name。</p>
+<p>範例：</p>
+<p class=notranslate>/*+ SKIP_SCAN */<br>/*+ RANGE_SCAN */<br>/*+ NO_INTRA_REGION_PARALLELIZATION */<br>/*+ NO_INDEX */<br>/*+ INDEX(employee emp_name_idx emp_start_date_idx) */</p>
+<h3 id=column_def class=notranslate>Column Def</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#column_ref>columnRef</a> <a href=#data_type>dataType</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>NOT</code><td class=le></table><td class=d><code class=c>NULL</code></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>PRIMARY KEY</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>ASC</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>DESC</code><td class=le></table><td class=le></table></table><td class=le></table></table>
+<p>定義一個新的主鍵資料行。資料行名稱預設是不區分大小寫的，如果有被雙引號包圍則區分大小寫。主鍵的排序順序可以是遞增 (<code>ASC</code>) 或遞減 (<code>DESC</code>)。預設為遞增。</p>
+<p>範例：</p>
+<p class=notranslate>id char(15) not null primary key<br>key integer null<br>m.response_time bigint</p>
+<h3 id=table_ref class=notranslate>Table Ref</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#name>schemaName</a> .</code></table><td class=le></table><td class=d><code class=c><a href=#name>tableName</a></code></table>
+<p>參考一個具有自選結構描述名稱量詞的資料表</p>
+<p>範例：</p>
+<p class=notranslate>Sales.Contact<br>HR.Employee<br>Department</p>
+<h3 id=column_ref class=notranslate>Column Ref</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#name>familyName</a> .</code></table><td class=le></table><td class=d><code class=c><a href=#name>columnName</a></code></table>
+<p>參考一個具有自選族群名稱量詞的資料行</p>
+<p>範例：</p>
+<p class=notranslate>e.salary<br>dept_name</p>
+<h3 id=select_expression class=notranslate>Select Expression</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>*</code><td class=te><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>( <a href=#name>familyName</a> . * )</code></table><td class=ke><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#term>term</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>AS</code><td class=le></table><td class=d><code class=c><a href=#alias>columnAlias</a></code></table><td class=le></table></table><td class=le></table>
+<p><code>SELECT</code> 敘述中的表達式。可以使用 * 選擇資料表中的所有資料行，並且可以使用 &lt;familyName&gt;.* 選擇特定資料行族群中的所有資料行。</p>
+<p>範例：</p>
+<p class=notranslate>*<br>cf.*<br>ID AS VALUE<br>VALUE + 1 VALUE_PLUS_ONE</p>
+<h3 id=split_point class=notranslate>Split Point</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#value>value</a></code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#bind_parameter>bindParameter</a></code><td class=le></table>
+<p>為資料表定義一個拆分點 (split point)。使用帶有 preparedStatement.setBinary(int, byte[]) 的綁定參數來提供任意位元組。</p>
+<p>範例：</p>
+<p class=notranslate>'A'</p>
+<h3 id=table_expression class=notranslate>Table Expression</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#name>schemaName</a> .</code></table><td class=le></table><td class=d><code class=c><a href=#name>tableName</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>AS</code><td class=le></table><td class=d><code class=c><a href=#alias>tableAlias</a></code></table><td class=le></table></table>
+<p>對資料表的參考。目前尚未支援 Join 和子查詢。</p>
+<p>範例：</p>
+<p class=notranslate>PRODUCT_METRICS AS PM</p>
+<h3 id=order class=notranslate>Order</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#expression>expression</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>ASC</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>DESC</code><td class=le></table><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>NULLS</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>FIRST</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>LAST</code><td class=le></table></table><td class=le></table></table>
+<p>藉由運算式對結果進行排序。</p>
+<p>範例：</p>
+<p class=notranslate>NAME DESC NULLS LAST</p>
+<h3 id=expression class=notranslate>Expression</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#and_condition>andCondition</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>OR <a href=#and_condition>andCondition</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table><td class=le></table></table>
+<p>值或是條件。</p>
+<p>範例：</p>
+<p class=notranslate>ID=1 OR NAME='Hi'</p>
+<h3 id=and_condition class=notranslate>And Condition</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#condition>condition</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>AND <a href=#condition>condition</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table><td class=le></table></table>
+<p>值或是條件。</p>
+<p>範例：</p>
+<p class=notranslate>ID=1 AND NAME='Hi'</p>
+<h3 id=condition class=notranslate>Condition</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#operand>operand</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#compare>compare</a> <a href=#operand>operand</a></code></table><td class=te><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>NOT</code><td class=le></table><td class=d><code class=c>IN ( <a href=#operand>constantOperand</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>, ...</code><td class=le></table><td class=d><code class=c>)</code></table><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>NOT</code><td class=le></table><td class=d><code class=c>LIKE <a href=#operand>operand</a></code></table><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>NOT</code><td class=le></table><td class=d><code class=c>BETWEEN <a href=#operand>operand</a> AND <a href=#operand>operand</a></code></table><td class=ke><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>IS</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>NOT</code><td class=le></table><td class=d><code class=c>NULL</code></table><td class=le></table><td class=le></table></table><td class=te><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>NOT <a href=#expression>expression</a></code></table><td class=ke><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>( <a href=#expression>expression</a> )</code></table><td class=le></table>
+<p>布林值或條件。當使用 <code>LIKE</code> 進行比較時，萬用字元為 <code>_</code>（任何單個字元）和 <code>%</code>（任何數量的字元）。若要搜尋 <code>%</code> 和 <code>_</code> 這些字元，則字元必需被溢出了(escape)。溢出字元是 <code> \ </code>（反斜線）。以溢出字元結尾的模式是無效的，並且運算式會回傳 <code>NULL</code>。<code>BETWEEN</code> 應對這兩個運算元進行包含在內的比較。</p>
+<p>範例：</p>
+<p class=notranslate>NAME LIKE 'Jo%'</p>
+<h3 id=compare class=notranslate>Compare</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>&lt; &gt;</code></table><td class=te><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>&lt; =</code></table><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>&gt; =</code></table><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c>=</code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c>&lt;</code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c>&gt;</code><td class=ke><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>! =</code></table><td class=le></table>
+<p>比較運算子。!= 運算子等同於 &lt;&gt;。</p>
+<p>範例：</p>
+<p class=notranslate>&lt;&gt;</p>
+<h3 id=operand class=notranslate>Operand</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#summand>summand</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>|| <a href=#summand>summand</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table><td class=le></table></table>
+<p>字串串接。</p>
+<p>範例：</p>
+<p class=notranslate>'foo'|| s</p>
+<h3 id=summand class=notranslate>Summand</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#factor>factor</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>+</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>-</code><td class=le></table><td class=d><code class=c><a href=#factor>factor</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table><td class=le></table></table>
+<p>數值或日期類型值的加法或減法。</p>
+<p>範例：</p>
+<p class=notranslate>a + b<br>a - b</p>
+<h3 id=factor class=notranslate>Factor</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#term>term</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>*</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>/</code><td class=le></table><td class=d><code class=c><a href=#term>term</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table><td class=le></table></table>
+<p>乘法或是除法。</p>
+<p>範例：</p>
+<p class=notranslate>c * d<br>e / 5</p>
+<h3 id=term class=notranslate>Term</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#value>value</a></code><td class=te><tr class=railroad><td class=ks><td class=d><code class=c><a href=#bind_parameter>bindParameter</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=functions.html>Function</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=#case>case</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=#case_when>caseWhen</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>( <a href=#operand>operand</a> )</code></table><td class=ke><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c><a href=#alias>tableAlias</a> .</code></table><td class=le></table><td class=d><code class=c><a href=#column_ref>columnRef</a></code></table><td class=ke><tr class=railroad><td class=ls><td class=d><code class=c><a href=#row_value_constructor>rowValueConstructor</a></code><td class=le></table>
+<p>一個值。</p>
+<p>範例：</p>
+<p class=notranslate>'Hello'</p>
+<h3 id=row_value_constructor class=notranslate>Row Value Constructor</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>( <a href=#term>term</a> , <a href=#term>term</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table><td class=d><code class=c>)</code></table>
+<p>列值建構函式是其他術語的清單，這些術語被視為一種複合結構來處理。它們可以互相比較，也可以與其他術語比較。其主要用例為 1) 大幅提高逐步經過行數的效率，以支援類似「查詢更多」的功能；或 2) 允許 <code>IN</code> 子句對複合列鍵進行點取得 (point get)。</p>
+<p>範例：</p>
+<p class=notranslate>(col1, col2, 5)</p>
+<h3 id=bind_parameter class=notranslate>Bind Parameter</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>?</code><td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>: <a href=#number>number</a></code></table><td class=le></table>
+<p>參數可以被索引，例如 <code>:1</code> 代表為第一個參數。</p>
+<p>範例：</p>
+<p class=notranslate>:1<br>?</p>
+<h3 id=value class=notranslate>Value</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#string>string</a></code><td class=te><tr class=railroad><td class=ks><td class=d><code class=c><a href=#numeric>numeric</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=#boolean>boolean</a></code><td class=ke><tr class=railroad><td class=ls><td class=d><code class=c><a href=#null>null</a></code><td class=le></table>
+<p>任何資料類型的常值 (literal value) 或 null。</p>
+<p>範例：</p>
+<p class=notranslate>10</p>
+<h3 id=case class=notranslate>Case</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>CASE <a href=#term>term</a> WHEN <a href=#expression>expression</a> THEN <a href=#term>term</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table><br><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ELSE <a href=#expression>expression</a></code></table><td class=le></table><td class=d><code class=c>END</code></table>
+<p>回傳第一個數值與測試運算式相等的運算式。如果未指定 else 的部分，則回傳 <code>NULL</code>。</p>
+<p>範例：</p>
+<p class=notranslate>CASE CNT WHEN 0 THEN 'No' WHEN 1 THEN 'One' ELSE 'Some' END</p>
+<h3 id=case_when class=notranslate>Case When</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>CASE WHEN <a href=#expression>expression</a> THEN <a href=#term>term</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table><br><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>ELSE <a href=#term>term</a></code></table><td class=le></table><td class=d><code class=c>END</code></table>
+<p>回傳條件為 True 的第一個運算式。如果未指定 else 的部分，則回傳 <code>NULL</code>。</p>
+<p>範例：</p>
+<p class=notranslate>CASE WHEN CNT&lt;10 THEN 'Low' ELSE 'High' END</p>
+<h3 id=name class=notranslate>Name</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>A-Z | _</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>A-Z | _</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>0-9</code><td class=le></table><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table><td class=le></table></table><td class=te><tr class=railroad><td class=ls><td class=d><code class=c><a href=#quoted_name>quotedName</a></code><td class=le></table>
+<p>未加引號的名稱「不」區分大小寫。名稱長度沒有上限設定。</p>
+<p>範例：</p>
+<p class=notranslate>my_column</p>
+<h3 id=quoted_name class=notranslate>Quoted Name</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>" anything "</code></table>
+<p>加引號的名稱會區分大小寫，並且可以包含空格。名稱長度無上限設定。可藉由兩個雙引號來在識別碼內建立一個單獨的雙引號。</p>
+<p>範例：</p>
+<p class=notranslate>"first-name"</p>
+<h3 id=alias class=notranslate>Alias</h3>
+<code class=c><a href=#name>name</a></code>
+<p>別名是一個名稱，僅在此陳述句的情境下有效。</p>
+<p>範例：</p>
+<p class=notranslate>A</p>
+<h3 id=null class=notranslate>Null</h3>
+<code class=c>NULL</code>
+<p><code>NULL</code> 是沒有資料類型的值，代表「未知數值」。</p>
+<p>範例：</p>
+<p class=notranslate>NULL</p>
+<h3 id=data_type class=notranslate>Data Type</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=datatypes.html#char_type>charType</a></code><td class=te><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#varchar_type>varcharType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#decimal_type>decimalType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#tinyint_type>tinyintType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#smallint_type>smallintType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#integer_type>integerType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#bigint_type>bigintType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#float_type>floatType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#double_type>doubleType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#timestamp_type>timestampType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#date_type>dateType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#time_type>timeType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#unsigned_tinyint_type>unsignedTinyintType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#unsigned_smallint_type>unsignedSmallintType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#unsigned_int_type>unsignedIntType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#unsigned_long_type>unsignedLongType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#unsigned_float_type>unsignedFloatType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#unsigned_double_type>unsignedDoubleType</a></code><td class=ke><tr class=railroad><td class=ks><td class=d><code class=c><a href=datatypes.html#binary_type>binaryType</a></code><td class=ke><tr class=railroad><td class=ls><td class=d><code class=c><a href=datatypes.html#varbinary_type>varbinaryType</a></code><td class=le></table>
+<p>類型的名稱。</p>
+<p>範例：</p>
+<p class=notranslate>CHAR(15)<br>VARCHAR<br>VARCHAR(1000)<br>INTEGER<br>BINARY(200)</p>
+<h3 id=string class=notranslate>String</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>' anything '</code></table>
+<p>字串的起始及其結尾都為單引號。兩個單引號可被用來在字串內建立單引號。</p>
+<p>範例：</p>
+<p class=notranslate>'John''s car'</p>
+<h3 id=boolean class=notranslate>Boolean</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c>TRUE</code><td class=te><tr class=railroad><td class=ls><td class=d><code class=c>FALSE</code><td class=le></table>
+<p>布林數值。</p>
+<p>範例：</p>
+<p class=notranslate>TRUE</p>
+<h3 id=numeric class=notranslate>Numeric</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><code class=c><a href=#int>int</a></code><td class=te><tr class=railroad><td class=ks><td class=d><code class=c><a href=#long>long</a></code><td class=ke><tr class=railroad><td class=ls><td class=d><code class=c><a href=#decimal>decimal</a></code><td class=le></table>
+<p>一個數值其資料類型的最低可能設定永遠會給定為某一個特定的數值。如果數字包含點 (dot)，則該數字即是一個小數；否則，它就會是 int、long 或是 decimal（取決於數值而定）。</p>
+<p>範例：</p>
+<p class=notranslate>SELECT -10.05<br>SELECT 5<br>SELECT 12345678912345</p>
+<h3 id=int class=notranslate>Int</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>-</code><td class=le></table><td class=d><code class=c><a href=#number>number</a></code></table>
+<p>最大整數為 2147483647，最小為 -2147483648。</p>
+<p>範例：</p>
+<p class=notranslate>10</p>
+<h3 id=long class=notranslate>Long</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>-</code><td class=le></table><td class=d><code class=c><a href=#number>number</a></code></table>
+<p>Long 數字介於 -9223372036854775808 以及 9223372036854775807 之間。</p>
+<p>範例：</p>
+<p class=notranslate>100000</p>
+<h3 id=decimal class=notranslate>Decimal</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>-</code><td class=le></table><td class=d><code class=c><a href=#number>number</a></code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>. <a href=#number>number</a></code></table><td class=le></table></table>
+<p>具有固定精度和範圍的十進位數字。在內部，是使用 <code>java.lang.BigDecimal</code>。</p>
+<p>範例：</p>
+<p class=notranslate>SELECT -10.5</p>
+<h3 id=number class=notranslate>Number</h3>
+<table class=railroad><tbody><tr class=railroad><td class=d><code class=c>0-9</code><td class=d><table class=railroad><tbody><tr class=railroad><td class=ts><td class=d>&nbsp;<td class=te><tr class=railroad><td class=ls><td class=d><code class=c>...</code><td class=le></table></table>
+<p>該數字的最長長度是根據所使用的資料類型而定。</p>
+<p>範例：</p>
+<p class=notranslate>100</p>
+<h3 id=comments class=notranslate>Comments</h3>
+<table class=railroad><tbody><tr class=railroad><td class=ts><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>- - anything</code></table><td class=te><tr class=railroad><td class=ks><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>/ / anything</code></table><td class=ke><tr class=railroad><td class=ls><td class=d><table class=railroad><tbody><tr class=railroad><td class=d><code class=c>/ * anything * /</code></table><td class=le></table>
+<p>備註 (Comments) 可以被用於命令的任何位置且會被資料庫給忽略。行註解的結尾是伴隨著換行字元的。區塊註解不能夠被嵌套建立的，然長度可以有多行之多。</p>
+<p>範例：</p>
+<p class=notranslate>// This is a comment</p>
+</div>
+<div id=my-extension-installed style=visibility:hidden></div><div id=crypto_context_tip style="display:none;position:fixed!important;z-index:999999!important;color:rgb(255,255,255)!important;background:rgba(0,0,0,0.8)!important;border:1px solid rgb(102,102,102);border-radius:2px;padding:0px 6px 0px 12px!important;font-family:sans-serif!important;font-size:13px!important;height:28px!important;line-height:26px!important;white-space:nowrap!important"></div><div id=simple-copy-menu style=display:none>🔗 複製連結</div><div id=kiss-translator-box class=notranslate><template shadowrootmode=open><div class="kiss-translator-box_wrapper notranslate"></div></template></div>
