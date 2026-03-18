@@ -429,3 +429,177 @@ Functions
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 </script>
+<style>
+  #toc-toggle-btn {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 101;
+    background: white;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-weight: bold;
+    font-size: 14px;
+  }
+  #toc-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 220px;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 100;
+  }
+  #toc-container h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+  #toc-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  #toc-list li {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  #toc-list a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  #toc-list a:hover {
+    background-color: #f0f0f0;
+    color: #0000bb;
+    text-decoration: none;
+  }
+  
+  @media (max-width: 1350px) {
+    #toc-container {
+      display: none;
+      top: 60px;
+    }
+    #toc-toggle-btn {
+      display: block;
+    }
+    #toc-container.show-toc {
+      display: block;
+    }
+  }
+</style>
+
+<button id="toc-toggle-btn">目錄 ☰</button>
+<div id="toc-container">
+  <h3>導覽目錄</h3>
+  <ul id="toc-list"></ul>
+</div>
+
+<script>
+  (function() {
+    var tocList = document.getElementById("toc-list");
+    if (!tocList) return;
+    
+    var groupMap = {};
+    var tables = document.querySelectorAll("#content table.index");
+    tables.forEach(function(tableElem) {
+      var prev = tableElem.previousElementSibling;
+      var groupTitleText = "";
+      while (prev) {
+        if (prev.tagName === 'H2' || prev.tagName === 'H3') {
+          groupTitleText = prev.innerText;
+          break;
+        }
+        prev = prev.previousElementSibling;
+      }
+      
+      var links = tableElem.querySelectorAll("a");
+      links.forEach(function(link) {
+        var href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+          groupMap[href.substring(1)] = groupTitleText;
+        }
+      });
+    });
+
+    var headings = document.querySelectorAll("#content h3[id]");
+    var currentGroup = null;
+    var currentUl = null;
+    
+    headings.forEach(function(heading) {
+      if (heading.id === 'grammar' || heading.id === 'functions' || heading.id === 'dataTypes') return;
+
+      var groupTitleText = groupMap[heading.id];
+      if (groupTitleText && groupTitleText !== currentGroup) {
+        currentGroup = groupTitleText;
+        var groupTitle = document.createElement("div");
+        groupTitle.innerText = groupTitleText;
+        groupTitle.style.fontWeight = "bold";
+        groupTitle.style.marginTop = "10px";
+        groupTitle.style.marginBottom = "5px";
+        tocList.appendChild(groupTitle);
+        
+        currentUl = document.createElement("ul");
+        currentUl.style.listStyleType = "none";
+        currentUl.style.paddingLeft = "10px";
+        tocList.appendChild(currentUl);
+      }
+      
+      var li = document.createElement("li");
+      li.style.marginBottom = "6px";
+      li.style.fontSize = "13px";
+      var a = document.createElement("a");
+      a.href = "#" + heading.id;
+      a.innerText = heading.innerText;
+      
+      a.addEventListener("click", function() {
+        var tocContainer = document.getElementById("toc-container");
+        if (window.innerWidth <= 1350 && tocContainer.classList.contains("show-toc")) {
+          tocContainer.classList.remove("show-toc");
+        }
+      });
+      
+      li.appendChild(a);
+      if (currentUl) {
+        currentUl.appendChild(li);
+      } else {
+        tocList.appendChild(li);
+      }
+    });
+
+    var tocToggleBtn = document.getElementById("toc-toggle-btn");
+    var tocContainer = document.getElementById("toc-container");
+    
+    if (tocToggleBtn && tocContainer) {
+      tocToggleBtn.addEventListener("click", function(e) {
+        tocContainer.classList.toggle("show-toc");
+        e.stopPropagation();
+      });
+      
+      document.addEventListener("click", function(e) {
+        if (window.innerWidth <= 1350 && 
+            tocContainer.classList.contains("show-toc") && 
+            !tocContainer.contains(e.target) && 
+            e.target !== tocToggleBtn) {
+          tocContainer.classList.remove("show-toc");
+        }
+      });
+    }
+  })();
+</script>
