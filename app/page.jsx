@@ -3,9 +3,14 @@
 import { useEffect, useRef } from "react";
 import "railroad-diagrams/railroad.css";
 import "../src/railroad.css";
+import "highlight.js/styles/atom-one-dark.css";
 import phoenix from "../src/phoenix.csv";
 import * as parser from "../src/grammar.peggy";
 import * as rr from "railroad-diagrams/railroad.js";
+import hljs from "highlight.js/lib/core";
+import sql from "highlight.js/lib/languages/sql";
+
+hljs.registerLanguage("sql", sql);
 
 function GrammarItem({ topic, syntax, description, example }) {
     const containerRef = useRef(null);
@@ -93,9 +98,15 @@ function GrammarItem({ topic, syntax, description, example }) {
             <div ref={errorRef} style={{ color: "red", fontSize: "0.9em", fontFamily: "monospace", margin: "1rem 0" }}></div>
 
             {example && (
-                <div style={{ background: "#282c34", padding: "1rem", borderRadius: "6px", color: "#abb2bf" }}>
+                <div style={{ background: "#282c34", padding: "1rem", borderRadius: "6px" }}>
                     <strong style={{ display: "block", marginBottom: "0.5rem", color: "#e5c07b" }}>範例：</strong>
-                    <pre style={{ whiteSpace: "pre-wrap", margin: 0, fontFamily: "monospace", fontSize: "0.9em" }}>{example.trim()}</pre>
+                    <pre style={{ margin: 0 }}><code
+                        className="language-sql hljs"
+                        style={{ fontFamily: "monospace", fontSize: "0.9em", whiteSpace: "pre-wrap", background: "transparent", padding: 0 }}
+                        dangerouslySetInnerHTML={{
+                            __html: hljs.highlight(example.trim(), { language: "sql" }).value
+                        }}
+                    /></pre>
                 </div>
             )}
         </div>
