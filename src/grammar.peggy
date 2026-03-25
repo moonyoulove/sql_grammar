@@ -38,7 +38,7 @@ identifier
     }
 
 symbol 
-    = symbol:$([^ \n\r\t\[\]{}\(\)]+) {
+    = symbol:$([^ \n\r\t\[\]{}\(\)|]+ / "||") {
         return rr.Terminal(symbol);
     }
 

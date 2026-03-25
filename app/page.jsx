@@ -13,10 +13,10 @@ function GrammarItem({ topic, syntax, description, example }) {
 
     useEffect(() => {
         if (!containerRef.current) return;
-        
+
         containerRef.current.innerHTML = ""; // clear previous diagram if any
         if (errorRef.current) errorRef.current.innerText = "";
-        
+
         const textToParse = syntax ? syntax.trim() : "";
         if (!textToParse) return;
 
@@ -27,7 +27,7 @@ function GrammarItem({ topic, syntax, description, example }) {
             let started = false;
             let ended = false;
             const items = [];
-            
+
             // If the parser returns a root object with .items, use it.
             // Otherwise, if it returns an array directly, use it.
             const rawItems = result && result.items ? result.items : (Array.isArray(result) ? result : [result]);
@@ -40,7 +40,7 @@ function GrammarItem({ topic, syntax, description, example }) {
                     makeDiagram();
                 }
                 items.push(item);
-                width += (item.width || 0);
+                width += item.width || 0;
             }
 
             ended = true;
@@ -67,25 +67,31 @@ function GrammarItem({ topic, syntax, description, example }) {
         }
     }, [syntax]);
 
-    const sectionId = topic ? topic.toLowerCase().replace(/\s+/g, '_') : undefined;
+    const sectionId = topic ? topic.toLowerCase().replace(/\s+/g, "_") : undefined;
 
     return (
-        <div id={sectionId} style={{ marginBottom: "2rem", padding: "1.5rem", border: "1px solid var(--card-border)", borderRadius: "8px", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", background: "var(--card-bg)" }}>
-            <h2 style={{ marginTop: 0, color: "var(--foreground)", borderBottom: "1px solid var(--card-border)", paddingBottom: "0.5rem" }}>{topic}</h2>
-            {description && <p style={{ lineHeight: "1.6", color: "var(--text-muted)" }}>{description}</p>}
-            
-            <div 
-                ref={containerRef} 
-                style={{ 
-                    overflowX: "auto", 
-                    margin: "1.5rem 0", 
-                    padding: "1rem", 
-                    background: "var(--diagram-bg)", 
-                    borderRadius: "4px" 
+        <div id={sectionId}
+            style={{ marginBottom: "2rem", padding: "1.5rem", border: "1px solid var(--card-border)", borderRadius: "8px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.2)", background: "var(--card-bg)" }}
+        >
+            <h2 style={{ marginTop: 0, color: "var(--foreground)", borderBottom: "1px solid var(--card-border)", paddingBottom: "0.5rem" }}>
+                {topic}
+            </h2>
+            {description && <p style={{ lineHeight: "1.6", color: "var(--text-muted)", whiteSpace: "pre-wrap" }}>{description}</p>}
+
+            <div
+                ref={containerRef}
+                style={{
+                    overflowX: "auto",
+                    margin: "1.5rem 0",
+                    padding: "1rem",
+                    background: "var(--diagram-bg)",
+                    borderRadius: "4px",
                 }}
-            ></div>
+            >
+            </div>
             <div ref={errorRef} style={{ color: "red", fontSize: "0.9em", fontFamily: "monospace", margin: "1rem 0" }}></div>
-            
+
             {example && (
                 <div style={{ background: "#282c34", padding: "1rem", borderRadius: "6px", color: "#abb2bf" }}>
                     <strong style={{ display: "block", marginBottom: "0.5rem", color: "#e5c07b" }}>範例：</strong>
@@ -113,7 +119,7 @@ export default function Page() {
                 const example = row[4];
 
                 return (
-                    <GrammarItem 
+                    <GrammarItem
                         key={i}
                         topic={topic}
                         syntax={syntax}
