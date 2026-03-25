@@ -1,0 +1,17 @@
+Syntax {
+	Statement = NonemptyListOf<Expression, "">
+
+	Expression = Optional | Choice | Common
+
+	Common = NonemptyListOf<(Command | Identifier), "">
+
+	Command = NonemptyListOf<Keyword, "">
+    
+    Keyword = upper+
+    
+	Identifier = (~(space | "[" | "]" | "{" | "}" | "|") any)+
+
+	Optional = "[" Statement  "]"
+
+	Choice = "{" NonemptyListOf<Expression, "|"> "}"
+}

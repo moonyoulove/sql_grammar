@@ -1,0 +1,2135 @@
+﻿SECTION,TOPIC,SYNTAX,TEXT,EXAMPLE,TEXT_ZH
+Commands,SELECT,"
+selectStatement [ { UNION ALL selectStatement [...] } ]
+[ ORDER BY order [,...] ] [ LIMIT {bindParameter | number} ]
+[ OFFSET {bindParameter | number} [ ROW | ROWS ] ] [ FETCH { FIRST | NEXT } {bindParameter | number} { ROW | ROWS } ONLY ]
+","
+Selects data from one or more tables.
+UNION ALL combines rows from multiple select statements.
+ORDER BY sorts the result based on the given expressions.
+LIMIT(or FETCH FIRST) limits the number of rows returned by the query with no limit applied if unspecified or specified
+as null or less than zero. The LIMIT(or FETCH FIRST) clause is executed after the ORDER BY clause to support top-N type
+queries.
+OFFSET clause skips that many rows before beginning to return rows.
+An optional hint may be used to override decisions made by the query optimizer.
+
+","
+SELECT * FROM TEST LIMIT 1000;
+SELECT * FROM TEST LIMIT 1000 OFFSET 100;
+SELECT full_name FROM SALES_PERSON WHERE ranking >= 5.0
+    UNION ALL SELECT reviewer_name FROM CUSTOMER_REVIEW WHERE score >= 8.0
+",從一個或多個表中選取資料。UNION ALL 會合併多個 SELECT 語句中的行。ORDER BY 根據指定的表達式對結果進行排序。LIMIT（或 FETCH FIRST）限制查詢返回的行數；若未指定、指定為 NULL 或小於零，則不施加限制。LIMIT（或 FETCH FIRST）子句在 ORDER BY 子句之後執行，以支援 Top-N 類型查詢。OFFSET 子句會在開始返回行之前跳過指定數量的行。可使用可選提示來覆蓋查詢優化器所做的決策。
+Commands,UPSERT VALUES,"
+UPSERT INTO tableName [( { columnRef | columnDef } [,...] )] VALUES ( constantTerm [,...] )
+[ON DUPLICATE KEY { IGNORE | UPDATE columnRef = operand } ]
+","
+Inserts if not present and updates otherwise the value in the table. The list of
+columns is optional and if not present, the values will map to the column in the
+order they are declared in the schema. The values must evaluate to constants.
+
+Use the ON DUPLICATE KEY clause (available in Phoenix 4.9) if you need the UPSERT to be atomic. Performance
+will be slower in this case as the row needs to be read on the server side when
+the commit is done. Use IGNORE if you do not want the UPSERT performed if the
+row already exists. Otherwise, with UPDATE, the expression will be evaluated and the
+result used to set the column, for example to perform an atomic increment. An UPSERT
+to the same row in the same commit batch will be processed in the order of execution.
+
+","
+UPSERT INTO TEST VALUES('foo','bar',3);
+UPSERT INTO TEST(NAME,ID) VALUES('foo',123);
+UPSERT INTO TEST(ID, COUNTER) VALUES(123, 0) ON DUPLICATE KEY UPDATE COUNTER = COUNTER + 1;
+UPSERT INTO TEST(ID, MY_COL) VALUES(123, 0) ON DUPLICATE KEY IGNORE;
+",若資料不存在則插入，若已存在則更新表中對應欄位的值。欄位清單為可選項目；若未指定，則值將依資料表架構中宣告的順序與欄位一一對應。所有值必須為常數。如需確保 UPSERT 操作具有原子性，可使用 ON DUPLICATE KEY 子句（適用於 Phoenix 4.9），但此情況下效能會較慢，因為在提交時需在伺服器端讀取該列。若不希望對已存在的列執行 UPSERT，則可使用 IGNORE。否則，搭配 UPDATE 使用時，系統將評估表達式並以其結果設定欄位值，例如用於執行原子性遞增操作。針對同一批次提交中相同列的 UPSERT 操作，將依照執行順序進行處理。
+Commands,UPSERT SELECT,"
+UPSERT [/*+ hint */] INTO tableName [( { columnRef | columnDef } [,...] )] select
+","
+Inserts if not present and updates otherwise rows in the table based on the
+results of running another query. The values are set based on their matching
+position between the source and target tables. The list of columns is optional
+and if not present will map to the column in the order they are declared in the
+schema. If auto commit is on, and both a) the target
+table matches the source table, and b) the select performs no aggregation, then the population of the target table will
+be done completely on the server-side (with constraint violations logged, but otherwise ignored). Otherwise, data is
+buffered on the client and, if auto commit is on, committed in row batches as specified by the UpsertBatchSize
+connection property (or the phoenix.mutate.upsertBatchSize HBase config property which defaults to 10000 rows)
+
+","
+UPSERT INTO test.targetTable(col1, col2) SELECT col3, col4 FROM test.sourceTable WHERE col5 < 100
+UPSERT INTO foo SELECT * FROM bar;
+","若資料不存在則插入，若已存在則更新表中的對應行，其操作結果取決於執行另一項查詢的輸出。欄位數值係依據來源表與目標表中相匹配的位置來設定；若未明確指定欄位清單，則將依資料庫架構中宣告的順序進行對應。當啟用自動提交時，若同時滿足以下條件：(a) 目標表與來源表結構相符，且 (b) SELECT 查詢未執行聚合操作，則目標表的資料填充將完全在伺服器端完成（約束違規情況會記錄但不予處理）；否則，資料會在客戶端緩存，並在啟用自動提交時，依照 UpsertBatchSize 連線屬性（或 Phoenix.mutate.upsertBatchSize HBase 配置屬性，預設值為每批次 10,000 行）指定的批次大小進行逐筆提交。"
+Commands,DELETE,"
+DELETE [/*+ hint */] FROM tableName [ WHERE expression ]
+[ ORDER BY order [,...] ] [ LIMIT {bindParameter | number} ]
+","
+Deletes the rows selected by the where clause. If auto commit is on, the
+deletion is performed completely server-side.
+
+","
+DELETE FROM TEST;
+DELETE FROM TEST WHERE ID=123;
+DELETE FROM TEST WHERE NAME LIKE 'foo%';
+",刪除符合 WHERE 子句條件的資料列。若自動提交功能已啟用，則刪除作業將完全在伺服器端執行。
+Commands,DECLARE CURSOR,"
+DECLARE CURSOR cursorName FOR selectStatement
+","
+Creates a cursor for the select statement
+
+","
+DECLARE CURSOR TEST_CURSOR FOR SELECT * FROM TEST_TABLE
+",建立用於 SELECT 語句的光標
+Commands,OPEN CURSOR,"
+OPEN CURSOR cursorName
+","
+Opens already declared cursor to perform FETCH operations
+
+","
+OPEN CURSOR TEST_CURSOR
+",開啟已宣告的游標以執行 FETCH 操作
+Commands,FETCH NEXT,"
+FETCH NEXT [n ROWS] FROM cursorName
+","
+Retrieves next or next n rows from already opened cursor
+
+","
+FETCH NEXT FROM TEST_CURSOR
+FETCH NEXT 10 ROWS FROM TEST_CURSOR
+",從已開啟的光標中檢索下一筆或多筆資料行。
+Commands,CLOSE,"
+CLOSE cursorName
+","
+Closes an already open cursor
+
+","
+CLOSE TEST_CURSOR
+",關閉已開啟的光標
+Commands,CREATE TABLE,"
+CREATE TABLE [IF NOT EXISTS] tableRef
+( columnDef [,...] [constraint] )
+[tableOptions] [ SPLIT ON ( splitPoint [,...] ) ]
+","
+Creates a new table. The HBase table and any column families referenced are created
+if they don't already exist. All table, column family and column names are uppercased unless they are double quoted in which case they are case sensitive.
+Column families that exist in the HBase table but are not listed are ignored.
+At create time, to improve query performance, an empty key value is added to the first column family of any existing rows or the default column family if no column families are explicitly defined. Upserts will also add this empty key value. This improves query performance by having a key value column we can guarantee always being there and thus minimizing the amount of data that must be projected and subsequently returned back to the client. HBase table and column configuration options may be passed through as key/value pairs to configure the HBase table as desired. Note that when using the IF NOT EXISTS clause, if a table already exists, then no change will be made to it. Additionally, no validation is done to check whether the existing table metadata matches the proposed table metadata. so it's better to use DROP TABLE followed by CREATE TABLE is the table metadata may be changing.
+
+","
+CREATE TABLE my_schema.my_table ( id BIGINT not null primary key, date Date)
+CREATE TABLE my_table ( id INTEGER not null primary key desc, date DATE not null,
+    m.db_utilization DECIMAL, i.db_utilization)
+    m.DATA_BLOCK_ENCODING='DIFF'
+CREATE TABLE stats.prod_metrics ( host char(50) not null, created_date date not null,
+    txn_count bigint CONSTRAINT pk PRIMARY KEY (host, created_date) )
+CREATE TABLE IF NOT EXISTS ""my_case_sensitive_table""
+    ( ""id"" char(10) not null primary key, ""value"" integer)
+    DATA_BLOCK_ENCODING='NONE',VERSIONS=5,MAX_FILESIZE=2000000 split on (?, ?, ?)
+CREATE TABLE IF NOT EXISTS my_schema.my_table (
+    org_id CHAR(15), entity_id CHAR(15), payload binary(1000),
+    CONSTRAINT pk PRIMARY KEY (org_id, entity_id) )
+    TTL=86400
+",建立新表。若 HBase 表或其所引用的任何列族尚未存在，則會自動建立它們。除非使用雙引號包裹，否則所有表、列族與欄位名稱均轉為大寫；若使用雙引號包裹，則區分大小寫。HBase 表中已存在但未在清單中列出的列族將被忽略。在建表時，為提升查詢效能，會在現有資料列的第一個列族（或若未明確定義列族時預設列族）中加入一個空的鍵值；Upsert 操作也會加入此空鍵值。透過確保始終存在一個鍵值欄位，可減少必須投影並回傳給客戶端之資料量，進而提升查詢效能。HBase 表與列的配置選項可作為鍵值對傳遞，以依需求設定 HBase 表。請注意，當使用 IF NOT EXISTS 子句時，若表已存在，則不會對其進行任何修改；此外，亦不會驗證現有表的元資料是否符合擬建的表元資料。因此，若需變更表元資料，建議先執行 DROP TABLE，再執行 CREATE TABLE。
+Commands,DROP TABLE,"
+DROP TABLE [IF EXISTS] tableRef [CASCADE]
+","
+Drops a table. The optional CASCADE keyword causes any views on the table to be dropped as well. When dropping a table, by default the underlying HBase data and index tables are dropped. The phoenix.schema.dropMetaData
+may be used to override this and keep the HBase table for point-in-time queries.
+
+","
+DROP TABLE my_schema.my_table;
+DROP TABLE IF EXISTS my_table;
+DROP TABLE my_schema.my_table CASCADE;
+",此指令用於刪除資料表。若選用可選的 CASCADE 關鍵字，則該資料表上的所有視圖也會一併被刪除。執行刪除資料表操作時，預設會同時刪除底層的 HBase 資料與索引資料表；但若需保留 HBase 資料表以支援時間點查詢，可使用 phoenix.schema.dropMetaData 來覆寫此預設行為。
+Commands,CREATE FUNCTION,"
+CREATE [TEMPORARY] FUNCTION funcName
+([funcArgument[,...]])
+RETURNS dataType AS className [USING JAR jarPath]
+","
+Creates a new function. The function name is uppercased unless they are double quoted in which case they are case sensitive. The function accepts zero or more arguments. The class name and jar path should be in single quotes. The jar path is optional and if not specified then the class name will be loaded from the jars present in directory configured for hbase.dynamic.jars.dir.
+
+","
+
+CREATE FUNCTION my_reverse(varchar) returns varchar as 'com.mypackage.MyReverseFunction' using jar 'hdfs:/localhost:8080/hbase/lib/myjar.jar'
+CREATE FUNCTION my_reverse(varchar) returns varchar as 'com.mypackage.MyReverseFunction'
+CREATE FUNCTION my_increment(integer, integer constant defaultvalue='10') returns integer as 'com.mypackage.MyIncrementFunction' using jar '/hbase/lib/myincrement.jar'
+CREATE TEMPORARY FUNCTION my_reverse(varchar) returns varchar as 'com.mypackage.MyReverseFunction' using jar 'hdfs:/localhost:8080/hbase/lib/myjar.jar'
+",建立新函數。除非使用雙引號指定函數名稱，否則名稱將自動轉為大寫；若使用雙引號則保留大小寫敏感性。該函數可接受零個或多個參數。類別名稱與 JAR 路徑必須以單引號包圍。JAR 路徑為可選項目，若未指定，則系統會從 HBase 動態配置目錄（hbase.dynamic.jars.dir）中現有的 JAR 檔案載入對應類別。
+Commands,DROP FUNCTION,"
+DROP FUNCTION [IF EXISTS] funcName
+","
+Drops a function.
+","
+DROP FUNCTION IF EXISTS my_reverse
+DROP FUNCTION my_reverse
+",刪除函數。
+Commands,CREATE VIEW,"
+CREATE VIEW [IF NOT EXISTS] newTableRef
+[ ( columnDef [,...] ) ]
+[AS SELECT * FROM existingTableRef [WHERE expression] ]
+[tableOptions]
+","
+Creates a new view over an existing HBase or Phoenix table. As expected, the WHERE expression is always automatically applied to any query run against the view. As with CREATE TABLE, the table, column family, and column names are uppercased unless they are double quoted. The newTableRef may refer directly to an HBase table, in which case, the table, column family, and column names must match the existing metadata exactly or an exception will occur. When a view is mapped directly to an HBase table, no empty key value will be added to rows and the view will be read-only.
+A view will be updatable (i.e. referenceable in a DML statement such as UPSERT or DELETE) if its WHERE clause expression contains only simple equality expressions separated by ANDs. Updatable views are not required to set the columns which appear in the equality expressions, as the equality expressions define the default values for those columns. If they are set, then they must match the value used in the WHERE clause, or an error will occur.
+All columns from the existingTableRef are included as columns in the new view as are columns defined in the columnDef list. An ALTER VIEW statement may be issued against a view to remove or add columns, however, no changes may be made to the primary key constraint. In addition, columns referenced in the WHERE clause are not allowed to be removed.
+Once a view is created for a table, that table may no longer altered or dropped until all of its views have been dropped.
+
+","
+CREATE VIEW ""my_hbase_table""
+    ( k VARCHAR primary key, ""v"" UNSIGNED_LONG) default_column_family='a';
+CREATE VIEW my_view ( new_col SMALLINT )
+    AS SELECT * FROM my_table WHERE k = 100;
+CREATE VIEW my_view_on_view
+    AS SELECT * FROM my_view WHERE new_col > 70;
+",此命令用於在現有的 HBase 或 Phoenix 表上建立新的檢視。如同預期，任何針對該檢視執行的查詢都會自動套用 WHERE 子句中的表達式。與 CREATE TABLE 類似，除非使用雙引號包裹，否則表名、欄位族名稱及欄位名稱均會轉為大寫。若 newTableRef 直接指向一個 HBase 表，則其表名、欄位族名稱及欄位名稱必須與現有元資料完全一致，否則將拋出異常。當檢視直接映射至 HBase 表時，不會向行中添加空的鍵值，且該檢視僅為唯讀。若檢視的 WHERE 子句表達式中僅包含由 AND 連接的簡單相等式，則該檢視可更新（即可在 DML 語句如 UPSERT 或 DELETE 中引用）。對於可更新的檢視，無需設定出現在相等式中的欄位，因為這些相等式已定義該等欄位的預設值；若確實進行了設定，則其值必須與 WHERE 子句中使用的值相符，否則將發生錯誤。新檢視中的所有欄位包含現有表的所有欄位以及 columnDef 清單中定義的欄位。可以對檢視執行 ALTER VIEW 語句以移除或新增欄位，但不得修改主鍵約束。此外，WHERE 子句中引用的欄位不允許被移除。一旦為某個表建立了檢視，在該表的所有檢視都被刪除之前，無法再修改或刪除該表。
+Commands,DROP VIEW,"
+DROP VIEW [IF EXISTS] tableRef [CASCADE]
+","
+Drops a view. The optional CASCADE keyword causes any views derived from the view to be dropped as well. When dropping a view, the actual table data is not affected. However, index data for the view will be deleted.
+
+","
+DROP VIEW my_view
+DROP VIEW IF EXISTS my_schema.my_view
+DROP VIEW IF EXISTS my_schema.my_view CASCADE
+",刪除檢視。可選的 CASCADE 關鍵字會同時刪除由該檢視衍生出的所有檢視。刪除檢視時，實際的表資料不會受到影響，但檢視的索引資料將被刪除。
+Commands,CREATE SEQUENCE,"
+CREATE SEQUENCE [IF NOT EXISTS] sequenceRef
+[START [WITH] {number | bindParameter}] [INCREMENT [BY] {number | bindParameter}]
+[MINVALUE {number | bindParameter}] [MAXVALUE {number | bindParameter}] [CYCLE]
+[CACHE {number | bindParameter}]
+","
+Creates a monotonically increasing sequence. START controls the initial sequence value while INCREMENT controls
+by how much the sequence is incremented after each call to NEXT VALUE FOR. By default, the sequence will start
+with 1 and be incremented by 1. Specify CYCLE to indicate that the sequence should continue to generate values
+after reaching either its MINVALUE or MAXVALUE. After an ascending sequence reaches its MAXVALUE, it generates
+its MINVALUE. After a descending sequence reaches its MINVALUE, it generates its MAXVALUE. CACHE controls how
+many sequence values will be reserved from the server, cached on the client, and doled out as need by subsequent
+NEXT VALUE FOR calls for that client connection to the cluster to save on RPC calls. If not specified, the
+phoenix.sequence.cacheSize config parameter defaulting to 100 will be used for the CACHE value.
+","
+CREATE SEQUENCE my_sequence;
+CREATE SEQUENCE my_sequence START WITH -1000
+CREATE SEQUENCE my_sequence INCREMENT BY 10
+CREATE SEQUENCE my_schema.my_sequence START 0 CACHE 10
+",建立一個單調遞增的序列。START 控制初始序列值，INCREMENT 控制每次呼叫 NEXT VALUE FOR 後序列增加的步幅。預設情況下，序列從 1 開始並每次增加 1。指定 CYCLE 表示當序列達到其 MINVALUE 或 MAXVALUE 後應繼續生成值：遞增序列到達 MAXVALUE 後將生成其 MINVALUE，而遞減序列到達 MINVALUE 後則生成其 MAXVALUE。CACHE 控制伺服器預留多少序列值緩存在客戶端，以便後續該客戶連接至叢集時呼叫 NEXT VALUE FOR 可隨需分配，從而減少 RPC 呼叫次數；若未指定，將使用 phoenix.sequence.cacheSize 配置參數的預設值 100 作為 CACHE 的值。
+Commands,DROP SEQUENCE,"
+DROP SEQUENCE [IF EXISTS] sequenceRef
+","
+Drops a sequence.
+
+","
+DROP SEQUENCE my_sequence
+DROP SEQUENCE IF EXISTS my_schema.my_sequence
+",刪除序列。
+Commands,ALTER,"
+ALTER {TABLE | VIEW} tableRef { { ADD [IF NOT EXISTS] columnDef [,...] [options] } | { DROP COLUMN [IF EXISTS] columnRef [,...] } | { SET options } }
+","
+Alters an existing table by adding or removing columns or updating table options. When a column is dropped from a table, the data in
+that column is deleted as well. PK columns may not be dropped, and only nullable PK columns may be added. For a view,
+the data is not affected when a column is dropped. Note that creating or dropping columns
+only affects subsequent queries and data modifications. Snapshot queries that are connected at an earlier timestamp
+will still use the prior schema that was in place when the data was written.
+
+","
+ALTER TABLE my_schema.my_table ADD d.dept_id char(10) VERSIONS=10
+ALTER TABLE my_table ADD dept_name char(50), parent_id char(15) null primary key
+ALTER TABLE my_table DROP COLUMN d.dept_id, parent_id;
+ALTER VIEW my_view DROP COLUMN new_col;
+ALTER TABLE my_table SET IMMUTABLE_ROWS=true,DISABLE_WAL=true;
+",ALTER 命令用於修改現有資料表，包括新增或移除欄位，以及更新資料表的選項。當從資料表中移除某個欄位時，該欄位中的資料也會被刪除。主鍵欄位無法被移除，僅可新增允許為 NULL 的主鍵欄位。對於檢視而言，移除欄位不會影響其資料。請注意，新增或移除欄位僅會影響後續的查詢與資料修改；在較早時間戳記建立連線的快照式查詢，仍將使用資料寫入時所存在的先前架構。
+Commands,CREATE INDEX,"
+CREATE [LOCAL] INDEX [IF NOT EXISTS] indexName
+ON tableRef ( expression [ASC | DESC] [,...] )
+[ INCLUDE ( columnRef [,...] ) ]
+[ ASYNC ]
+[indexOptions] [ SPLIT ON ( splitPoint [,...] ) ]
+","
+Creates a new secondary index on a table or view. The index will be automatically kept in sync with the table as the data changes.
+At query time, the optimizer will use the index if it contains all columns referenced in the query and produces the most efficient
+execution plan.
+If a table has rows that are write-once and append-only, then the table may set the IMMUTABLE_ROWS property to true (either up-front
+in the CREATE TABLE statement or afterwards in an ALTER TABLE statement). This reduces the overhead at write time to maintain the index.
+Otherwise, if this property is not set on the table, then incremental index maintenance will be performed on the server side when
+the data changes.
+As of the 4.3 release, functional indexes are supported which allow arbitrary expressions rather than solely column names to be indexed.
+As of the 4.4.0 release, you can specify the ASYNC keyword to create the index using a map reduce job.
+","
+CREATE INDEX my_idx ON sales.opportunity(last_updated_date DESC)
+CREATE INDEX my_idx ON log.event(created_date DESC) INCLUDE (name, payload) SALT_BUCKETS=10
+CREATE INDEX IF NOT EXISTS my_comp_idx ON server_metrics ( gc_time DESC, created_date DESC )
+    DATA_BLOCK_ENCODING='NONE',VERSIONS=?,MAX_FILESIZE=2000000 split on (?, ?, ?)
+CREATE INDEX my_idx ON sales.opportunity(UPPER(contact_name))
+",在表或視圖上建立新的次要索引。該索引會隨著資料變更而自動與表保持同步。在查詢執行時，若優化器判斷該索引包含查詢所引用的所有欄位，且能產生最高效的執行計畫，則將使用此索引。若表中存在僅寫入一次且為追加式更新的資料行，可將 IMMUTABLE_ROWS 屬性設定為 true（可在建立表時於 CREATE TABLE 語句中先行設定，或之後透過 ALTER TABLE 語句進行設定），以降低在寫入時維護索引的開銷。若未針對該表設定此屬性，則當資料變更時，伺服器端將執行增量式索引維護。自版本 4.3 起，支援功能型索引，允許對任意表達式（而不僅是欄位名稱）建立索引。自版本 4.4.0 起，可使用 ASYNC 關鍵字透過 MapReduce 工作來建立索引。
+Commands,DROP INDEX,"
+DROP INDEX [IF EXISTS] indexName ON tableRef
+","
+Drops an index from a table. When dropping an index, the data in the index is deleted. Note that since metadata is versioned,
+snapshot queries connecting at an earlier time stamp may still use the index, as the HBase table backing the index is not deleted.
+
+","
+DROP INDEX my_idx ON sales.opportunity
+DROP INDEX IF EXISTS my_idx ON server_metrics
+",從表中刪除索引。刪除索引時，索引中的數據也會被刪除。請注意，由於元數據採用版本控制機制，在較早時間戳連接的快照查詢仍可能使用該索引，因為支撐該索引的 HBase 表並未刪除。
+Commands,ALTER INDEX,"
+ALTER INDEX [IF EXISTS] indexName ON tableRef { DISABLE | REBUILD | UNUSABLE | USABLE }
+","
+Alters the state of an existing index.  DISABLE will cause the no further index maintenance to be performed on the index and it
+will no longer be considered for use in queries. REBUILD will completely rebuild the index and upon completion will enable
+the index to be used in queries again. UNUSABLE will cause the index to no longer be considered for use in queries, however
+index maintenance will continue to be performed. USABLE will cause the index to again be considered for use in queries. Note
+that a disabled index must be rebuild and cannot be set as USABLE.
+","
+ALTER INDEX my_idx ON sales.opportunity DISABLE
+ALTER INDEX IF EXISTS my_idx ON server_metrics REBUILD
+",ALTER INDEX 用於修改現有索引的狀態。將狀態設為 DISABLE 時，系統將不再對該索引執行維護作業，且該索引將不再被考慮用於查詢；若設為 REBUILD，則會完全重建該索引，重建完成後即可再次用於查詢；設為 UNUSABLE 時，該索引將不再被考慮用於查詢，但系統仍會繼續執行維護作業；設為 USABLE 時，該索引將再次被考慮用於查詢。請注意，已停用（DISABLE）的索引必須先重建，無法直接設為可用（USABLE）。
+Commands,EXPLAIN,"
+EXPLAIN {select|upsertSelect|delete}
+","
+Computes the logical steps necessary to execute the given command. Each step is represented as a string in a single column result set row.
+
+","
+EXPLAIN SELECT NAME, COUNT(*) FROM TEST GROUP BY NAME HAVING COUNT(*) > 2;
+EXPLAIN SELECT entity_id FROM CORE.CUSTOM_ENTITY_DATA WHERE organization_id='00D300000000XHP' AND SUBSTR(entity_id,1,3) = '002' AND created_date < CURRENT_DATE()-1;
+",計算執行所給定命令所需的邏輯步驟。每個步驟均以字串形式呈現於單一欄位結果集的一行中。
+Other Grammar,Constraint,"
+CONSTRAINT constraintName PRIMARY KEY (columnName [ASC | DESC] [ROW_TIMESTAMP] [,...])
+","
+Defines a multi-part primary key constraint. Each column may be declared to be
+sorted in ascending or descending ordering. The default is ascending. One primary
+key column can also be designated as ROW_TIMESTAMP provided it is of one of the types: BIGINT, UNSIGNED_LONG, DATE, TIME and TIMESTAMP.
+","
+CONSTRAINT my_pk PRIMARY KEY (host,created_date)
+CONSTRAINT my_pk PRIMARY KEY (host ASC,created_date DESC)
+CONSTRAINT my_pk PRIMARY KEY (host ASC,created_date DESC ROW_TIMESTAMP)
+",定義多欄位主鍵約束。每個欄位可宣示為依遞增或遞減順序排序，預設為遞增。此外，任一主鍵欄位若資料型態為 BIGINT、UNSIGNED_LONG、DATE、TIME 或 TIMESTAMP，亦可指定為 ROW_TIMESTAMP。
+Commands,UPDATE STATISTICS,"
+UPDATE STATISTICS tableRef [ALL | INDEX | COLUMNS] [SET guidepostOptions]
+","
+Updates the statistics on the table and by default all of its associated index tables. To only
+update the table, use the COLUMNS option and to only update the INDEX, use the INDEX option.
+The statistics for a single index may also be updated by using its full index name for the tableRef.
+The default guidepost properties may be overridden by specifying their values after the SET
+keyword. Note that when a major compaction occurs, the default guidepost properties will be
+used again.
+
+","
+UPDATE STATISTICS my_table
+UPDATE STATISTICS my_schema.my_table INDEX
+UPDATE STATISTICS my_index
+UPDATE STATISTICS my_table COLUMNS
+UPDATE STATISTICS my_table SET phoenix.stats.guidepost.width=50000000
+",此命令會更新表及其預設的所有相關索引表的統計資訊。若僅要更新表，請使用 COLUMNS 選項；若僅要更新索引，則請使用 INDEX 選項。亦可透過在 tableRef 中指定完整索引名稱，來單獨更新單一索引的統計資訊。預設的導航樁屬性可透過在 SET 關鍵字後指定其數值來覆蓋。請注意，當發生主要壓縮時，系統將再次採用預設的導航樁屬性。
+Commands,CREATE SCHEMA,"
+CREATE SCHEMA [IF NOT EXISTS] schemaName
+","
+creates a schema and corresponding name-space in hbase. To enable namespace mapping, see https://phoenix.apache.org/tuning.html
+
+User that execute this command should have admin permissions to create namespace in HBase.
+","
+CREATE SCHEMA IF NOT EXISTS my_schema
+CREATE SCHEMA my_schema
+",建立一個對應的 HBase 命名空間，並啟用命名空間映射功能；詳細資訊請參閱 https://phoenix.apache.org/tuning.html。執行此命令的使用者必須擁有在 HBase 中建立命名空間的管理權限。
+Commands,USE,"
+USE { schemaName | DEFAULT }
+","
+Sets a default schema for the connection and is used as a target schema for all statements issued from the connection that do not specify schema name explicitly.
+USE DEFAULT unset the schema for the connection so that no schema will be used for the statements issued from the connection.
+
+schemaName should already be existed for the USE SCHEMA statement to succeed. see CREATE SCHEMA for creating schema.
+","
+USE my_schema
+USE DEFAULT
+",SET 指令用於設定連線的預設圖表，並作為所有未明確指定圖表名稱之語句的目標圖表。若執行 USE DEFAULT，則會取消設定該連線的圖表，使得從此連線發出的語句不會使用任何圖表。對於 USE SCHEMA 指令要成功執行，schemaName 必須已存在；如需建立圖表，請參閱 CREATE SCHEMA 指令。
+Commands,DROP SCHEMA,"
+DROP SCHEMA [IF EXISTS] schemaName
+","
+Drops a schema and corresponding name-space from hbase. To enable namespace mapping, see https://phoenix.apache.org/tuning.html
+
+This statement succeed only when schema doesn't hold any tables.
+","
+DROP SCHEMA IF EXISTS my_schema
+DROP SCHEMA my_schema
+",此語句會從 HBase 中刪除指定的 Schema 及其對應的命名空間。如需啟用命名空間映射，請參閱 https://phoenix.apache.org/tuning.html。僅當該 Schema 中不包含任何資料表時，此語句才會執行成功。
+Commands,GRANT,"
+GRANT {permissionString} [ON { {SCHEMA schemaName} | tableRef}] TO [GROUP] userString
+","
+Grant permissions at table, schema or user level. Permissions are managed by HBase in hbase:acl table, hence access controls need to be enabled. This feature will be available from Phoenix 4.14 version onwards.
+
+Possible permissions are R - Read, W - Write, X - Execute, C - Create and A - Admin.
+To enable/disable access controls, see https://hbase.apache.org/book.html#hbase.accesscontrol.configuration
+
+Permissions should be granted on base tables. It will be propagated to all its indexes and views.
+Group permissions are applicable to all users in the group and schema permissions are applicable to all tables with that schema.
+Grant statements without table/schema specified are assigned at GLOBAL level.
+
+Phoenix doesn't expose Execute('X') functionality to end users. However, it is required for mutable tables with secondary indexes.
+
+Important Note:
+
+Every user requires 'RX' permissions on all Phoenix SYSTEM tables in order to work correctly. Users also require 'RWX' permissions on SYSTEM.SEQUENCE table for using SEQUENCES.
+
+","
+GRANT 'RXC' TO 'User1'
+GRANT 'RWXC' TO GROUP 'Group1'
+GRANT 'A' ON Table1 TO 'User2'
+GRANT 'RWX' ON my_schema.my_table TO 'User2'
+GRANT 'A' ON SCHEMA my_schema TO 'User3'
+","授予表、模式或用戶層級的權限。權限由 HBase 在 hbase:acl 表中進行管理，因此必須啟用存取控制。此功能自 Phoenix 4.14 版本起可用。
+
+可能的權限包括：R（讀取）、W（寫入）、X（執行）、C（建立）和 A（管理）。
+若要啟用或停用存取控制，請參閱 https://hbase.apache.org/book.html#hbase.accesscontrol.configuration
+
+權限應授予基礎表上，並會自動傳播至其所有索引與視圖。群組權限適用於該群組中的所有用戶，模式權限則適用於具有該模式的所有表。未指定表或模式的 GRANT 語句將被分配至全域層級。
+
+Phoenix 不對終端用戶暴露執行（X）功能，但對於具有次要索引的可變表而言，此功能是必需的。
+
+重要說明：
+每位用戶都必須在所有 Phoenix 系統表上擁有「RX」權限才能正常運作；若需使用序列號，用戶還必須在 SYSTEM.SEQUENCE 表上擁有「RWX」權限。"
+Commands,REVOKE,"
+REVOKE [ON { {SCHEMA schemaName} | tableRef}] FROM [GROUP] userString
+","
+Revoke permissions at table, schema or user level. Permissions are managed by HBase in hbase:acl table, hence access controls need to be enabled. This feature will be available from Phoenix 4.14 version onwards.
+
+To enable/disable access controls, see https://hbase.apache.org/book.html#hbase.accesscontrol.configuration
+
+Group permissions are applicable to all users in the group and schema permissions are applicable to all tables with that schema.
+Permissions should be revoked on base tables. It will be propagated to all its indexes and views.
+Revoke statements without table/schema specified are assigned at GLOBAL level.
+
+Revoke removes all the permissions at that level.
+
+Important Note:
+
+Revoke permissions needs to be exactly at the same level as permissions assigned via Grant permissions statement. Level refers to table, schema or user.
+Revoking any of 'RX' permissions on any Phoenix SYSTEM tables will cause exceptions.
+Revoking any of 'RWX' permissions on SYSTEM.SEQUENCE will cause exceptions while accessing sequences.
+
+The examples below are for revoking permissions granted using the examples from GRANT statement above.
+","
+REVOKE FROM 'User1'
+REVOKE FROM GROUP 'Group1'
+REVOKE ON Table1 FROM 'User2'
+REVOKE ON my_schema.my_table FROM 'User2'
+REVOKE ON SCHEMA my_schema FROM 'User3'
+",在表、模式或用戶層級撤銷權限。權限由 HBase 在 hbase:acl 表中管理，因此必須啟用存取控制。此功能自 Phoenix 4.14 版本起可用。若要啟用或停用存取控制，請參閱 https://hbase.apache.org/book.html#hbase.accesscontrol.configuration。群組權限適用於該群組中的所有用戶，模式權限則適用於具有該模式的所有表。撤銷權限應針對基礎表執行，此操作將傳播至其所有索引與檢視。未指定表或模式的撤銷陳述式將被指派至全域層級。撤銷操作會移除該層級上的所有權限。重要注意事項：撤銷權限必須與透過 GRANT 陳述式授予權限的層級完全一致，此處所指的層級包含表、模式或用戶。對任何 Phoenix 系統表中的「RX」權限進行撤銷將導致異常。對 SYSTEM.SEQUENCE 中的任何「RWX」權限進行撤銷，在存取序列時將引發異常。以下範例用於撤銷透過上方 GRANT 陳述式範例所授予的權限。
+Other Grammar,Options,"
+{ [familyName .] name= value } [,...]
+","
+Sets a built-in Phoenix table property or an HBase table or column descriptor metadata attribute.
+The name is case insensitive. If the name is a known HColumnDescriptor attribute, then the value
+is applied to the specified column family or, if omitted, to all column families. Otherwise, the
+HBase metadata attribute value is applied to the HTableDescriptor. Note that no validation is
+performed on the property name or value, so unknown or misspelled options will end up as adhoc
+metadata attributes values on the HBase table.
+
+Built-in Phoenix table options include:
+
+SALT_BUCKETS numeric property causes an extra byte to be transparently
+prepended to every row key to ensure an evenly distributed read and write load across all
+region servers. This is especially useful when your row key is always monotonically increasing
+and causing hot spotting on a single region server. However, even if it's not, it often improves
+performance by ensuring an even distribution of data across your cluster.  The byte is
+determined by hashing the row key and modding it with the SALT_BUCKETS value. The value may
+be from 0 to 256, with 0 being a special means of turning salting off for an index in which the
+data table is salted (since by default an index has the same number of salt buckets as its
+data table). If split points are not defined for the table, the table will automatically be pre-split
+at each possible salt bucket value. For more information, see http://phoenix.incubator.apache.org/salted.html
+
+DISABLE_WAL boolean option when true causes HBase not to write data to the write-ahead-log,
+thus making updates faster at the expense of potentially losing data in the event of a region server
+failure. This option is useful when updating a table which is not the source-of-truth and thus making
+the lose of data acceptable.
+
+IMMUTABLE_ROWS boolean option when true declares that your table has rows which are write-once,
+append-only (i.e. the same row is never updated). With this option set, indexes added to
+the table are managed completely on the client-side, with no need to perform incremental index
+maintenance, thus improving performance. Deletes of rows in immutable tables are allowed with some
+restrictions if there are indexes on the table. Namely, the WHERE clause may not filter on columns
+not contained by every index. Upserts are expected to never update an existing row (failure to follow
+this will result in invalid indexes). For more information, see http://phoenix.incubator.apache.org/secondary_indexing.html
+
+MULTI_TENANT boolean option when true enables views to be created over the table across different
+tenants. This option is useful to share the same physical HBase table across many different
+tenants. For more information, see http://phoenix.incubator.apache.org/multi-tenancy.html
+
+DEFAULT_COLUMN_FAMILY string option determines the column family used used when none
+is specified. The value is case sensitive. If this option is not present, a column family
+name of '0' is used.
+
+STORE_NULLS boolean option (available as of Phoenix 4.3) determines whether or not null values should be
+explicitly stored in HBase. This option is generally only useful if a table is configured to store multiple
+versions in order to facilitate doing flashback queries (i.e. queries to look at the state of a record in the past).
+
+TRANSACTIONAL option (available as of Phoenix 4.7) determines whether a table (and its
+secondary indexes) are tranactional. The default value is FALSE, but may be overriden with the
+phoenix.table.istransactional.default property. A table may be altered to become transactional,
+but it cannot be transitioned back to be non transactional. For more information on transactions, see
+http://phoenix.apache.org/transactions.html
+
+UPDATE_CACHE_FREQUENCY option (available as of Phoenix 4.7) determines how often the server
+will be checked for meta data updates (for example, the addition or removal of a table column or
+the updates of table statistics). Possible values are ALWAYS (the default), NEVER, and a millisecond
+numeric value. An ALWAYS value will cause the client to check with the server each time a statement
+is executed that references a table (or once per commit for an UPSERT VALUES statement).  A millisecond
+value indicates how long the client will hold on to its cached version of the metadata before checking
+back with the server for updates.
+
+APPEND_ONLY_SCHEMA boolean option (available as of Phoenix 4.8) when true declares that columns will only be added
+but never removed from a table. With this option set we can prevent the RPC from the client to the server to fetch the
+table metadata when the client already has all columns declared in a CREATE TABLE/VIEW IF NOT EXISTS statement.
+
+AUTO_PARTITION_SEQ string option (available as of Phoenix 4.8) when set on a base table determines the sequence used
+to automatically generate a WHERE clause with the first PK column and the unique identifier from the sequence for child
+views. With this option set, we prevent allocating a sequence in the event that the view already exists.
+
+The GUIDE_POSTS_WIDTH option (available as of Phoenix 4.9) enables specifying a different guidepost width per table. The guidepost width
+determines the byte sized chunk of work over which a query will be parallelized. A value of 0 means that no guideposts should be collected
+for the table. A value of null removes any table specific guidepost setting, causing the global server-side phoenix.stats.guidepost.width config
+parameter to be used again. For more information, see the Statistics Collection page.
+","
+IMMUTABLE_ROWS=true
+DEFAULT_COLUMN_FAMILY='a'
+SALT_BUCKETS=10
+DATA_BLOCK_ENCODING='NONE',a.VERSIONS=10
+MAX_FILESIZE=2000000000,MEMSTORE_FLUSHSIZE=80000000
+UPDATE_CACHE_FREQUENCY=300000
+GUIDE_POSTS_WIDTH=30000000
+CREATE SEQUENCE id;
+CREATE TABLE base_table (partition_id INTEGER, val DOUBLE) AUTO_PARTITION_SEQ=id;
+CREATE VIEW my_view AS SELECT * FROM base_table;
+The view statement for my_view will be : WHERE partition_id =  1
+","設定內建 Phoenix 資料表屬性，或 HBase 資料表與欄位描述元資料屬性。名稱不區分大小寫；若該名稱對應已知的 HColumnDescriptor 屬性，則其值將套用至指定的欄位族，若未指定則套用至所有欄位族；否則，HBase 的元資料屬性值將套用至 HTableDescriptor。請注意，系統不會對屬性名稱或值進行驗證，因此未知或拼寫錯誤的選項將成為 HBase 資料表上的臨時元資料屬性值。
+
+內建 Phoenix 資料表選項包括：
+
+SALT_BUCKETS（數值型）：此屬性會在每個列鍵前透明地附加一個額外位元組，以確保在所有區域伺服器之間實現均勻分散的讀取與寫入負載。當您的列鍵始終單調遞增並導致單一區域伺服器出現熱點問題時，此功能尤為有用。即使並非如此，它通常也能透過確保資料在整個叢集中的均勻分佈來提升效能。該位元組是透過對列鍵進行雜湊運算並對 SALT_BUCKETS 值取模來決定的。其取值範圍為 0 至 256，其中 0 具有特殊意義：用於關閉索引的加鹽功能（因為預設情況下，索引的加鹽桶數量與其資料表相同）。若未為資料表定義分割點，則系統會自動在每個可能的加鹽桶值處進行預先分割。更多資訊請參閱 http://phoenix.incubator.apache.org/salted.html
+
+DISABLE_WAL（布林型）：當設為 true 時，HBase 將不將資料寫入寫入前日誌（WAL），從而加快更新速度，但代價是若區域伺服器發生故障，可能會導致資料遺失。此選項適用於更新並非唯一真相來源的資料表，此時資料遺失是可接受的。
+
+IMMUTABLE_ROWS（布林型）：當設為 true 時，表示該資料表的列為一次寫入、僅可追加（即同一列絕不會被更新）。啟用此選項後，新增至資料表的索引將完全由客戶端管理，無需執行增量索引維護，從而提升效能。對於具有索引的不可變資料表，允許在特定限制下刪除列；具體而言，WHERE 子句不得篩選未包含於每個索引中的欄位。Upsert 操作預期不會更新現有列（若違反此規則將導致索引無效）。更多資訊請參閱 http://phoenix.incubator.apache.org/secondary_indexing.html
+
+MULTI_TENANT（布林型）：當設為 true 時，允許在不同租戶之間建立跨越該資料表的視圖。此選項可用於讓多個不同租戶共享同一個實體 HBase 資料表。更多資訊請參閱 http://phoenix.incubator.apache.org/multi-tenancy.html
+
+DEFAULT_COLUMN_FAMILY（字串型）：用於指定在未明確指定欄位族時所使用的預設欄位族名稱。此值區分大小寫。若未設定此選項，則使用名為 '0' 的欄位族。
+
+STORE_NULLS（布林型，自 Phoenix 4.3 起可用）：決定是否應在 HBase 中明確儲存 null 值。此選項通常僅在資料表配置為儲存多個版本以支援閃回查詢（即檢視記錄過去狀態的查詢）時才有意義。
+
+TRANSACTIONAL（選項，自 Phoenix 4.7 起可用）：決定資料表（及其次要索引）是否具有事務性。預設值為 FALSE，但可透過 phoenix.table.istransactional.default 屬性覆蓋。資料表可被修改以具備事務性，但無法再轉換回非事務狀態。關於事務的更多資訊請參閱 http://phoenix.apache.org/transactions.html
+
+UPDATE_CACHE_FREQUENCY（選項，自 Phoenix 4.7 起可用）：決定伺服器多久檢查一次元資料更新（例如新增或移除資料表欄位、更新資料表統計資訊等）。可能的值包括 ALWAYS（預設）、NEVER，以及以毫秒為單位的數值。設定為 ALWAYS 時，客戶端會在執行任何引用該資料表的陳述式時與伺服器進行檢查（對於 UPSERT VALUES 陳述式則每次提交時檢查一次）。若設定為毫秒數值，則表示客戶端在持有其快取版本的元資料後，會等待多久才向伺服器查詢更新。
+
+APPEND_ONLY_SCHEMA（布林型，自 Phoenix 4.8 起可用）：當設為 true 時，表示僅可向資料表新增欄位，絕不會移除欄位。啟用此選項後，可避免客戶端在已透過 CREATE TABLE/VIEW IF NOT EXISTS 陳述式宣告所有欄位的情況下，仍需向伺服器發出 RPC 以擷取資料表元資料。
+
+AUTO_PARTITION_SEQ（字串型，自 Phoenix 4.8 起可用）：當設定於基礎資料表時，用於決定自動生成 WHERE 子句所使用的序列，該子句將包含第一個主鍵欄位以及來自序列的唯一識別碼，以用於建立子視圖。啟用此選項後，若視圖已存在，則可避免分配序列。
+
+GUIDE_POSTS_WIDTH（選項，自 Phoenix 4.9 起可用）：允許為每個資料表指定不同的導航標記寬度。導航標記寬度決定了查詢將被並行化的工作區塊大小（以位元組計）。設定為 0 表示不為該資料表收集任何導航標記；設定為 null 則會移除該資料表的特定導航標記設定，並重新使用全域伺服器端配置參數 phoenix.stats.guidepost.width。更多資訊請參閱統計資訊收集頁面。"
+Other Grammar,Hint,"
+{ scanHint | indexHint | cacheHint | smallHint | joinHint | seekToColumnHint | serialHint } [,...]
+","
+An advanced features that overrides default query processing behavior for decisions such as
+whether to use a range scan versus skip scan and an index versus no index. Note that strict
+parsing is not done on hints. If hints are misspelled or invalid, they are silently ignored.
+
+","
+SKIP_SCAN,NO_INDEX
+USE_SORT_MERGE_JOIN
+NO_CACHE
+INDEX(employee emp_name_idx emp_start_date_idx)
+SMALL
+",提示是一種進階功能，可覆蓋預設的查詢處理行為，用於決定是否採用範圍掃描或跳過掃描、使用索引或不使用索引等決策。請注意，提示不會進行嚴格解析；若提示拼寫錯誤或無效，系統將靜默忽略。
+Other Grammar,Scan Hint,"
+SKIP_SCAN | RANGE_SCAN
+","
+Use the SKIP_SCAN hint to force a skip scan to be performed on the query when
+it otherwise would not be. This option may improve performance if a query does
+not include the leading primary key column, but does include other, very
+selective primary key columns.
+
+Use the RANGE_SCAN hint to force a range scan to be
+performed on the query. This option may improve performance if a query
+filters on a range for non selective leading primary key column along
+with other primary key columns
+
+","
+SKIP_SCAN
+RANGE_SCAN
+","使用 SKIP_SCAN 提示可強制對查詢執行跳過掃描，即使原本不會執行此操作。若查詢未包含主鍵的首個欄位，但包含了其他具有高選擇性的主鍵欄位時，此選項可能有助於提升效能。
+
+使用 RANGE_SCAN 提示可強制對查詢執行範圍掃描。若查詢針對非高選擇性的主鍵首欄位進行範圍過濾，同時也包含其他主鍵欄位時，此選項可能有助於提升效能。"
+Other Grammar,Cache Hint,"
+NO_CACHE
+","
+Use the NO_CACHE hint to prevent the results of the query from populating the HBase block cache.
+This is useful in situation where you're doing a full table scan and know that it's unlikely
+that the rows being returned will be queried again.
+
+","
+NO_CACHE
+",使用 NO_CACHE 提示可防止查詢結果填充 HBase 區塊快取。當執行全表掃描且已知返回的行不太可能再次被查詢時，此用法尤為適用。
+Other Grammar,Index Hint,"
+INDEX | NO_INDEX | USE_INDEX_OVER_DATA_TABLE | USE_DATA_OVER_INDEX_TABLE
+","
+Use the INDEX(<table_name> <index_name>...) to suggest which index to use for a given
+query. Double quotes may be used to surround a table_name and/or index_name to make
+them case sensitive. As of the 4.3 release, this will force an index to be used, even
+if it doesn't contain all referenced columns, by joining back to the data table to
+retrieve any columns not contained by the index.
+
+Use the NO_INDEX hint to force the data table to be used for a query.
+
+Use the USE_INDEX_OVER_DATA_TABLE hint to act as a tiebreaker for choosing the index
+table over the data table when all other criteria are equal. Note that this is the
+default optimizer decision.
+
+Use the USE_DATA_OVER_INDEX_TABLE hint to act as a tiebreaker for choosing the data
+table over the index table when all other criteria are equal.
+
+","
+INDEX(employee emp_name_idx emp_start_date_idx)
+NO_INDEX
+USE_INDEX_OVER_DATA_TABLE
+USE_DATA_OVER_INDEX_TABLE
+","使用 INDEX(<table_name> <index_name>...) 提示來建議查詢應使用的索引。可使用雙引號將表名和/或索引名括起來，使其區分大小寫。自 4.3 版本起，此提示會強制使用指定索引；即使該索引未包含所有被引用的欄位，系統也會透過回連至資料表來檢索索引中不包含的欄位。
+
+使用 NO_INDEX 提示可強制查詢直接使用資料表。
+
+使用 USE_INDEX_OVER_DATA_TABLE 提示作為在其它條件均相等時，優先選擇索引表而非資料表的決斷依據。請注意，這即是預設的最佳化器決策行為。
+
+使用 USE_DATA_OVER_INDEX_TABLE 提示作為在其它條件均相等時，優先選擇資料表而非索引表的決斷依據。"
+Other Grammar,Small Hint,"
+SMALL
+","
+Use the SMALL hint to reduce the number of RPCs done between the client
+and server when a query is executed. Generally, if the query is a point
+lookup or returns data that is likely in a single data block (64 KB by
+default), performance may improve when using this hint.
+
+","
+SMALL
+",使用 SMALL 提示可在執行查詢時減少客戶端與伺服器之間的 RPC 次數。一般而言，若查詢為點查詢或返回的資料很可能位於單一資料區塊內（預設為 64 KB），使用此提示可提升效能。
+Other Grammar,Seek To Column Hint,"
+SEEK_TO_COLUMN | NO_SEEK_TO_COLUMN
+","
+Use the SEEK_TO_COLUMN hint to force the server to seek to navigate between columns instead of doing a next.
+If there are many versions of the same column value or if there are many columns between the columns
+that are projected, then this may be more efficient.
+
+Use the NO_SEEK_TO_COLUMN hint to force the server to do a next to navigate between columns instead
+of a seek. If there are few versions of the same column value or if the columns that are projected are
+adjacent to each other, then this may be more efficient.
+
+","
+SEEK_TO_COLUMN
+NO_SEEK_TO_COLUMN
+","使用 SEEK_TO_COLUMN 提示詞可強制伺服器在列之間進行搜尋導航，而非執行 next 操作。當同一欄位值存在多個版本，或待投影的列之間夾雜許多其他列時，此方式可能更具效率。  
+使用 NO_SEEK_TO_COLUMN 提示詞則可強制伺服器在列之間執行 next 操作，而非搜尋導航。若同一欄位值的版本較少，且待投影的列彼此相鄰時，此方式可能更具效率。"
+Other Grammar,Join Hint,"
+USE_SORT_MERGE_JOIN | NO_STAR_JOIN | NO_CHILD_PARENT_JOIN_OPTIMIZATION
+","
+Use the USE_SORT_MERGE_JOIN hint to force the optimizer to use a sort merge join instead of a
+broadcast hash join when both sides of the join are bigger than will fit in the server-side memory.
+Currently the optimizer will not make this determination itself, so this hint is required to override
+the default behavior of using a hash join.
+
+Use the NO_STAR_JOIN hint to prevent the optimizer from using the star join query to broadcast
+the results of the querying one common table to all region servers. This is useful when the
+results of the querying the one common table is too large and would likely be substantially
+filtered when joined against one or more of the other joined tables.
+
+Use the NO_CHILD_PARENT_JOIN_OPTIMIZATION hint to prevent the optimizer from doing point lookups
+between a child table (such as a secondary index) and a parent table (such as the data table)
+for a correlated subquery.
+
+","
+NO_STAR_JOIN
+","使用 USE_SORT_MERGE_JOIN 提示詞，可強制優化器在連線兩側資料量均超過伺服器端記憶體容量時，採用排序合併連接（sort merge join）而非廣播雜湊連接（broadcast hash join）。目前優化器無法自行判斷是否應如此處理，因此必須透過此提示詞來覆蓋預設的雜湊連接行為。
+
+使用 NO_STAR_JOIN 提示詞，可防止優化器採用星型查詢（star join query）將單一共用表的查詢結果廣播至所有區域伺服器。當該共用表的查詢結果過大，且在與一個或多個其他連線表進行關聯時預期會產生大幅過濾效果時，此提示詞尤為有用。
+
+使用 NO_CHILD_PARENT_JOIN_OPTIMIZATION 提示詞，可防止優化器針對相關子查詢在子表（例如次要索引）與父表（例如資料表）之間執行點查詢（point lookups）。"
+Other Grammar,Serial Hint,"
+SERIAL
+","
+Use the SERIAL hint to force a query to be executed serially as opposed to being
+parallelized along the guideposts and region boundaries.
+
+","
+SERIAL
+",使用 SERIAL 提示詞可強制查詢以串行方式執行，而非依據導引標記與區域邊界進行並行化處理。
+Other Grammar,Column Def,"
+columnRef dataType [[NOT] NULL] [DEFAULT constantOperand]
+[PRIMARY KEY [ASC | DESC] [ROW_TIMESTAMP]]
+","
+Define a new primary key column. The column name is case insensitive by default and
+case sensitive if double quoted. The sort order of a primary key may be ascending (ASC)
+or descending (DESC). The default is ascending. You may also specify a default value (Phoenix 4.9 or above) for the column
+with a constant expression. If the column is the only column that forms the primary key, then it can
+be designated as ROW_TIMESTAMP column provided its data type is one of these: BIGINT, UNSIGNED_LONG,
+DATE, TIME and TIMESTAMP.
+
+","
+id char(15) not null primary key
+key integer null
+m.response_time bigint
+
+created_date date not null primary key row_timestamp
+key integer null
+m.response_time bigint
+
+",定義新的主鍵欄位。預設情況下，欄位名稱不區分大小寫；若使用雙引號括起則會區分大小寫。主鍵的排序順序可為升序（ASC）或降序（DESC），預設為升序。對於 Phoenix 4.9 及以上版本，您也可以使用常數表達式指定該欄位的預設值。若該欄位是構成主鍵的唯一欄位，且其資料類型為 BIGINT、UNSIGNED_LONG、DATE、TIME 或 TIMESTAMP 其中之一，則可將其指定為 ROW_TIMESTAMP 欄位。
+Other Grammar,Table Ref,"
+[schemaName .] tableName
+","
+References a table or view with an optional schema name qualifier
+","
+Sales.Contact
+HR.Employee
+Department
+",引用具有可選模式名稱限定詞的表或視圖
+Other Grammar,Sequence Ref,"
+[schemaName .] sequenceName
+","
+References a sequence with an optional schema name qualifier
+","
+my_id_generator
+my_seq_schema.id_generator
+",引用具有可選圖表名稱限定詞的序列。
+Other Grammar,Column Ref,"
+[familyName .] columnName
+","
+References a column with an optional family name qualifier
+","
+e.salary
+dept_name
+",引用帶有可選家族名稱限定詞的欄位。
+Other Grammar,Select Expression,"
+* | ( familyName . *) | expression [ [ AS ] columnAlias ]
+","
+An expression in a SELECT statement. All columns in a table may be selected using
+*, and all columns in a column family may be selected using <familyName>.*.
+","
+*
+cf.*
+ID AS VALUE
+VALUE + 1 VALUE_PLUS_ONE
+",SELECT 語句中的表達式。可使用 * 選取表中的所有欄位，或使用 <familyName>.* 選取欄位組中的所有欄位。
+Other Grammar,Select Statement,"
+SELECT [/*+ hint */] [DISTINCT | ALL] selectExpression [,...]
+FROM tableSpec [ { [joinType] JOIN tableSpec ON expression } [...] ]
+[ WHERE expression ]
+[ GROUP BY expression [,...] ] [ HAVING expression ]
+","
+Selects data from a table.
+DISTINCT filters out duplicate results while ALL, the default, includes all results.
+FROM identifies the table being queried. Columns may be dynamically defined in parenthesis
+after the table name and then used in the query. Joins are processed in reverse order through a
+broadcast hash join mechanism. For best performance, order tables from largest to smallest in
+terms of how many rows you expect to be used from each table.
+GROUP BY groups the the result by the given expression(s).
+HAVING filters rows after grouping.
+An optional hint may be used to override decisions made by the query optimizer.
+
+","
+SELECT * FROM TEST;
+SELECT DISTINCT NAME FROM TEST;
+SELECT ID, COUNT(1) FROM TEST GROUP BY ID;
+SELECT NAME, SUM(VAL) FROM TEST GROUP BY NAME HAVING COUNT(1) > 2;
+SELECT d.dept_id,e.dept_id,e.name FROM DEPT d JOIN EMPL e ON e.dept_id = d.dept_id;
+",SELECT 語句用於從表中檢索數據。DISTINCT 用於過濾重複結果，而 ALL（預設選項）則包含所有結果。FROM 子句指定被查詢的表；可在表名後以括號形式動態定義欄位並用於查詢。連接操作透過廣播哈希連接機制按逆序處理。為達到最佳效能，建議依據預期從各表中使用的行數，將表由大到小排列。GROUP BY 子句會根據給定的表達式對結果進行分組。HAVING 子句在分組後過濾行。此外，可使用可選提示來覆蓋查詢優化器所做的決策。
+Other Grammar,Split Point,"
+value | bindParameter
+
+","
+Defines a split point for a table. Use a bind parameter with
+preparedStatement.setBinary(int,byte[]) to supply arbitrary bytes.
+","
+'A'
+","定義表格的分割點。使用 bind 參數搭配 preparedStatement.setBinary(int, byte[]) 來提供任意位元組。"
+Other Grammar,Table Spec,"
+aliasedTableRef | ( select ) [ [ AS ] tableAlias ]
+","
+An optionally aliased table reference,
+or an optionally aliased select statement in paranthesis.
+
+","
+PRODUCT_METRICS AS PM
+PRODUCT_METRICS(referrer VARCHAR)
+( SELECT feature FROM PRODUCT_METRICS ) AS PM
+",一個可選別名的表引用，或括號內的可選別名 SELECT 陳述式。
+Other Grammar,Aliased Table Ref,"
+{ [ schemaName. ] tableName } [ [ AS ] tableAlias ] [( columnDef [,...] )]
+[ TABLESAMPLE ({positiveDecimal}) ]
+","
+A reference to an optionally aliased table optionally followed by dynamic column definitions.
+
+","
+PRODUCT_METRICS AS PM
+PRODUCT_METRICS(referrer VARCHAR)
+PRODUCT_METRICS TABLESAMPLE (12.08)
+",對可選別名的表的引用，後接可選的動態欄位定義。
+Other Grammar,Join Type,"
+INNER | {  { LEFT | RIGHT } [OUTER] }
+","
+The type of join
+
+","
+INNER
+LEFT OUTER
+RIGHT
+",連線類型
+Other Grammar,Func Argument,"
+dataType [CONSTANT] [DEFUALTVALUE=string] [MINVALUE=string] [MAXVALUE=string]
+","
+The function argument is sql data type. It can be constant and also we can provide default,min and max values for the argument in single quotes.
+","
+VARCHAR
+INTEGER DEFAULTVALUE='100'
+INTEGER CONSTANT DEFAULTVALUE='10' MINVALUE='1' MAXVALUE='15'
+",函數參數的資料類型為 SQL。該參數可以是常數，也可以以單引號提供預設值、最小值和最大值。
+Other Grammar,Class Name,"
+{String}
+","
+Canonical class name in single quotes.
+","
+'com.mypackage.MyReverseFunction'
+",以單引號括起的標準類別名稱。
+Other Grammar,Jar Path,"
+{String}
+","
+Hdfs path of jar in single quotes.
+","
+'hdfs://localhost:8080:/hbase/lib/myjar.jar'
+'/tmp/lib/myjar.jar'
+",以單引號標記的 JAR 檔案 HDFS 路徑。
+Other Grammar,Order,"
+{ expression } [ ASC | DESC ] [ NULLS { FIRST | LAST } ]
+","
+Sorts the result by an expression.
+","
+NAME DESC NULLS LAST
+",根據表達式對結果進行排序。
+Other Grammar,Expression,"
+andCondition [ { OR andCondition } [...] ]
+","
+Value or condition.
+","
+ID=1 OR NAME='Hi'
+",價值或條件。
+Other Grammar,And Condition,"
+booleanCondition [ { AND booleanCondition } [...] ]
+","
+Condition separated by AND.
+","
+FOO!='bar' AND ID=1
+",以 AND 分隔的條件。
+Other Grammar,Boolean Condition,"
+[NOT] condition
+","
+Boolean condition.
+","
+ID=1 AND NAME='Hi'
+",布林條件
+Other Grammar,Condition,"
+operand [ { = | < | > | <= | >= | <> | != } { rhsOperand }
+    | { LIKE | ILIKE } operand
+    | IS [ NOT ] NULL
+    | [ NOT ] { IN ( { select | { constantOperand [,...] } } )
+    | EXISTS ( select )
+    | BETWEEN operand AND operand } ]
+","
+Boolean value or condition.
+When comparing with LIKE, the wildcards characters are ""_"" (any one character)
+and ""%"" (any characters). ILIKE is the same, but the search is case insensitive.
+To search for the characters ""%"" and
+""_"", the characters need to be escaped. The escape character is "" \ "" (backslash).
+Patterns that end with an escape character are invalid and the expression returns NULL.
+BETWEEN does an inclusive comparison for both operands.
+","
+FOO = 'bar'
+NAME LIKE 'Jo%'
+IN (1, 2, 3)
+NOT EXISTS (SELECT 1 FROM FOO WHERE BAR < 10)
+N BETWEEN 1 and 100
+",布林值或條件。與 LIKE 比較時，通配符字元為「_」（代表任意單一字元）和「%」（代表任意字元串）。ILIKE 的行為相同，但搜尋時不區分大小寫。若要搜尋字元「%」和「_」，則需對其進行轉義；轉義字元為反斜線「\」。若模式以轉義字元結尾，則該模式無效，表達式將回傳 NULL。BETWEEN 運算子會對兩個操作數執行包含性比較。
+Other Grammar,RHS Operand,"
+operand | { ANY | ALL } ( { operand | select } )
+","
+Right-hand side operand
+","
+s.my_col
+ANY(my_col + 1)
+ALL(select foo from bar where bas > 5)
+",右側運算元
+Other Grammar,Operand,"
+summand [ { || } summand [...] ]
+","
+A string concatenation.
+","
+'foo'|| s
+",字串連接運算子。
+Other Grammar,Summand,"
+factor [ { + | - } factor [...] ]
+","
+An addition or subtraction of numeric or date type values
+","
+a + b
+a - b
+",數值或日期類型值的加法或減法運算
+Other Grammar,Factor,"
+term [ { * | / | % } term [...] ]
+","
+A multiplication, division, or modulus of numeric type values.
+","
+c * d
+e / 5
+f % 10
+",數值類型值的乘法、除法或取餘運算。
+Other Grammar,Term,"
+{ value
+    | ( expression )
+    | bindParameter
+    | function
+    | case
+    | caseWhen
+    | [ tableAlias. ] columnRef
+    | rowValueConstructor
+    | cast
+    | sequence
+    | arrayConstructor } [ '[' expression ']' ]
+","
+A term which may use subscript notation if it's an array.
+","
+'Hello'
+23
+my_array[my_index]
+array_col[1]
+",一個可能在使用陣列時採用下標表示法的術語。
+Other Grammar,Array Constructor,"
+ARRAY '[' expression [,...] ']'
+","
+Constructs an ARRAY out of the list of expressions.
+","
+ARRAY[1.0,2.2,3.3]
+ARRAY['foo','bas']
+ARRAY[col1,col2,col3+1,?]
+",根據表達式列表建立陣列。
+Other Grammar,Sequence,"
+{NEXT | CURRENT} { VALUE | {number VALUES} } FOR sequenceRef
+","
+Gets the CURRENT or NEXT value for a sequence, a monotonically incrementing BIGINT
+value. Each call to NEXT VALUE FOR increments the sequence value and returns the current value.
+The NEXT <n> VALUES syntax may be used to reserve <n> consecutive sequence values.
+A sequence is only increment once for a given statement, so multiple references to
+the same sequence by NEXT VALUE FOR produce the same value. Use CURRENT VALUE FOR to
+access the last sequence allocated with NEXT VALUE FOR for cluster connection of your
+client. If no NEXT VALUE FOR had been previously called, an error will occur. These
+calls are only allowed in the SELECT expressions or UPSERT VALUES expressions.
+","
+NEXT VALUE FOR my_table_id
+NEXT 5 VALUES FOR my_table_id
+CURRENT VALUE FOR my_schema.my_id_generator
+",取得序列的當前值或下一個值，該值為單調遞增的大整數。每次呼叫「NEXT VALUE FOR」都會將序列值加一並回傳當前值。可使用「NEXT <n> VALUES」語法來預留連續的 <n> 個序列值。對於同一陳述式，序列僅會增加一次，因此多次透過「NEXT VALUE FOR」引用相同序列時，所產生的值亦相同。若要存取客戶端群組連線中最後由「NEXT VALUE FOR」分配的序列值，請使用「CURRENT VALUE FOR」。若先前未曾呼叫「NEXT VALUE FOR」，則將發生錯誤。這些呼叫僅允許用於 SELECT 表達式或 UPSERT VALUES 表達式中。
+Other Grammar,Cast,"
+CAST ( expression AS dataType )
+","
+The CAST operator coerces the given expression to a different dataType. This
+is useful, for example, to convert a BIGINT or INTEGER to a DECIMAL or DOUBLE
+to prevent truncation to a whole number during arithmetic operations. It is
+also useful to coerce from a more precise type to a less precise type since
+this type of coercion will not automatically occur, for example from a TIMESTAMP
+to a DATE. If the coercion is not possible, an error will occur.
+","
+CAST ( my_int AS DECIMAL )
+CAST ( my_timestamp AS DATE )
+",CAST 運算子會將給定的表達式轉換為不同的資料類型。例如，此功能可用於將 BIGINT 或 INTEGER 轉換為 DECIMAL 或 DOUBLE，以避免在算術運算時被截斷為整數。此外，當需要從精確度較高的類型轉換至精確度較低的類型時（例如從 TIMESTAMP 轉換為 DATE），也需使用此運算子，因為這類型的自動轉換不會發生。若無法進行轉換，則會產生錯誤。
+Other Grammar,Row Value Constructor,"
+( expression { ,expression } [...] )
+","
+A row value constructor is a list of other terms which are treated together as
+a kind of composite structure. They may be compared to each other or to other
+other terms. The main use case is 1) to enable efficiently stepping through
+a set of rows in support of query-more type functionality, or 2) to allow
+IN clause to perform point gets on composite row keys.
+","
+(col1, col2, 5)
+",行值建構子是一組被視為整體的複合結構的其他術語。它們可相互比較，也可與其他術語進行比較。其主要用途包括：1) 支援查詢類型的功能，以高效地遍歷一組資料列；或 2) 允許 IN 子句針對複合行鍵執行點讀取操作。
+Other Grammar,Bind Parameter,"
+?
+    | :number
+","
+A parameters can be indexed, for example "":1"" meaning the first parameter.
+","
+:1
+?
+",參數可以透過索引來指定，例如使用「:1」代表第一個參數。
+Other Grammar,Value,"
+string | numeric | boolean | null
+","
+A literal value of any data type, or null.
+","
+10
+",任何資料類型的字面值，或是 null。
+Other Grammar,Case,"
+CASE term { WHEN expression THEN term } [...]
+[ ELSE expression ] END
+","
+Returns the first expression where the value is equal to the test expression. If
+no else part is specified, return NULL.
+","
+CASE CNT WHEN 0 THEN 'No' WHEN 1 THEN 'One' ELSE 'Some' END
+",返回第一個值等於測試表達式的表達式；若未指定 else 部分，則返回 NULL。
+Other Grammar,Case When,"
+CASE { WHEN expression THEN term} [...]
+[ ELSE term ] END
+","
+Returns the first expression where the condition is true. If no else part is
+specified, return NULL.
+","
+CASE WHEN CNT<10 THEN 'Low' ELSE 'High' END
+",返回條件為真時的第一個表達式；若未指定 else 子句，則返回 NULL。
+Other Grammar,Name,"
+{ { A-Z|_  } [ { A-Z|_|0-9 } [...] ] } | quotedName
+","
+Unquoted names are not case sensitive. There is no maximum name length.
+","
+my_column
+",未加引號的名稱不區分大小寫，且沒有名稱長度上限。
+Other Grammar,Quoted Name,"
+""anythingExceptDoubleQuote""
+","
+Quoted names are case sensitive, and can contain spaces. There is no maximum
+name length. Two double quotes can be used to create a single double quote
+inside an identifier.
+","
+""first-name""
+",引號名稱區分大小寫，且可包含空格。名稱長度無上限。在標識符內部可使用兩個雙引號來表示一個單個雙引號。
+Other Grammar,Alias,"
+name
+","
+An alias is a name that is only valid in the context of the statement.
+","
+A
+",別名僅在語句上下文中有效。
+Other Grammar,Null,"
+NULL
+","
+NULL is a value without data type and means 'unknown value'.
+","
+NULL
+",NULL 是一個沒有資料類型的值，代表「未知值」。
+Other Grammar,Data Type,"
+{ sqlDataType | hbaseDataType } [ ARRAY [ '[' [ dimensionInt ] ']' ] ]
+","
+A type name optionally declared as an array. An array is mapped to ""java.sql.Array"".
+Only single dimension arrays are supported and varbinary arrays are not allowed.
+","
+CHAR(15)
+VARCHAR
+DECIMAL(10,2)
+DOUBLE
+DATE
+VARCHAR ARRAY
+CHAR(10) ARRAY [5]
+INTEGER []
+",類型名稱可選地宣告為陣列。該陣列對應至「java.sql.Array」。僅支援單維度陣列，不允許使用 varbinary 陣列。
+Other Grammar,SQL Data Type,"
+charType | varcharType | decimalType | tinyintType | smallintType | integerType | bigintType | floatType | doubleType | timestampType | dateType | timeType | binaryType | varbinaryType
+","
+A standard SQL data type.
+","
+TINYINT
+CHAR(15)
+VARCHAR
+VARCHAR(1000)
+DECIMAL(10,2)
+DOUBLE
+INTEGER
+BINARY(200)
+DATE
+",標準 SQL 資料類型。
+Other Grammar,HBase Data Type,"
+unsignedTimestampType | unsignedDateType | unsignedTimeType | unsignedTinyintType | unsignedSmallintType | unsignedIntType | unsignedLongType | unsignedFloatType | unsignedDoubleType
+","
+A type that maps to a native primitive HBase value serialized through the Bytes.toBytes() utility methods. Only positive values are allowed.
+","
+UNSIGNED_INT
+UNSIGNED_DATE
+UNSIGNED_LONG
+",此類型對應於透過 Bytes.toBytes() 工具方法序列化的原生基本型別 HBase 值，僅允許正數。
+Other Grammar,String,"
+'anythingExceptSingleQuote'
+","
+A string starts and ends with a single quote. Two single quotes can be used to
+create a single quote inside a string.
+","
+'John''s car'
+",字串以單引號開始並結束。若要於字串內部包含單引號，可使用兩個連續的單引號來表示。
+Other Grammar,Boolean,"
+TRUE | FALSE
+","
+A boolean value.
+","
+TRUE
+",布林值。
+Other Grammar,Numeric,"
+int | long | decimal
+","
+The data type of a numeric value is always the lowest possible for the given value.
+If the number contains a dot this is decimal; otherwise it is int, long, or decimal (depending on the value).
+","
+SELECT -10.05
+SELECT 5
+SELECT 12345678912345
+",數值資料類型始終採用該數值所能使用的最低類型。若數字包含小數點，則為十進位型別；否則依數值大小分別為整數、長整數或十進位型別。
+Other Grammar,Int,"
+[ - ] number
+","
+The maximum integer number is 2147483647, the minimum is -2147483648.
+","
+10
+",最大整數為 2147483647，最小整數為 -2147483648。
+Other Grammar,Long,"
+[ - ] number
+","
+Long numbers are between -9223372036854775808 and 9223372036854775807.
+","
+100000
+",Long 數值的範圍介於 -9223372036854775808 至 9223372036854775807 之間。
+Other Grammar,Decimal,"
+[ - ] { number [ . number ] }
+","
+A decimal number with fixed precision and scale.
+Internally, ""java.lang.BigDecimal"" is used.
+","
+SELECT -10.5
+",具有固定精度和尺度的十進位數字。內部使用「java.lang.BigDecimal」類別。
+Other Grammar,Number,"
+0-9 [...]
+","
+The maximum length of the number depends on the data type used.
+","
+100
+",數字的最大長度取決於所使用的資料類型。
+Other Grammar,Comments,"
+-- anythingUntilEndOfLine | // anythingUntilEndOfLine | /* anythingUntilEndComment */
+","
+Comments can be used anywhere in a command and are ignored by the database. Line
+comments end with a newline. Block comments cannot be nested, but can be
+multiple lines long.
+","
+// This is a comment
+",註解可用於命令的任何位置，資料庫會忽略它們。行註解以換行符號結束。區塊註解不能嵌套，但可以跨越多行。
+Data Types,INTEGER Type,"
+INTEGER
+","
+Possible values: -2147483648 to 2147483647.
+
+Mapped to ""java.lang.Integer"". The binary representation is a 4 byte
+integer with the sign bit flipped (so that negative values sorts before positive values).
+","
+INTEGER
+","可能的取值範圍為 -2,147,483,648 至 2,147,483,647。此類型對應於「java.lang.Integer」，其二進位表示法為 4 位元組的整數，且符號位已反轉（因此負數會排在正數之前）。"
+Data Types,UNSIGNED_INT Type,"
+UNSIGNED_INT
+","
+Possible values: 0 to 2147483647.
+Mapped to ""java.lang.Integer"". The binary representation is a 4 byte
+integer, matching the HBase Bytes.toBytes(int) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+","
+UNSIGNED_INT
+",可能取值範圍為 0 至 2147483647。此類型對應於「java.lang.Integer」，其二進位表示法為 4 字節整數，與 HBase 的 Bytes.toBytes(int) 方法相符。此類型的用途是映射使用該 HBase 工具方法進行序列化的現有 HBase 資料；若不符合此情況，則應改用有符號類型。
+Data Types,BIGINT Type,"
+BIGINT
+","
+Possible values: -9223372036854775808 to 9223372036854775807.
+Mapped to ""java.lang.Long"". The binary representation is an 8 byte
+long with the sign bit flipped (so that negative values sorts before positive values).
+","
+BIGINT
+",可能的取值範圍為 -9223372036854775808 至 9223372036854775807。對應於「java.lang.Long」類型，其二進位表示法為一個 8 字節的長整數，且符號位已反轉（因此負數會排在正數之前）。
+Data Types,UNSIGNED_LONG Type,"
+UNSIGNED_LONG
+","
+Possible values: 0 to 9223372036854775807.
+Mapped to ""java.lang.Long"". The binary representation is an 8 byte
+integer, matching the HBase Bytes.toBytes(long) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+","
+UNSIGNED_LONG
+",可能的取值範圍為 0 至 9223372036854775807。此類型對應於「java.lang.Long」，其二進位表示法為 8 位元整數，與 HBase 的 Bytes.toBytes(long) 方法所產生的格式相符。採用此類型的目的是為了映射那些已使用該 HBase 工具方法進行序列化的現有 HBase 資料；若不符合此情況，則應改用普通的有符號類型。
+Data Types,TINYINT Type,"
+TINYINT
+","
+Possible values: -128 to 127.
+Mapped to ""java.lang.Byte"". The binary representation is a single byte,
+with the sign bit flipped (so that negative values sorts before positive values).
+","
+TINYINT
+",可能的取值範圍為 -128 至 127。此類型對應於「java.lang.Byte」，其二進位表示法為單節節（single byte），但會將符號位元取反（因此負數的排序順序會在正數之前）。
+Data Types,UNSIGNED_TINYINT Type,"
+UNSIGNED_TINYINT
+","
+Possible values: 0 to 127.
+Mapped to ""java.lang.Byte"". The binary representation is a single byte,
+matching the HBase Bytes.toBytes(byte) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+","
+UNSIGNED_TINYINT
+",可能的取值範圍為 0 至 127。此類型對應於「java.lang.Byte」，其二進位表示法為單節節（single byte），與 HBase 的 Bytes.toBytes(byte) 方法相符。該類型的用途是映射使用此 HBase 工具方法進行序列化的現有 HBase 資料；若不符合此情況，則應改用有符號類型。
+Data Types,SMALLINT Type,"
+SMALLINT
+","
+Possible values: -32768 to 32767.
+Mapped to ""java.lang.Short"". The binary representation is a 2 byte
+short with the sign bit flipped (so that negative values sort before positive values).
+","
+SMALLINT
+",可能值範圍為 -32768 至 32767。對應於「java.lang.Short」類型，其二進位表示法為一個 2 字節的 short，其中符號位已翻轉（因此負數會排在正數之前）。
+Data Types,UNSIGNED_SMALLINT Type,"
+UNSIGNED_SMALLINT
+","
+Possible values: 0 to 32767.
+Mapped to ""java.lang.Short"". The binary representation is an 2 byte
+integer, matching the HBase Bytes.toBytes(short) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+","
+UNSIGNED_SMALLINT
+",可能的取值範圍為 0 至 32767。此類型對應於「java.lang.Short」，其二進位表示法為 2 位元組的整數，與 HBase 的 Bytes.toBytes(short) 方法相符。此類型的用途是映射使用該 HBase 工具方法進行序列化的現有 HBase 資料；若不符合此情況，則請改用有符號類型。
+Data Types,FLOAT Type,"
+FLOAT
+","
+Possible values: -3.402823466 E + 38 to 3.402823466 E + 38.
+Mapped to ""java.lang.Float"". The binary representation is an 4 byte
+float with the sign bit flipped (so that negative values sort before
+positive values).
+","
+FLOAT
+",可能值範圍為 -3.402823466 E + 38 至 3.402823466 E + 38。此類型對應於「java.lang.Float」，其二進位表示法為一個 4 字節的浮點數，但符號位元已反轉（使得負數在排序時排在正數之前）。
+Data Types,UNSIGNED_FLOAT Type,"
+UNSIGNED_FLOAT
+","
+Possible values: 0 to 3.402823466 E + 38.
+Mapped to ""java.lang.Float"". The binary representation is an 4 byte
+float matching the HBase Bytes.toBytes(float) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+","
+UNSIGNED_FLOAT
+",可能的取值範圍為 0 至 3.402823466 E + 38。此類型對應於「java.lang.Float」，其二進位表示法為 4 字節的浮點數，與 HBase 的 Bytes.toBytes(float) 方法所產生的格式相符。採用此類型的目的是為了映射那些使用該 HBase 工具方法進行序列化的既有 HBase 資料；若不符合此情況，則應改用有符號的類型。
+Data Types,DOUBLE Type,"
+DOUBLE
+","
+Possible values: -1.7976931348623158 E + 308 to 1.7976931348623158 E + 308.
+Mapped to ""java.lang.Double"". The binary representation is an 8 byte
+double with the sign bit flipped (so that negative values sort before positive value).
+","
+DOUBLE
+",可能的取值範圍為 -1.7976931348623158 E + 308 至 1.7976931348623158 E + 308。此類型對應於「java.lang.Double」，其二進位表示法為一個 8 字節的雙精度浮點數，但會將符號位元取反（因此負數在排序時會排在正數之前）。
+Data Types,UNSIGNED_DOUBLE Type,"
+UNSIGNED_DOUBLE
+","
+Possible values: 0 to  1.7976931348623158 E + 308.
+Mapped to ""java.lang.Double"". The binary representation is an 8 byte
+double matching the HBase Bytes.toBytes(double) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+","
+UNSIGNED_DOUBLE
+",可能的取值範圍為 0 至 1.7976931348623158 E + 308。此類型對應於「java.lang.Double」，其二進位表示法為 8 字節的雙精度浮點數，符合 HBase Bytes.toBytes(double) 方法的格式。該類型的用途是映射至使用此 HBase 工具方法進行序列化的現有 HBase 資料；若不符合此情況，則應改用有符號類型。
+Data Types,DECIMAL Type,"
+DECIMAL [ (precisionInt, scaleInt) ]
+","
+Data type with fixed precision and scale. A user can specify precision and scale by expression DECIMAL(precision,scale) in a DDL statement, for example, DECIMAL(10,2).
+The maximum precision is 38 digits. Mapped to ""java.math.BigDecimal"". The binary representation is binary
+comparable, variable length format. When used in a row key, it is terminated
+with a null byte unless it is the last column.
+","
+DECIMAL
+DECIMAL(10,2)
+","DECIMAL 類型具有固定的精度與小數位數。使用者可在資料定義語言（DDL）語句中使用 DECIMAL(precision,scale) 表達式來指定精度與小數位數，例如 DECIMAL(10,2)。其最大精度為 38 位數字，對應至 Java 的 java.math.BigDecimal 類別。其二進位表示法採用可變長度格式，且支援二進位比較。當用於列鍵時，若非最後一欄，則以 null 字節結尾。"
+Data Types,BOOLEAN Type,"
+BOOLEAN
+","
+Possible values: TRUE and FALSE.
+
+Mapped to ""java.lang.Boolean"". The binary representation is a single byte with 0 for false and 1 for true
+","
+BOOLEAN
+",可能的值為 TRUE 和 FALSE。對應至「java.lang.Boolean」類別，其二進位表示法為一個字節，其中 0 代表 false，1 代表 true。
+Data Types,TIME Type,"
+TIME
+","
+The time data type. The format is yyyy-MM-dd hh:mm:ss, with both the date
+and time parts maintained. Mapped to ""java.sql.Time"".
+The binary representation is an 8 byte long (the number of milliseconds from the epoch), making it
+possible (although not necessarily recommended) to store more information within a TIME column
+than what is provided by ""java.sql.Time"". Note that the internal representation is based on
+a number of milliseconds since the epoch (which is based on a time in GMT), while
+""java.sql.Time"" will format times based on the client's local time zone. Please note that
+this TIME type is different than the TIME type as defined by the SQL 92 standard in that it
+includes year, month, and day components. As such, it is not in compliance with the JDBC APIs.
+As the underlying data is still stored as a long, only the presentation of the value is incorrect.
+","
+TIME
+",時間資料類型。其格式為 yyyy-MM-dd hh:mm:ss，同時保留日期與時間部分，對應至「java.sql.Time」。其二進位表示法為 8 位元組的長整數（自基準點起算的毫秒數），這使得在 TIME 欄位中儲存比「java.sql.Time」所提供的更多資訊成為可能（儘管並非建議做法）。請注意，其內部表示法基於自基準點（以格林威治標準時間為基礎）起的毫秒數，而「java.sql.Time」則會根據客戶端的本地時區格式化時間。此外，此 TIME 類型與 SQL 92 標準所定義的 TIME 類型不同，因為它包含年、月及日成分，因此不符合 JDBC API 規範。由於底層資料仍以長整數儲存，僅在值的呈現方式上存在不正確之處。
+Data Types,DATE Type,"
+DATE
+","
+The date data type. The format is yyyy-MM-dd hh:mm:ss, with both the date
+and time parts maintained to a millisecond accuracy. Mapped to ""java.sql.Date"".
+The binary representation is an 8 byte long (the number of milliseconds from the epoch), making it
+possible (although not necessarily recommended) to store more information within a DATE column than
+what is provided by ""java.sql.Date"". Note that the internal representation is based on a number
+of milliseconds since the epoch (which is based on a time in GMT), while ""java.sql.Date""
+will format dates based on the client's local time zone. Please note that this DATE type
+is different than the DATE type as defined by the SQL 92 standard in that it includes
+a time component. As such, it is not in compliance with the JDBC APIs. As the underlying data
+is still stored as a long, only the presentation of the value is incorrect.
+","
+DATE
+",DATE 資料類型。其格式為 yyyy-MM-dd hh:mm:ss，日期與時間部分均維持至毫秒精度，對應至「java.sql.Date」。其二進位表示法為 8 位元組的 long（自基準點起經過的毫秒數），這使得在 DATE 欄位中儲存比「java.sql.Date」所提供的資訊更多內容成為可能（儘管並非建議做法）。請注意，其內部表示法是基於自基準點（以格林威治標準時間 GMT 為基礎）經過的毫秒數，而「java.sql.Date」則會根據客戶端的本機時區來格式化日期。此外，此 DATE 類型與 SQL 92 標準所定義的 DATE 類型不同，因為它包含時間元件，因此不符合 JDBC API 規範。由於底層資料仍以 long 儲存，僅在數值的呈現方式上存在錯誤。
+Data Types,TIMESTAMP Type,"
+TIMESTAMP
+","
+The timestamp data type. The format is yyyy-MM-dd hh:mm:ss[.nnnnnnnnn].
+Mapped to ""java.sql.Timestamp"" with an internal representation of the
+number of nanos from the epoch. The binary representation is 12 bytes:
+an 8 byte long for the epoch time plus a 4 byte integer for the nanos.
+Note that the internal representation is based on a number of milliseconds
+since the epoch (which is based on a time in GMT), while
+""java.sql.Timestamp"" will format timestamps based on the client's local
+time zone.
+","
+TIMESTAMP
+",時間戳資料類型。其格式為 yyyy-MM-dd hh:mm:ss[.nnnnnnnnn]。此類型對應至「java.sql.Timestamp」物件，內部以自紀元起算的奈秒數表示。其二進位表示法共 12 個位元組：包含 8 個位元組的長整型（用於儲存紀元時間）以及 4 個位元組的整數（用於儲存奈秒）。請注意，內部表示法是基於自紀元起算的毫秒數（該紀元時間基準為格林威治標準時間），而「java.sql.Timestamp」則會根據客戶端的當地時區來格式化時間戳。
+Data Types,UNSIGNED_TIME Type,"
+UNSIGNED_TIME
+","
+The unsigned time data type. The format is yyyy-MM-dd hh:mm:ss, with both the date
+and time parts maintained to the millisecond accuracy. Mapped to ""java.sql.Time"".
+The binary representation is an 8 byte long (the number of milliseconds from the epoch)
+matching the HBase.toBytes(long) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+","
+UNSIGNED_TIME
+",無符號時間資料類型。其格式為 yyyy-MM-dd hh:mm:ss，日期與時間部分均維持至毫秒精確度，對應於「java.sql.Time」。其二進位表示法為 8 字節的長整數（自紀元起算的毫秒數），符合 HBase.toBytes(long) 方法的規範。此類型的用途是映射使用該 HBase 工具方法進行序列化的既有 HBase 資料；若不符合此情況，則請改用一般的有符號類型。
+Data Types,UNSIGNED_DATE Type,"
+UNSIGNED_DATE
+","
+The unsigned date data type. The format is yyyy-MM-dd hh:mm:ss, with both the date
+and time parts maintained to a millisecond accuracy. Mapped to ""java.sql.Date"".
+The binary representation is an 8 byte long (the number of milliseconds from the epoch)
+matching the HBase.toBytes(long) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+","
+UNSIGNED_DATE
+",unsigned_date 資料類型。其格式為 yyyy-MM-dd hh:mm:ss，日期與時間部分均維持至毫秒精度。對應至「java.sql.Date」。其二進位表示法為 8 字節的 long（自 epoch 起算的毫秒數），符合 HBase.toBytes(long) 方法的定義。此類型的用途是對應使用該 HBase 工具方法進行序列化的既有 HBase 資料；若不符合此情況，則應改用普通的有號類型。
+Data Types,UNSIGNED_TIMESTAMP Type,"
+UNSIGNED_TIMESTAMP
+","
+The timestamp data type. The format is yyyy-MM-dd hh:mm:ss[.nnnnnnnnn].
+Mapped to ""java.sql.Timestamp"" with an internal representation of the
+number of nanos from the epoch. The binary representation is 12 bytes:
+an 8 byte long for the epoch time plus a 4 byte integer for the nanos with the
+long serialized through the HBase.toBytes(long) method.
+The purpose of this type is to map to existing HBase data that was serialized using
+this HBase utility method. If that is not the case, use the regular signed type instead.
+
+","
+UNSIGNED_TIMESTAMP
+",時間戳資料類型。其格式為 yyyy-MM-dd hh:mm:ss[.nnnnnnnnn]。此類型對應至「java.sql.Timestamp」物件，內部以自基準點（epoch）起經過的納秒數表示。其二進位表示法共佔用 12 個位元組：包含一個用於儲存基準時間的 8 位元組 long 整數，以及一個用於儲存納秒數的 4 位元組整數；其中 long 值係透過 HBase.toBytes(long) 方法進行序列化。此類型的設計目的在於對應先前使用該 HBase 工具方法序列化的既有 HBase 資料；若不符合此情況，則應改用一般的有符號類型。
+Data Types,VARCHAR Type,"
+VARCHAR  [ ( precisionInt ) ]
+","
+A variable length String with an optional max byte length. The binary representation
+is UTF8 matching the HBase Bytes.toBytes(String) method. When used in a row key, it
+is terminated with a null byte unless it is the last column.
+
+Mapped to ""java.lang.String"".
+","
+VARCHAR
+VARCHAR(255)
+",可選設定最大位元組長度的變長字串。其二進位表示法採用 UTF8 編碼，符合 HBase Bytes.toBytes(String) 方法。當用於列鍵時，若非最後一欄，則以 null 位元組終止。對應至「java.lang.String」。
+Data Types,CHAR Type,"
+CHAR ( precisionInt )
+","
+A fixed length String with single-byte characters. The binary representation
+is UTF8 matching the HBase Bytes.toBytes(String) method.
+
+Mapped to ""java.lang.String"".
+","
+CHAR(10)
+",固定長度的字串，由單節點字元組成。其二進位表示法採用 UTF-8 編碼，對應於 HBase 的 Bytes.toBytes(String) 方法。此類型映射至「java.lang.String」。
+Data Types,BINARY Type,"
+BINARY ( precisionInt )
+","
+Raw fixed length byte array.
+
+Mapped to ""byte[]"".
+","
+BINARY
+",原始固定長度位元組陣列。對應至「byte[]」。
+Data Types,VARBINARY Type,"
+VARBINARY
+","
+Raw variable length byte array.
+
+Mapped to ""byte[]"".
+","
+VARBINARY
+",原始的可變長度位元組陣列。對應至「byte[]」。
+Data Types,ARRAY,"
+ARRAY [ '[' [ dimensionInt ] ']' ]
+","
+Mapped to ""java.sql.Array"". Every primitive type except for VARBINARY may be declared
+as an ARRAY. Only single dimensional arrays are supported.
+","
+VARCHAR ARRAY
+CHAR(10) ARRAY [5]
+INTEGER []
+INTEGER [100]
+",對應至「java.sql.Array」。除 VARBINARY 外，所有基本類型均可宣告為陣列。僅支援一維陣列。
+Functions (Aggregate),AVG,"
+AVG ( { numericTerm } )
+","
+The average (mean) value.
+If no rows are selected, the result is NULL.
+Aggregates are only allowed in select statements.
+The returned value is of the same data type as the parameter.
+","
+AVG(X)
+",平均值。若未選取任何列，則結果為 NULL。聚合函數僅允許用於 SELECT 語句。返回值的資料類型與參數相同。
+Functions (Aggregate),COUNT,"
+COUNT( [ DISTINCT ] { * | { term } } )
+","
+The count of all row, or of the non-null values.
+This method returns a long.
+When DISTINCT is used, it counts only distinct values.
+If no rows are selected, the result is 0.
+Aggregates are only allowed in select statements.
+","
+COUNT(*)
+",COUNT 函數用於計算所有列或所有非空值的數量。此方法會回傳一個 long 型別的值。當使用 DISTINCT 關鍵字時，僅計算不重複的數值。若沒有選取任何列，則結果為 0。聚合函數僅允許出現在 SELECT 語句中。
+Functions (Aggregate),APPROX_COUNT_DISTINCT,"
+APPROX_COUNT_DISTINCT( { * | { term } } )
+","
+The approximate distinct count of all row, or of the non-null values.
+The relative error of approximation by default is less than 0.00405
+This method returns a long.
+If no rows are selected, the result is 0.
+Aggregates are only allowed in select statements.
+","
+APPROX_COUNT_DISTINCT(*)
+",所有行的近似去重計數，或所有非空值的近似去重計數。預設情況下，近似的相對誤差小於 0.00405。此方法返回一個 long 類型值。若未選取任何行，則結果為 0。聚合函數僅允許用於 SELECT 語句之中。
+Functions (Aggregate),MAX,"
+MAX(term)
+","
+The highest value.
+If no rows are selected, the result is NULL.
+Aggregates are only allowed in select statements.
+The returned value is of the same data type as the parameter.
+","
+MAX(NAME)
+",最高值。若未選取任何列，則結果為 NULL。聚合函數僅允許用於 SELECT 語句。返回值的資料類型與參數相同。
+Functions (Aggregate),MIN,"
+MIN(term)
+","
+The lowest value.
+If no rows are selected, the result is NULL.
+Aggregates are only allowed in select statements.
+The returned value is of the same data type as the parameter.
+","
+MIN(NAME)
+",最小值。若未選取任何列，結果為 NULL。聚合函數僅允許用於 SELECT 語句。返回值的資料類型與參數相同。
+Functions (Aggregate),SUM,"
+SUM( { numericTerm } )
+","
+The sum of all values.
+If no rows are selected, the result is NULL.
+Aggregates are only allowed in select statements.
+The returned value is of the same data type as the parameter.
+","
+SUM(X)
+",所有數值的總和。若未選取任何列，結果為 NULL。聚合函數僅允許用於 SELECT 語句。返回值的資料類型與參數相同。
+Functions (Aggregate),PERCENTILE_CONT,"
+PERCENTILE_CONT( { numeric } ) WITHIN GROUP (ORDER BY { numericTerm } { ASC | DESC } )
+","
+The nth percentile of values in the column.
+The percentile value can be between 0 and 1 inclusive.
+Aggregates are only allowed in select statements.
+The returned value is of decimal data type.
+","
+PERCENTILE_CONT( 0.9 ) WITHIN GROUP (ORDER BY X ASC)
+","該欄位數值的第 n 百分位。
+百分位數值介於 0 到 1（含）之間。
+聚合函數僅允許用於 SELECT 語句。
+返回的資料類型為十進位數。"
+Functions (Aggregate),PERCENTILE_DISC,"
+PERCENTILE_DIST( { numeric } ) WITHIN GROUP (ORDER BY { numericTerm } { ASC | DESC } )
+","
+PERCENTILE_DISC is an inverse distribution function that assumes a discrete distribution model. It takes a percentile value and a sort specification and returns an element from the set. Nulls are ignored in the calculation.
+","
+PERCENTILE_DISC( 0.9 ) WITHIN GROUP (ORDER BY X DESC)
+",PERCENTILE_DISC 是一個基於離散分佈模型的逆分佈函數，它接受一個百分位數值和排序說明，並從集合中返回對應的元素。計算時會忽略空值。
+Functions (Aggregate),PERCENT_RANK,"
+PERCENT_RANK( { numeric } ) WITHIN GROUP (ORDER BY { numericTerm } { ASC | DESC } )
+","
+The percentile rank for a hypothetical value, if inserted into the column.
+Aggregates are only allowed in select statements.
+The returned value is of decimal data type.
+","
+PERCENT_RANK( 100 ) WITHIN GROUP (ORDER BY X ASC)
+",假設值插入該欄位後的百分等級。聚合函數僅允許用於 SELECT 語句。返回值的資料類型為十進位數。
+Functions (Aggregate),FIRST_VALUE,"
+FIRST_VALUE( { expression } ) WITHIN GROUP (ORDER BY { expression } { ASC | DESC } )
+","
+The first value in each distinct group ordered according to the ORDER BY specification.
+","
+FIRST_VALUE( name ) WITHIN GROUP (ORDER BY salary DESC)
+",每個不同群組中，依照 ORDER BY 子句排序後的第一個值。
+Functions (Aggregate),LAST_VALUE,"
+LAST_VALUE( { expression } ) WITHIN GROUP (ORDER BY { expression } { ASC | DESC } )
+","
+The last value in each distinct group ordered according to the ORDER BY specification.
+","
+LAST_VALUE( name ) WITHIN GROUP (ORDER BY salary DESC)
+",每個不同群組中，依據 ORDER BY 子句排序後的最後一個值。
+Functions (Aggregate),FIRST_VALUES,"
+FIRST_VALUES( { expression , numeric } ) WITHIN GROUP (ORDER BY { expression } { ASC | DESC } )
+","
+Returns an array of at most the given numeric size of the first values in each distinct group ordered according to the ORDER BY specification.
+","
+FIRST_VALUES( name, 3 ) WITHIN GROUP (ORDER BY salary DESC)
+",返回一個陣列，其中包含每個不同群組中前 N 個值的結果（N 為指定的數值大小），這些群組依 ORDER BY 子句所規定的順序進行排序。
+Functions (Aggregate),LAST_VALUES,"
+LAST_VALUES( { expression , numeric } ) WITHIN GROUP (ORDER BY { expression } { ASC | DESC } )
+","
+Returns an array of at most the given numeric size of the last values in each distinct group ordered according to the ORDER BY specification.
+","
+LAST_VALUES( name, 3 ) WITHIN GROUP (ORDER BY salary DESC)
+",返回一個數組，其中包含每個獨特分組中最後的數值（最多為指定的數值大小），並依照 ORDER BY 子句指定的順序進行排列。
+Functions (Aggregate),NTH_VALUE,"
+NTH_VALUE( { expression, nthNumeric } ) WITHIN GROUP (ORDER BY { expression } { ASC | DESC } )
+","
+The nth value in each distinct group ordered according to the ORDER BY specification.
+","
+NTH_VALUE( name, 2 ) WITHIN GROUP (ORDER BY salary DESC)
+",每個不同群組中，依據 ORDER BY 子句排序後第 n 個的值。
+Functions (Aggregate),STDDEV_POP,"
+STDDEV_POP( { numericTerm } )
+","
+The population standard deviation of all values.
+Aggregates are only allowed in select statements.
+The returned value is of decimal data type.
+","
+STDDEV_POP( X )
+",所有數值的母群體標準差。聚合函式僅允許用於 SELECT 語句。回傳值為十進位資料類型。
+Functions (Aggregate),STDDEV_SAMP,"
+STDDEV_SAMP( { numericTerm } )
+","
+The sample standard deviation of all values.
+Aggregates are only allowed in select statements.
+The returned value is of decimal data type.
+","
+STDDEV_SAMP( X )
+",所有數值的樣本標準差。聚合函數僅允許用於 SELECT 語句。返回值的資料類型為十進位數。
+Functions (Numeric),ROUND,"
+ROUND({numericTerm | dateTimeTerm} [, scaleNumber | {'DAY' | 'HOUR' | 'MINUTE' | 'SECOND' | 'MILLISECOND'} [, multiplierNumber]])
+","
+Rounds the numeric or timestamp expression to the nearest scale or time unit specified. If the expression
+is a numeric type, then the second argument is the scale to be used for rounding off the number,
+defaulting to zero. If the expression is a date/time type, then the second argument may be one of
+the time units listed to determine the remaining precision of the date/time. A default of
+MILLISECONDS is used if not present. The multiplier is
+only applicable for a date/time type and is used to round to a multiple of a time unit (i.e.
+10 minute) and defaults to 1 if not specified. This method returns the same type as its first
+argument.
+","
+ROUND(number)
+ROUND(number, 2)
+ROUND(timestamp)
+ROUND(time, 'HOUR')
+ROUND(date, 'MINUTE', 30)
+",將數值或時間戳記表達式四捨五入至指定的刻度或時間單位。若表達式為數值類型，則第二參數為用於四捨五入的刻度，預設值為零；若表達式為日期/時間類型，則第二參數可為所列的時間單位之一，用以決定該日期/時間的剩餘精度，若未指定則預設為毫秒。倍數因子僅適用於日期/時間類型，用於將結果四捨五入至某個時間單位的倍數（例如 10 分鐘），若未指定則預設值為 1。此方法返回的類型與第一個參數相同。
+Functions (Numeric),CEIL,"
+CEIL({numericTerm | dateTimeTerm} [, scaleNumber | {'DAY' | 'HOUR' | 'MINUTE' | 'SECOND' | 'MILLISECOND'} [, multiplierInt]])
+","
+Same as ROUND, except it rounds any fractional value up to the next even multiple.
+","
+CEIL(number, 3)
+CEIL(2.34)
+CEIL(timestamp, 'SECOND', 30)
+CEIL(date, 'DAY', 7)
+",與 ROUND 函數相同，但會將任何小數位向上取整至下一個偶數倍數。
+Functions (Numeric),FLOOR,"
+FLOOR({numericTerm | dateTimeTerm} [, scaleNumber | {'DAY' | 'HOUR' | 'MINUTE' | 'SECOND' | 'MILLISECOND'} [, multiplierInt]])
+","
+Same as ROUND, except it rounds any fractional value down to the previous even multiple.
+","
+FLOOR(timestamp)
+FLOOR(date, 'DAY', 7)
+",與 ROUND 函數相同，但會將任何小數值向下捨入至前一個偶數倍數。
+Functions (Numeric),TRUNC,"
+TRUNC({numericTerm | dateTimeTerm} [, scaleNumber | {'DAY' | 'HOUR' | 'MINUTE' | 'SECOND' | 'MILLISECOND'} [, multiplierInt]])
+","
+Same as FLOOR
+","
+TRUNC(timestamp, 'SECOND', 30)
+TRUNC(date, 'DAY', 7)
+",同於向下取整
+Functions (String),SUBSTR,"
+SUBSTR( stringTerm, startInt [, lengthInt ] )
+","
+Returns a substring of a string starting at the one-based position.
+If zero is used, the position is zero-based. If the start index is
+negative, then the start index is relative to the end of the string.
+The length is optional and if not supplied, the rest of the string
+will be returned.
+","
+SUBSTR('[Hello]', 2, 5)
+SUBSTR('Hello World', -5)
+",返回從指定位置開始的字串子串。若使用零作為起始位置，則採用基於零的索引；若起始索引為負數，則該索引相對於字串的結尾計算。長度參數可選，若未提供，則返回剩餘的所有字串內容。
+Functions (String),INSTR,"
+INSTR( stringTerm, stringTerm )
+","
+Returns the one-based position of the initial occurrence of the second
+argument in the first argument. If the second argument is not contained
+in the first argument, then zero is returned.
+","
+INSTR('Hello World', 'World')
+INSTR('Simon says', 'mon')
+INSTR('Peace on earth', 'war')
+",傳回第二參數在第一個參數中首次出現的起始位置（以 1 為基準）。若第二參數不存在於第一個參數中，則傳回零。
+Functions (String),TRIM,"
+TRIM( stringTerm )
+","
+Removes leading and trailing spaces from the input string.
+","
+TRIM('  Hello  ')
+",移除輸入字串前後的多餘空白。
+Functions (String),LTRIM,"
+LTRIM( stringTerm )
+","
+Removes leading spaces from the input string.
+","
+LTRIM('  Hello')
+",移除輸入字串開頭的空白字元。
+Functions (String),RTRIM,"
+RTRIM( stringTerm )
+","
+Removes trailing spaces from the input string.
+","
+RTRIM('Hello   ')
+",移除輸入字串末尾的空格。
+Functions (String),LPAD,"
+LPAD( stringTerm, lengthNumeric, [padString] )
+","
+Pads the string expression with the specific pad character (space by default) up to the length argument.
+","
+LPAD('John',30)
+",將字串表達式以指定的填充字元（預設為空格）進行填充，直至達到長度參數所指定的長度。
+Functions (Array),ARRAY_ELEM,"
+ARRAY_ELEM( arrayTerm, numericTerm )
+","
+Alternative to using array subscript notation to access an array element.
+Returns the element in the array at the given position. The position is one-based.
+","
+ARRAY_ELEM(my_array_col, 5)
+ARRAY_ELEM(ARRAY[1,2,3], 1)
+",提供使用陣列下標符號存取陣列元素的替代方案。返回指定位置處的陣列元素，該位置採用一基數索引。
+Functions (Array),ARRAY_LENGTH,"
+ARRAY_LENGTH( arrayTerm )
+","
+Returns the current length of the array.
+","
+ARRAY_LENGTH(my_array_col)
+ARRAY_LENGTH(ARRAY[1,2,3])
+",返回陣列目前的長度。
+Functions (Array),ARRAY_APPEND,"
+ARRAY_APPEND( arrayTerm, elementTerm )
+","
+Appends the given element to the end of the array.
+","
+ARRAY_APPEND(my_array_col, my_element_col)
+ARRAY_APPEND(ARRAY[1,2,3], 4) evaluates to ARRAY[1,2,3,4]
+",將指定的元素附加到陣列末尾。
+Functions (Array),ARRAY_PREPEND,"
+ARRAY_PREPEND(elementTerm, arrayTerm)
+","
+Appends the given element to the beginning of the array.
+","
+ARRAY_PREPEND(my_element_col, my_array_col)
+ARRAY_PREPEND(0, ARRAY[1,2,3]) evaluates to ARRAY[0,1,2,3]
+",將指定元素添加到陣列的開頭。
+Functions (Array),ARRAY_CAT,"
+ARRAY_CAT(arrayTerm, arrayTerm)
+","
+Concatenates the input arrays and returns the result.
+","
+ARRAY_CAT(my_array_col1, my_array_col2)
+ARRAY_CAT(ARRAY[1,2], ARRAY[3,4]) evaluates to ARRAY[1,2,3,4]
+",將輸入數組連接並返回結果。
+Functions (Array),ARRAY_FILL,"
+ARRAY_FILL(arrayTerm, lengthNumeric)
+","
+Returns an array initialized with supplied value and length.
+","
+ARRAY_FILL(my_element_col, my_length_col)
+ARRAY_FILL(1, 3) evaluates to ARRAY[1,1,1]
+",返回一個已初始化指定值與長度的陣列。
+Functions (Array),ARRAY_TO_STRING,"
+ARRAY_TO_STRING(arrayTerm, delimiterString [, nullString])
+","
+Concatenates array elements using supplied delimiter and optional null string and returns the resulting string. If the nullString parameter is omitted or NULL, any null elements in the array are simply skipped and not represented in the output string.
+","
+ARRAY_TO_STRING(my_array_col, my_delimiter_col, my_null_string_col)
+ARRAY_TO_STRING(ARRAY['a','b','c'], ',') evaluates to 'a,b,c'
+ARRAY_TO_STRING(ARRAY['a','b',null,'c'], ',') evaluates to 'a,b,c'
+ARRAY_TO_STRING(ARRAY['a','b',null,'c'], ',', 'NULL') evaluates to 'a,b,NULL,c'
+",使用提供的分隔符和可選的空字串將陣列元素連接，並返回結果字串。若省略 nullString 參數或將其設為 NULL，則會跳過陣列中的任何空元素，不會在輸出字串中顯示。
+Functions (Array),ANY,"
+ANY( arrayTerm )
+","
+Used on the right-hand side of a comparison expression to test that any array
+element satisfies the comparison expression against the left-hand side.
+","
+1 = ANY(my_array)
+10 > ANY(my_array)
+",用於比較表達式的右側，以測試任一陣列元素是否符合與左側的比較條件。
+Functions (Array),ALL,"
+ALL( arrayTerm )
+","
+Used on the right-hand side of a comparison expression to test that all array
+elements satisfy the comparison expression against the left-hand side.
+of the array.
+","
+1 = ALL(my_array)
+10 > ALL(my_array)
+",用於比較表達式的右側，以測試陣列中的所有元素是否均滿足與左側的比較條件。
+Functions (String),LENGTH,"
+LENGTH( stringTerm )
+","
+Returns the length of the string in characters.
+","
+LENGTH('Hello')
+",返回字串的字元長度。
+Functions (String),REGEXP_SUBSTR,"
+REGEXP_SUBSTR( stringTerm, patternString [, startInt ] )
+","
+Returns a substring of a string by applying a regular
+expression start from the offset of a one-based position. Just like with SUBSTR,
+if the start index is negative, then it is relative to the end of the string. If not
+specified, the start index defaults to 1.
+","
+REGEXP_SUBSTR('na1-appsrv35-sj35', '[^-]+') evaluates to 'na1'
+",透過應用正規表達式，從一維度偏移量開始返回字串的子字串。與 SUBSTR 函數類似，若起始索引為負數，則其相對於字串的結尾；若未指定，則預設起始索引為 1。
+Functions (String),REGEXP_REPLACE,"
+REGEXP_REPLACE( stringTerm, patternString [, replacementString ] )
+","
+Returns a string by applying a regular expression and replacing the matches with the replacement
+string. If the replacement string is not specified, it defaults to an empty string.
+","
+REGEXP_REPLACE('abc123ABC', '[0-9]+', '#') evaluates to 'abc#ABC'
+",此函數會套用正規表達式並替換符合的欄位，回傳字串。若未指定替換字串，則預設為空字串。
+Functions (String),REGEXP_SPLIT,"
+REGEXP_SPLIT( stringTerm, patternTerm )
+","
+Splits a string into a VARCHAR ARRAY using a regular expression.
+If characters that have a special meaning in regular expressions are to be used
+as a regular delimiter in the pattern string, they must be escaped with backslashes.
+","
+REGEXP_SPLIT('ONE,TWO,THREE', ',') evaluates to ARRAY['ONE', 'TWO', 'THREE']
+REGEXP_SPLIT('ONE!#TWO#,!THREE', '[,!#]+') evaluates to ARRAY['ONE', 'TWO', 'THREE']
+",使用正則表達式將字串分割為 VARCHAR 陣列。若要在模式字串中將具有正則表達式特殊意義的字符用作常規分隔符，必須以反斜線進行轉義。
+Functions (General),MD5,"
+MD5( term )
+","
+Computes the MD5 hash of the argument, returning the result as a BINARY(16).
+","
+MD5(my_column)
+",計算參數的 MD5 雜湊值，並以 BINARY(16) 格式返回結果。
+Functions (General),INVERT,"
+INVERT( term )
+","
+Inverts the bits of the argument. The return type will be the same as the argument.
+","
+INVERT(my_column)
+",將參數的位元進行反轉，其回傳類型與參數相同。
+Functions (General),ENCODE,"
+ENCODE( expression, 'BASE62' )
+","
+Encodes the expression according to the encoding format provided and returns the
+resulting string. For 'BASE62', converts the given base 10 number to a base 62
+number and returns a string representing the number.
+","
+ENCODE(myNumber, 'BASE62')
+",根據所提供的編碼格式將表達式進行編碼，並返回結果字串。對於'BASE62'，則將給定的十進位數字轉換為六十二進位數字，並返回代表該數字的字串。
+Functions (General),DECODE,"
+DECODE( expression, 'HEX' )
+","
+Decodes the expression according to the encoding format provided and returns the
+resulting value as a VARBINARY. For 'HEX', converts the hex string expression to
+its binary representation, providing a mechanism for inputting binary data through
+the console.
+","
+DECODE('000000008512af277ffffff8', 'HEX')
+",根據所提供的編碼格式解碼表達式，並返回結果值為 VARBINARY。對於 'HEX' 類型，將十六進位字串表達式轉換為其二進位表示形式，提供透過主控台輸入二進位資料的機制。
+Functions (Numeric),TO_NUMBER,"
+TO_NUMBER( { stringTerm | dateTimeTerm } [, formatString] )
+","
+Formats a string or date/time type as a number, optionally accepting a format string.
+For details on the format, see ""java.text.DecimalFormat"". For date, time, and timeStamp
+terms, the result is the time in milliseconds since the epoch.
+This method returns a decimal number.
+","
+TO_NUMBER('$123.33', '\u00A4###.##')
+",將字串或日期/時間類型的數據格式化為數字，可選地接受格式字串。有關格式的詳細資訊，請參閱「java.text.DecimalFormat」。對於日期、時間和時間戳記等術語，結果為自基準點以來經過的毫秒數。此方法返回一個十進制數字。
+Functions (Numeric),RAND,"
+RAND( [seedNumber] )
+","
+Function that produces a random, uniformly distributed double value between 0.0 (inclusive) and
+1.0 (exclusive). If a seed is provided, then the the returned value is identical across each
+invocation for the same row. If a seed is not provided, then the returned value is different for
+each invocation. The seed must be a constant.
+","
+RAND()
+RAND(5)
+",此函數會產生一個介於 0.0（含）與 1.0（不含）之間的隨機均勻分佈雙精度值。若提供種子，則針對同一行，每次呼叫所返回的值均相同；若未提供種子，則每次呼叫返回的值皆不同。種子必須為常數。
+Functions (String),UPPER,"
+UPPER( stringTerm [, localeString ] )
+","
+Returns upper case string of the string argument. If localeString (available in Phoenix 4.14)
+is provided, it identifies the locale whose rules are used for the
+conversion. If localeString is not provided, the default locale is
+used. The localeString must be of the form returned by the Java 6
+implementation of java.util.Locale.toString() e.g. 'zh_TW_STROKE' or
+'en_US' or 'fr_FR'.
+","
+UPPER('Hello')
+UPPER('Hello', 'tr_TR')
+",返回字符串參數的大寫形式。若提供 localeString（在 Phoenix 4.14 中可用），則用於識別轉換時所採用的區域設定規則；若未提供，則使用預設區域設定。localeString 的格式必須與 Java 6 實作中的 java.util.Locale.toString() 方法所返回的形式一致，例如 'zh_TW_STROKE'、'en_US' 或 'fr_FR'。
+Functions (String),LOWER,"
+LOWER( stringTerm [, localeString ] )
+","
+Returns lower case string of the string argument. If localeString (available in Phoenix 4.14)
+is provided, it identifies the locale whose rules are used for the
+conversion. If localeString is not provided, the default locale is
+used. The localeString must be of the form returned by the Java 6
+implementation of java.util.Locale.toString() e.g. 'zh_TW_STROKE' or
+'en_US' or 'fr_FR'.
+","
+LOWER('HELLO')
+LOWER('HELLO', 'en_US')
+",返回小寫字串的參數字串。若提供 localeString（在 Phoenix 4.14 中可用），則指定用於轉換的區域設定；若未提供，則使用預設區域設定。localeString 必須符合 Java 6 實作中 java.util.Locale.toString() 所返回的格式，例如 'zh_TW_STROKE'、'en_US' 或 'fr_FR'。
+Functions (String),REVERSE,"
+REVERSE( stringTerm )
+","
+Returns reversed string of the string argument.
+","
+REVERSE('Hello')
+",返回字串參數的反轉字串。
+Functions (String),TO_CHAR,"
+TO_CHAR( { timestampTerm | numberTerm } [, formatString] )
+","
+Formats a date, time, timestamp, or number as a string.
+The default date format is ""yyyy-MM-dd HH:mm:ss"" and
+the default number format is ""#,##0.###"".
+For details, see ""java.text.SimpleDateFormat""
+for date/time values and ""java.text.DecimalFormat"" for
+numbers. This method returns a string.
+","
+TO_CHAR(myDate, '2001-02-03 04:05:06')
+TO_CHAR(myDecimal, '#,##0.###')
+","將日期、時間、時間戳或數字格式化為字串。預設的日期格式為「yyyy-MM-dd HH:mm:ss」，預設的數字格式為「#,##0.###」。詳細資訊請參閱日期/時間值的「java.text.SimpleDateFormat」以及數字的「java.text.DecimalFormat」。此方法會回傳一個字串。"
+Functions (Time and Date),TO_DATE,"
+TO_DATE( stringTerm [, formatString [, timeZoneIdString]] )
+","
+Parses a string and returns a date. Note that the
+returned date is internally represented as the number
+of milliseconds since the java epoch.
+The most important format characters are:
+y year, M month, d day, H hour, m minute, s second.
+The default format string is ""yyyy-MM-dd HH:mm:ss"".
+For details of the format, see ""java.text.SimpleDateFormat"".
+By default, GMT will be used as the time zone when parsing the
+date. However, a time zone id can also be supplied. This is
+a time zone id such as 'GMT+1'. If 'local' is provided as the
+time zone id, the local time zone will be used for parsing.
+The configuration setting ""phoenix.query.dateFormatTimeZone""
+can also be set to a time zone id, which will cause the
+default of GMT to be overridden with the configured
+time zone id. Please see the Data Type reference guide about
+how Apache Phoenix presently defines the DATE datatype.
+Additionally, Phoenix supports the ANSI SQL ""date"" literal which acts
+similarly to the single-argument ""TO_DATE"" function.
+","
+TO_DATE('Sat, 3 Feb 2001 03:05:06 GMT', 'EEE, d MMM yyyy HH:mm:ss z')
+TO_DATE('1970-01-01', 'yyyy-MM-dd', 'GMT+1')
+date '1970-01-01 12:30:00'
+","將字串解析並回傳日期。請注意，所回傳的日期在內部以自 Java 時代起經過的毫秒數表示。最重要的格式符號包括：y 代表年份、M 代表月份、d 代表日期、H 代表小時、m 代表分鐘、s 代表秒。預設的格式字串為 ""yyyy-MM-dd HH:mm:ss""。有關格式的詳細資訊，請參閱 ""java.text.SimpleDateFormat""。解析日期時預設會使用 GMT 作為時間區；不過也可以提供時間區 ID，例如 'GMT+1'。若提供 'local' 作為時間區 ID，則將使用本地時間區進行解析。此外，還可設定配置項目 ""phoenix.query.dateFormatTimeZone"" 為某個時間區 ID，此設定將覆蓋預設的 GMT 並採用所配置的時間區 ID。有關 Apache Phoenix 目前如何定義 DATE 資料類型的詳細說明，請參閱資料類型參考指南。此外，Phoenix 也支援 ANSI SQL 的 ""date"" 字面量，其功能類似於單引數的 ""TO_DATE"" 函式。"
+Functions (Time and Date),CURRENT_DATE,"
+CURRENT_DATE()
+","
+Returns the current server-side date, bound at the start of the execution
+of a query based on the current time on the region server owning the
+metadata of the table being queried. Please see the Data Type reference guide
+about how Apache Phoenix presently defines the DATE datatype.
+","
+CURRENT_DATE()
+",返回當前服務端日期，該日期在查詢執行時根據擁有被查詢表元數據的區域服務器上的當前時間進行綁定。有關 Apache Phoenix 目前如何定義 DATE 數據類型，請參閱數據類型參考指南。
+Functions (Time and Date),TO_TIME,"
+TO_TIME( string [, formatString [, timeZoneIdString]] )
+","
+Converts the given string into a TIME instance. When a date format is not provided
+it defaults to ""yyyy-MM-dd HH:mm:ss.SSS"" or whatever is defined by the
+configuration property ""phoenix.query.dateFormat"". The configuration setting
+""phoenix.query.dateFormatTimeZone"" can also be set to a time zone id, which will
+cause the default of GMT to be overridden with the configured time zone id.
+Additionally, Phoenix supports the ANSI SQL ""time"" literal which acts similarly to the
+single-argument ""TO_TIME"" function.
+","
+TO_TIME('2005-10-01 14:03:22.559')
+TO_TIME('1970-01-01', 'yyyy-MM-dd', 'GMT+1')
+time '2005-10-01 14:03:22.559'
+","將給定的字串轉換為 TIME 實例。若未提供日期格式，則預設為 ""yyyy-MM-dd HH:mm:ss.SSS""，或依照配置屬性 ""phoenix.query.dateFormat"" 所定義的格式。此外，還可設定配置屬性 ""phoenix.query.dateFormatTimeZone"" 以指定時區 ID，此設定將覆蓋預設的 GMT 時區。Phoenix 同時支援 ANSI SQL 的 ""time"" 字面量，其行為與單參數的 ""TO_TIME"" 函式類似。"
+Functions (Time and Date),TO_TIMESTAMP,"
+TO_TIMESTAMP( string [, formatString [, timeZoneIdString]] )
+","
+Converts the given string into a TIMESTAMP instance. When a date format is not provided
+it defaults to ""yyyy-MM-dd HH:mm:ss.SSS"" or whatever is defined by the
+configuration property ""phoenix.query.dateFormat"". The configuration setting
+""phoenix.query.dateFormatTimeZone"" can also be set to a time zone id, which will
+cause the default of GMT to be overridden with the configured time zone id.
+Additionally, Phoenix supports the ANSI SQL ""timestamp"" literal which acts similarly to
+the single-argument ""TO_TIMESTAMP"" function.
+","
+TO_TIMESTAMP('2005-10-01 14:03:22.559')
+TO_TIMESTAMP('1970-01-01', 'yyyy-MM-dd', 'GMT+1')
+timestamp '2005-10-01 14:03:22.559'
+","將給定的字串轉換為 TIMESTAMP 物件。若未提供日期格式，預設值為 ""yyyy-MM-dd HH:mm:ss.SSS""，或遵循配置屬性 ""phoenix.query.dateFormat"" 所定義的格式。此外，還可設定配置屬性 ""phoenix.query.dateFormatTimeZone"" 以指定時區 ID，此設定將覆蓋預設的 GMT 時區。Phoenix 同時支援 ANSI SQL 的 ""timestamp"" 字面量，其行為與單參數的 ""TO_TIMESTAMP"" 函數類似。"
+Functions (Time and Date),CURRENT_TIME,"
+CURRENT_TIME()
+","
+Same as CURRENT_DATE(), except returns a value of type TIME. In either case,
+the underlying representation is the epoch time as a long value. Please see the
+Data Type reference guide about how Apache Phoenix presently defines the TIME datatype.
+","
+CURRENT_TIME()
+",與 CURRENT_DATE() 相同，但返回的類型為 TIME。無論在哪種情況下，其底層表示均為以長整數形式呈現的紀元時間。請參閱數據類型參考指南，了解 Apache Phoenix 目前如何定義 TIME 數據類型。
+Functions (Time and Date),CONVERT_TZ,"
+CONVERT_TZ(dateTerm|timeTerm|timestampTerm, fromTimeZoneString, toTimeZoneString)
+","
+Converts date/time from one time zone to another returning the shifted date/time value.
+","
+CONVERT_TZ(myDate, 'UTC', 'Europe/Prague')
+",將日期/時間從一個時區轉換至另一個時區，並返回調整後的日期/時間值。
+Functions (Time and Date),TIMEZONE_OFFSET,"
+TIMEZONE_OFFSET(timeZoneString, dateTerm|timeTerm|timestampTerm)
+","
+Returns offset (shift in minutes) of a time zone at particular date/time in minutes.
+","
+TIMEZONE_OFFSET('Indian/Cocos', myDate)
+",返回特定日期/時間下時區的偏移量（以分鐘為單位）。
+Functions (Time and Date),NOW,"
+NOW()
+","
+Returns the current date, bound at the start of the execution of a query based on the current time on the region server owning the metadata of the table being queried.
+","
+NOW()
+",返回當前日期，該日期綁定於查詢執行開始時，由所查詢表的元數據所在的區域服務器上的當前時間決定。
+Functions (Time and Date),YEAR,"
+YEAR(dateTerm|timeTerm|timestampTerm)
+","
+Returns the year of the specified date.
+","
+YEAR(TO_DATE('2015-6-05'))
+",返回指定日期的年份。
+Functions (Time and Date),MONTH,"
+MONTH(dateTerm|timeTerm|timestampTerm)
+","
+Returns the month of the specified date.
+","
+MONTH(TO_TIMESTAMP('2015-6-05'))
+",傳回指定日期的月份。
+Functions (Time and Date),WEEK,"
+WEEK(dateTerm|timeTerm|timestampTerm)
+","
+Returns the week of the specified date.
+","
+WEEK(TO_TIME('2010-6-15'))
+",返回指定日期所在的週數。
+Functions (Time and Date),DAYOFYEAR,"
+DAYOFYEAR(dateTerm|timeTerm|timestampTerm)
+","
+Returns the day of the year of the specified date.
+","
+DAYOFYEAR(TO_DATE('2004-01-18 10:00:10'))
+",返回指定日期在該年中的第幾天。
+Functions (Time and Date),DAYOFMONTH,"
+DAYOFMONTH(dateTerm|timeTerm|timestampTerm)
+","
+Returns the day of the month of the specified date.
+","
+DAYOFMONTH(TO_DATE('2004-01-18 10:00:10'))
+",返回指定日期在當月中的日期。
+Functions (Time and Date),DAYOFWEEK,"
+DAYOFWEEK(dateTerm|timeTerm|timestampTerm)
+","
+Returns the day of the week of the specified date.
+","
+DAYOFWEEK(TO_DATE('2004-01-18 10:00:10'))
+",返回指定日期對應的一週中的星期幾。
+Functions (Time and Date),HOUR,"
+HOUR(dateTerm|timeTerm|timestampTerm)
+","
+Returns the hour of the specified date.
+","
+HOUR(TO_TIMESTAMP('2015-6-05'))
+",返回指定日期的時數。
+Functions (Time and Date),MINUTE,"
+MINUTE(dateTerm|timeTerm|timestampTerm)
+","
+Returns the minute of the specified date.
+","
+MINUTE(TO_TIME('2015-6-05'))
+",返回指定日期的分鐘數。
+Functions (Time and Date),SECOND,"
+SECOND(dateTerm|timeTerm|timestampTerm)
+","
+Returns the second of the specified date.
+","
+SECOND(TO_DATE('2015-6-05'))
+",返回指定日期的第二個日期。
+Functions (General),COALESCE,"
+COALESCE( firstTerm, secondTerm )
+","
+Returns the value of the first argument if not null and the second argument otherwise. Useful
+to guarantee that a column in an UPSERT SELECT command will evaluate to a non null value.
+","
+COALESCE(last_update_date, CURRENT_DATE())
+",若第一個參數非 NULL，則返回其值；否則返回第二個參數。此函數可用於確保 UPSERT SELECT 命令中的欄位評估結果為非 NULL 值。
+Functions (Math),SIGN,"
+SIGN(numericTerm)
+","
+Returns the signum function of the given numeric expression as an INTEGER. The return value is -1 if the given numeric expression is negative; 0 if the given numeric expression is zero; and 1 if the given numeric expression is positive.
+","
+SIGN(number)
+SIGN(1.1)
+SIGN(-1)
+",返回指定數值表達式的符號函數結果，類型為整數。若該數值表達式為負數則返回 -1；若為零則返回 0；若為正數則返回 1。
+Functions (Math),ABS,"
+ABS(numericTerm)
+","
+Returns the absolute value of the given numeric expression maintaining the same type.
+","
+ABS(number)
+ABS(1.1)
+ABS(-1)
+",返回給定數值表達式的絕對值，並保持其類型不變。
+Functions (Math),SQRT,"
+SQRT(numericTerm)
+","
+Returns the correctly rounded square root of the given non-negative numeric expression as a DOUBLE.
+","
+SQRT(number)
+SQRT(1.1)
+",返回給定非負數值表達式的正確舍入平方根，結果為雙精度浮點數。
+Functions (Math),CBRT,"
+CBRT(numericTerm)
+","
+Returns the cube root of the given numeric expression as a DOUBLE.
+","
+CBRT(number)
+CBRT(1.1)
+CBRT(-1)
+",返回給定數值表達式的立方根，結果為 DOUBLE 類型。
+Functions (Math),EXP,"
+EXP(numericTerm)
+","
+Returns Euler's number e raised to the power of the given numeric value as a DOUBLE.
+","
+EXP(number)
+EXP(1.1)
+EXP(-1)
+",返回以雙精度浮點數表示的歐拉數 e 的指定數值次方。
+Functions (Math),POWER,"
+POWER(numericTerm, numericTerm)
+","
+Returns the value of the first argument raised to the power of the second argument as a DOUBLE.
+","
+POWER(number, number)
+POWER(3, 2)
+POWER(2, 3)
+",返回第一個參數的 n 次方值，結果為雙精度浮點數 (DOUBLE)。
+Functions (Math),LN,"
+LN(numericTerm)
+","
+Returns the natural logarithm (base e) of the given positive expression as a DOUBLE.
+","
+LN(number)
+LN(3)
+LN(2)
+",返回給定正表達式的自然對數（以 e 為底），結果為雙精度浮點數。
+Functions (Math),LOG,"
+LOG(numericTerm[, numericTerm])
+","
+Returns the logarithm of the first argument computed at the base of the second argument
+as a DOUBLE. If omitted, a base of 10 will be used for the second argument.
+","
+LOG(3, 2)
+LOG(2, 3)
+LOG(2)
+",返回以第二參數為底的第一個參數的對數，結果為雙精度浮點數。若省略第二參數，則預設使用 10 作為底數。
+Functions (General),GET_BIT,"
+GET_BIT( binaryValue, offsetInt )
+","
+Retrieves the bit at the given index in the given binary value.
+","
+GET_BIT(CAST('FFFF' as BINARY), 1)
+",取得指定二進位值中特定索引位置的位元。
+Functions (General),GET_BYTE,"
+GET_BYTE( binaryValue, offsetInt )
+","
+Retrieves the byte at the given index in the given binary value.
+","
+GET_BYTE(CAST('FFFF' as BINARY), 1)
+",取得指定二進位值中特定索引位置的位元。
+Functions (General),OCTET_LENGTH,"
+OCTET_LENGTH( binaryValue )
+","
+Returns the number of bytes in a binary value.
+","
+OCTET_LENGTH(NAME)
+",返回二進制數值的位元組數量。
+Functions (General),SET_BIT,"
+SET_BIT( binaryValue, offsetInt, newValue )
+","
+Replaces the bit at the given index in the binary value with the provided newValue.
+","
+SET_BIT(CAST('FFFF' as BINARY), 1, 61)
+",將二進制值中指定索引位置的位元替換為提供的 newvalue。
+Functions (General),SET_BYTE,"
+SET_BYTE( binaryValue, offsetInt, newValue )
+","
+Replaces the byte at the given index in the binary value with the provided newValue.
+","
+SET_BYTE(CAST('FFFF' as BINARY), 1, 61)
+",將二進制值中指定索引位置的位元替換為提供的 new 值。
+Functions (String),COLLATION_KEY,"
+COLLATION_KEY( stringTerm, localeString [, upperCaseBoolean [, strengthInt [, decompositionInt ] ] ] )
+","
+Calculates a collation key that can be used to sort strings in a
+natural-language-aware way. The localeString must be of the form
+returned by the Java 6 implementation of java.util.Locale.toString()
+e.g. 'zh_TW_STROKE' or 'en_US' or 'fr_FR'. The third, fourth and fifth
+arguments are optional and determine respectively whether to use a
+special upper-case collator, the strength value of the collator, and
+the decomposition value of the collator. (See java.text.Collator to
+learn about strength and decomposition).
+","
+SELECT NAME FROM EMPLOYEE ORDER BY COLLATION_KEY(NAME, 'zh_TW')
+",計算用於依自然語言感知方式對字串進行排序的拼寫鍵。localeString 必須為 Java 6 實作中 java.util.Locale.toString() 所返回的形式，例如 'zh_TW_STROKE'、'en_US' 或 'fr_FR'。第三、第四和第五個參數為可選參數，分別用於指定是否使用特殊大寫拼寫器、拼寫器的強度值以及拼寫器的分解值。（請參閱 java.text.Collator 以了解強度和分解的相關資訊。）
