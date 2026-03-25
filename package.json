@@ -7,11 +7,13 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run"
   },
   "devDependencies": {
     "csv-loader": "^3.0.5",
-    "peggy": "^5.1.0"
+    "peggy": "^5.1.0",
+    "vitest": "^4.1.1"
   },
   "dependencies": {
     "next": "^16.2.1",
