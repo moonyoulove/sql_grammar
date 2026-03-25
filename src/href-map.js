@@ -6,7 +6,6 @@
  */
 export const HREF_MAP = {
     // Table references
-    "table_name":          "name",
     "new_table_ref":       "table_ref",
     "existing_table_ref":  "table_ref",
 
@@ -33,18 +32,17 @@ export const HREF_MAP = {
     "guidepost_option":   "options",
     "guidepost_options":  "options",
 
-    // Names → their create commands
-    "func_name":      "create_function",
-    "index_name":     "create_index",
-    "schema_name":    "create_schema",
-    "sequence_name":  "create_sequence",
-
     // "function" keyword (e.g. in CLOSE syntax)
-    "function":  "create_function",
+    // "function":  "create_function",
 
-    // Column/family references
-    "column_name":  "column_ref",
-    "family_name":  "column_ref",
+    // Names
+    "column_name":  "name",
+    "family_name":  "name",
+    "table_name":   "name",
+    "func_name":    "name",
+    "index_name":   "name",
+    "schema_name":  "name",
+    "sequence_name":"name",
 
     // Aliases
     "column_alias":  "alias",
