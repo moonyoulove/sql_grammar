@@ -63,7 +63,7 @@ function GrammarItem({ topic, syntax, description, example }) {
                 }
 
                 const stack = new rr.Stack(...rows);
-                const diagram = new rr.Diagram(stack);
+                const diagram = new rr.Diagram(new rr.Start(), stack, new rr.End());
                 diagram.addTo(containerRef.current);
                 items.length = 0;
                 width = 0;
