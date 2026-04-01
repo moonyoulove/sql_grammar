@@ -164,14 +164,8 @@ body {
 }
 
 .search-container::before {
-  content: '🔍';
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.9rem;
-  opacity: 0.5;
-  pointer-events: none;
+  /* Removed emoji icon, will use SVG in JSX */
+  display: none;
 }
 
 /* Make sidebar text not searchable by Ctrl+F */
