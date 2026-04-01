@@ -139,6 +139,41 @@ body {
   color: #3b82f6;
 }
 
+.search-container {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.sidebar-search {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-left: 2.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.sidebar-search:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: var(--card-bg);
+}
+
+.search-container::before {
+  content: '🔍';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 /* Make sidebar text not searchable by Ctrl+F */
 .sidebar [data-text]::before {
   content: attr(data-text);

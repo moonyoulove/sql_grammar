@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "railroad-diagrams/railroad.css";
 import "../src/railroad.css";
 import "highlight.js/styles/atom-one-dark.css";
@@ -106,6 +106,8 @@ function GrammarItem({ topic, syntax, description, example }) {
 
 
 export default function Page() {
+    const [searchQuery, setSearchQuery] = useState("");
+    
     // csv-loader returns an array of arrays. The very first row is the header.
     // SECTION[0], TOPIC[1], SYNTAX[2], TEXT[3], EXAMPLE[4], TEXT_ZH[5]
     const dataRows = Array.isArray(phoenix) ? phoenix.slice(1) : [];
@@ -122,6 +124,14 @@ export default function Page() {
 
     const sectionOrder = Object.keys(sections);
 
+    const filteredSectionOrder = sectionOrder.filter(sectionName => {
+        const matchesSection = sectionName.toLowerCase().includes(searchQuery.toLowerCase());
+        const hasMatchingTopic = sections[sectionName].some(row => 
+            row[1] && row[1].toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        return matchesSection || hasMatchingTopic;
+    });
+
     return (
         <div className="app-container">
             <aside className="sidebar">
@@ -129,26 +139,47 @@ export default function Page() {
                     className="sidebar-title" 
                     data-text="SQL Reference" 
                     aria-label="SQL Reference"
-                    style={{ fontSize: "1.2rem", marginBottom: "1.5rem", fontWeight: 800 }}
+                    style={{ fontSize: "1.2rem", marginBottom: "1rem", fontWeight: 800 }}
                 >
                 </h3>
-                {sectionOrder.map(sectionName => (
-                    <div key={sectionName} className="toc-section">
-                        <div className="toc-section-title" data-text={sectionName} aria-label={sectionName}></div>
-                        <ul className="toc-list">
-                            {sections[sectionName].map((row, idx) => {
-                                const topic = row[1];
-                                const slug = topic ? topic.toLowerCase().replace(/\s+/g, "_") : `row-${idx}`;
-                                return (
-                                    <li key={idx} className="toc-item">
-                                        <a href={`#${slug}`} className="toc-link" data-text={topic} aria-label={topic}>
-                                        </a>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
-                ))}
+
+                <div className="search-container">
+                    <input 
+                        type="text" 
+                        placeholder="搜尋語法..." 
+                        className="sidebar-search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
+
+                {filteredSectionOrder.map(sectionName => {
+                    const matchedItems = sections[sectionName].filter(row => 
+                        !searchQuery || 
+                        row[1]?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        sectionName.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+
+                    if (matchedItems.length === 0) return null;
+
+                    return (
+                        <div key={sectionName} className="toc-section">
+                            <div className="toc-section-title" data-text={sectionName} aria-label={sectionName}></div>
+                            <ul className="toc-list">
+                                {matchedItems.map((row, idx) => {
+                                    const topic = row[1];
+                                    const slug = topic ? topic.toLowerCase().replace(/\s+/g, "_") : `row-${idx}`;
+                                    return (
+                                        <li key={`${sectionName}-${idx}`} className="toc-item">
+                                            <a href={`#${slug}`} className="toc-link" data-text={topic} aria-label={topic}>
+                                            </a>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    );
+                })}
             </aside>
 
             <main className="main-content">
