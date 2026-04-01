@@ -28,46 +28,52 @@ function GrammarItem({ topic, syntax, description, example }) {
         try {
             const result = parser.parse(textToParse);
 
-            let width = 0;
-            let started = false;
-            let ended = false;
-            const items = [];
-
-            // If the parser returns a root object with .items, use it.
-            // Otherwise, if it returns an array directly, use it.
             const rawItems = result && result.items ? result.items : (Array.isArray(result) ? result : [result]);
-            const resultItems = [...rawItems];
 
-            while (resultItems.length > 0) {
-                const item = resultItems.shift();
-                if (!item) continue;
-                if (width + (item.width || 0) > 600) {
-                    makeDiagram();
+            // Dynamically group items into rows based on their actual width
+            const rows = [];
+            let currentRow = [];
+            let currentWidth = 0;
+            const maxWidth = 600; // Lower threshold for more frequent wrapping
+
+            rawItems.forEach(item => {
+                if (!item) return;
+                const itemWidth = item.width || 0;
+                
+                if (currentWidth + itemWidth > maxWidth && currentRow.length > 0) {
+                    rows.push(currentRow);
+                    currentRow = [item];
+                    currentWidth = itemWidth;
+                } else {
+                    currentRow.push(item);
+                    currentWidth += itemWidth;
                 }
-                items.push(item);
-                width += item.width || 0;
+            });
+
+            if (currentRow.length > 0) {
+                rows.push(currentRow);
             }
 
-            ended = true;
-            if (items.length > 0) {
-                makeDiagram();
-            }
+            // Render each row as an independent Diagram
+            rows.forEach((rowItems, index) => {
+                const isFirst = index === 0;
+                const isLast = index === rows.length - 1;
 
-            function makeDiagram() {
-                // Chunk items into rows to force wrapping
-                const chunkSize = 3;
-                const rows = [];
-                for (let i = 0; i < items.length; i += chunkSize) {
-                    const chunk = items.slice(i, i + chunkSize);
-                    rows.push(new rr.Sequence(...chunk));
-                }
+                // !!! 重要備註 (IMPORTANT) !!!
+                // 由於 railroad-diagrams 庫在 Start/End 的 type 定義與視覺效果（雙槓/單槓）反向，
+                // 故此處採取反向邏輯處理：如果是頭尾需要雙槓，必須傳入 "simple"。
+                // 如果是中間需要單槓，則傳入 "complex"。
+                const startType = isFirst ? "simple" : "complex";
+                const endType = isLast ? "simple" : "complex";
 
-                const stack = new rr.Stack(...rows);
-                const diagram = new rr.Diagram(new rr.Start(), stack, new rr.End());
+                const diagram = new rr.Diagram(
+                    new rr.Start({ type: startType }),
+                    ...rowItems,
+                    new rr.End({ type: endType })
+                );
+
                 diagram.addTo(containerRef.current);
-                items.length = 0;
-                width = 0;
-            }
+            });
         } catch (error) {
             console.error("Syntax:", textToParse, error);
             if (errorRef.current) {

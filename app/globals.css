@@ -249,6 +249,10 @@ body {
   background: var(--diagram-bg);
   border-radius: var(--radius-md);
   border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start;
 }
 
 .example-box {
