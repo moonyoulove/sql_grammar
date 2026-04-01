@@ -131,7 +131,9 @@ export default function Page() {
     
     // csv-loader returns an array of arrays. The very first row is the header.
     // SECTION[0], TOPIC[1], SYNTAX[2], TEXT[3], EXAMPLE[4], TEXT_ZH[5]
-    const dataRows = Array.isArray(phoenix) ? phoenix.slice(1) : [];
+    const dataRows = Array.isArray(phoenix) 
+        ? phoenix.slice(1).filter(row => row.some(cell => cell && cell.trim())) 
+        : [];
 
     // Group rows by Section for TOC
     const sections = {};

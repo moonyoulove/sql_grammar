@@ -5,15 +5,10 @@
   --card-border: #e2e8f0;
   --text-muted: #64748b;
   --diagram-bg: #f1f5f9;
-  --railroad-rect: #e2e8f0;
-  --railroad-text: #0f172a;
-  --railroad-path: #64748b;
-  --railroad-bg: transparent;
   --example-bg: #f8fafc;
   --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   --accent: #3b82f6;
   --accent-hover: #2563eb;
-  --header-bg: rgba(255, 255, 255, 0.8);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,15 +19,10 @@
     --card-border: #1e293b;
     --text-muted: #94a3b8;
     --diagram-bg: #020617;
-    --railroad-rect: #1e293b;
-    --railroad-text: #f8fafc;
-    --railroad-path: #475569;
-    --railroad-bg: transparent;
     --example-bg: #0f172a;
     --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #020617 100%);
     --accent: #60a5fa;
     --accent-hover: #3b82f6;
-    --header-bg: rgba(2, 6, 23, 0.8);
   }
 }
 
