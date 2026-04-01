@@ -229,7 +229,7 @@ export default function Page() {
             <main className="main-content">
                 <section className="hero-section">
                     <h1 className="hero-title">SQL Reference</h1>
-                    <p className="hero-subtitle">針對 Apache Phoenix 語法的完整手冊與鐵路圖參考</p>
+                    <p className="hero-subtitle">基於 Apache Phoenix 官方語法文件開發的視覺化 SQL 參考手冊</p>
                 </section>
                 
                 {sectionOrder.map(sectionName => (
