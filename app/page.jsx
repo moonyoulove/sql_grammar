@@ -54,15 +54,19 @@ function GrammarItem({ topic, syntax, description, example }) {
             }
 
             function makeDiagram() {
-                const start = new rr.Start({ type: started ? "complex" : "simple" });
-                const end = new rr.End({ type: ended ? "simple" : "complex" });
-                const diagram = new rr.Diagram(start, ...items, end);
+                // Chunk items into rows to force wrapping
+                const chunkSize = 3;
+                const rows = [];
+                for (let i = 0; i < items.length; i += chunkSize) {
+                    const chunk = items.slice(i, i + chunkSize);
+                    rows.push(new rr.Sequence(...chunk));
+                }
+
+                const stack = new rr.Stack(...rows);
+                const diagram = new rr.Diagram(stack);
                 diagram.addTo(containerRef.current);
                 items.length = 0;
                 width = 0;
-                if (!started) {
-                    started = true;
-                }
             }
         } catch (error) {
             console.error("Syntax:", textToParse, error);
