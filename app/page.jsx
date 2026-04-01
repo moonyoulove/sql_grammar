@@ -75,30 +75,21 @@ function GrammarItem({ topic, syntax, description, example }) {
     const sectionId = topic ? topic.toLowerCase().replace(/\s+/g, "_") : undefined;
 
     return (
-        <div id={sectionId}
-            style={{ marginBottom: "2rem", padding: "1.5rem", border: "1px solid var(--card-border)", borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.2)", background: "var(--card-bg)" }}
-        >
-            <h2 style={{ marginTop: 0, color: "var(--foreground)", borderBottom: "1px solid var(--card-border)", paddingBottom: "0.5rem" }}>
+        <div id={sectionId} className="grammar-card">
+            <h2 className="grammar-title">
                 {topic}
             </h2>
-            {description && <p style={{ lineHeight: "1.6", color: "var(--text-muted)", whiteSpace: "pre-wrap" }}>{description}</p>}
+            {description && <p className="grammar-description">{description}</p>}
 
             <div
                 ref={containerRef}
-                style={{
-                    overflowX: "auto",
-                    margin: "1.5rem 0",
-                    padding: "1rem",
-                    background: "var(--diagram-bg)",
-                    borderRadius: "4px",
-                }}
+                className="diagram-container"
             >
             </div>
             <div ref={errorRef} style={{ color: "red", fontSize: "0.9em", fontFamily: "monospace", margin: "1rem 0" }}></div>
 
             {example && (
-                <div style={{ background: "#282c34", padding: "1rem", borderRadius: "6px" }}>
+                <div className="example-box">
                     <strong style={{ display: "block", marginBottom: "0.5rem", color: "#e5c07b" }}>範例：</strong>
                     <pre style={{ margin: 0 }}><code
                         className="language-sql hljs"
@@ -113,32 +104,91 @@ function GrammarItem({ topic, syntax, description, example }) {
     );
 }
 
+
 export default function Page() {
     // csv-loader returns an array of arrays. The very first row is the header.
+    // SECTION[0], TOPIC[1], SYNTAX[2], TEXT[3], EXAMPLE[4], TEXT_ZH[5]
     const dataRows = Array.isArray(phoenix) ? phoenix.slice(1) : [];
 
-    return (
-        <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "2rem", fontFamily: "system-ui, sans-serif" }}>
-            <h1 style={{ textAlign: "center", marginBottom: "3rem", color: "var(--foreground)" }}>SQL Grammar Reference</h1>
-            {dataRows.map((row, i) => {
-                // Determine indices based on phoenix.csv headers:
-                // SECTION[0], TOPIC[1], SYNTAX[2], TEXT[3], EXAMPLE[4], TEXT_ZH[5]
-                const topic = row[1];
-                const syntax = row[2];
-                // Use Chinese text if available, otherwise fallback to English text
-                const description = row[5] ? row[5].trim() : (row[3] ? row[3].trim() : "");
-                const example = row[4];
+    // Group rows by Section for TOC
+    const sections = {};
+    dataRows.forEach(row => {
+        const sectionName = row[0] || "General";
+        if (!sections[sectionName]) {
+            sections[sectionName] = [];
+        }
+        sections[sectionName].push(row);
+    });
 
-                return (
-                    <GrammarItem
-                        key={i}
-                        topic={topic}
-                        syntax={syntax}
-                        description={description}
-                        example={example}
-                    />
-                );
-            })}
+    const sectionOrder = Object.keys(sections);
+
+    return (
+        <div className="app-container">
+            <aside className="sidebar">
+                <h3 
+                    className="sidebar-title" 
+                    data-text="SQL Reference" 
+                    aria-label="SQL Reference"
+                    style={{ fontSize: "1.2rem", marginBottom: "1.5rem", fontWeight: 800 }}
+                >
+                </h3>
+                {sectionOrder.map(sectionName => (
+                    <div key={sectionName} className="toc-section">
+                        <div className="toc-section-title" data-text={sectionName} aria-label={sectionName}></div>
+                        <ul className="toc-list">
+                            {sections[sectionName].map((row, idx) => {
+                                const topic = row[1];
+                                const slug = topic ? topic.toLowerCase().replace(/\s+/g, "_") : `row-${idx}`;
+                                return (
+                                    <li key={idx} className="toc-item">
+                                        <a href={`#${slug}`} className="toc-link" data-text={topic} aria-label={topic}>
+                                        </a>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                ))}
+            </aside>
+
+            <main className="main-content">
+                <h1 style={{ textAlign: "left", marginBottom: "3rem", color: "var(--foreground)", fontSize: "2.5rem", fontWeight: 800 }}>
+                    SQL Grammar Reference
+                </h1>
+                
+                {sectionOrder.map(sectionName => (
+                    <div key={sectionName} style={{ marginBottom: "4rem" }}>
+                        <h2 style={{ 
+                            fontSize: "1.5rem", 
+                            textTransform: "uppercase", 
+                            letterSpacing: "0.1em", 
+                            color: "var(--text-muted)", 
+                            marginBottom: "1.5rem",
+                            borderBottom: "2px solid var(--card-border)",
+                            display: "inline-block",
+                            paddingBottom: "0.25rem"
+                        }}>
+                            {sectionName}
+                        </h2>
+                        {sections[sectionName].map((row, idx) => {
+                            const topic = row[1];
+                            const syntax = row[2];
+                            const description = row[5] ? row[5].trim() : (row[3] ? row[3].trim() : "");
+                            const example = row[4];
+
+                            return (
+                                <GrammarItem
+                                    key={idx}
+                                    topic={topic}
+                                    syntax={syntax}
+                                    description={description}
+                                    example={example}
+                                />
+                            );
+                        })}
+                    </div>
+                ))}
+            </main>
         </div>
     );
 }

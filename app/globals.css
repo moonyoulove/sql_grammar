@@ -29,20 +29,176 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
   scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
 }
+
+
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   margin: 0;
-  padding: 2rem;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.app-container {
   display: flex;
-  justify-content: center;
+  min-height: 100vh;
+}
+
+
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 2rem 1rem;
+  border-right: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.05);
+}
+
+
+
+@media (prefers-color-scheme: dark) {
+  .sidebar {
+    background: rgba(15, 23, 42, 0.7);
+  }
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem 4rem;
+  max-width: 1200px;
+  margin-left: 280px; /* Space for the fixed sidebar */
+}
+
+
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .main-content {
+    padding: 2rem 1.5rem;
+    margin-left: 0;
+  }
+
+}
+
+.toc-section {
+  margin-bottom: 1.5rem;
+}
+
+.toc-section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-item {
+  margin-bottom: 0.25rem;
+}
+
+.toc-link {
+  display: block;
+  padding: 0.4rem 0.75rem;
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.toc-link:hover {
+  background: var(--card-border);
+  color: #3b82f6;
+}
+
+/* Make sidebar text not searchable by Ctrl+F */
+.sidebar [data-text]::before {
+  content: attr(data-text);
+  pointer-events: none; /* Make sure pseudo-element doesn't block interactions */
+}
+
+
+.grammar-card {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background: var(--card-bg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grammar-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.grammar-title {
+  margin-top: 0;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+
+.grammar-description {
+  line-height: 1.7;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  margin: 1rem 0;
+}
+
+.diagram-container {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: var(--diagram-bg);
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+}
+
+.example-box {
+  background: #1e293b;
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .example-box {
+    background: #020617;
+  }
 }
 
 * {
