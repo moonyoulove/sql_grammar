@@ -232,19 +232,20 @@ body {
 
 .diagram-container svg.railroad-diagram path {
   stroke: var(--railroad-path);
-  stroke-width: 2px;
+  stroke-width: 1.5px;
 }
 
 .diagram-container svg.railroad-diagram rect {
   stroke: var(--railroad-path);
-  fill: var(--background);
-  rx: 4;
-  ry: 4;
+  fill: rgba(148, 163, 184, 0.05);
 }
 
 .diagram-container svg.railroad-diagram g.non-terminal rect {
-  fill: rgba(59, 130, 246, 0.05);
+  fill: rgba(59, 130, 246, 0.15);
   stroke: var(--accent);
+  stroke-width: 1.8px;
+  rx: 8;
+  ry: 8;
 }
 
 .diagram-container svg.railroad-diagram text {
@@ -256,25 +257,25 @@ body {
 
 @media (prefers-color-scheme: dark) {
   .diagram-container svg.railroad-diagram path {
-    stroke: #475569;
+    stroke: var(--railroad-path);
   }
   
   .diagram-container svg.railroad-diagram rect {
-    stroke: #334155;
-    fill: #020617;
+    stroke: var(--railroad-path);
+    fill: rgba(255, 255, 255, 0.03);
   }
 
   .diagram-container svg.railroad-diagram g.non-terminal rect {
-    fill: rgba(59, 130, 246, 0.1);
-    stroke: #3b82f6;
+    fill: rgba(59, 130, 246, 0.3);
+    stroke: var(--accent);
   }
   
   .diagram-container svg.railroad-diagram text {
-    fill: #e2e8f0;
+    fill: var(--foreground);
   }
 
   .diagram-container svg.railroad-diagram g.non-terminal text {
-    fill: #93c5fd !important;
+    fill: var(--accent) !important;
   }
 }
 
