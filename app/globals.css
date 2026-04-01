@@ -17,7 +17,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  body:not([data-theme='light']) {
     --background: #020617;
     --foreground: #f8fafc;
     --card-bg: #0f172a;
@@ -34,6 +34,24 @@
     --radius-md: 8px;
     --radius-sm: 6px;
   }
+}
+
+body[data-theme='dark'] {
+  --background: #020617;
+  --foreground: #f8fafc;
+  --card-bg: #0f172a;
+  --card-border: #1e293b;
+  --text-muted: #94a3b8;
+  --diagram-bg: #020617;
+  --example-bg: #0f172a;
+  --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+  --accent: #60a5fa;
+  --accent-hover: #3b82f6;
+  --railroad-text: #f8fafc;
+  --railroad-path: #94a3b8;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
 }
 
 html,
@@ -153,8 +171,33 @@ body {
   margin: 0;
 }
 
-.toc-item {
-  margin-bottom: 0.25rem;
+.theme-toggle {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+}
+
+.theme-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+  padding: 0.6rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .toc-link {
