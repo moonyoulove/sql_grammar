@@ -7,22 +7,32 @@
   --diagram-bg: #f1f5f9;
   --railroad-rect: #e2e8f0;
   --railroad-text: #0f172a;
-  --railroad-path: #334155;
+  --railroad-path: #64748b;
   --railroad-bg: transparent;
+  --example-bg: #f8fafc;
+  --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --header-bg: rgba(255, 255, 255, 0.8);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
+    --background: #020617;
     --foreground: #f8fafc;
-    --card-bg: #1e293b;
-    --card-border: #334155;
-    --text-muted: #cbd5e1;
+    --card-bg: #0f172a;
+    --card-border: #1e293b;
+    --text-muted: #94a3b8;
     --diagram-bg: #020617;
-    --railroad-rect: #334155;
+    --railroad-rect: #1e293b;
     --railroad-text: #f8fafc;
-    --railroad-path: #94a3b8;
+    --railroad-path: #475569;
     --railroad-bg: transparent;
+    --example-bg: #0f172a;
+    --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+    --accent: #60a5fa;
+    --accent-hover: #3b82f6;
+    --header-bg: rgba(2, 6, 23, 0.8);
   }
 }
 
@@ -57,20 +67,19 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  padding: 2rem 1rem;
+  padding: 2.5rem 1.25rem;
   border-right: 1px solid var(--card-border);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(20px);
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 4px 0 24px rgba(0,0,0,0.05);
 }
 
 
 
 @media (prefers-color-scheme: dark) {
   .sidebar {
-    background: rgba(15, 23, 42, 0.7);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -135,8 +144,9 @@ body {
 }
 
 .toc-link:hover {
-  background: var(--card-border);
-  color: #3b82f6;
+  background: var(--accent);
+  color: #ffffff;
+  padding-left: 1rem;
 }
 
 .search-container {
@@ -168,21 +178,6 @@ body {
   display: none;
 }
 
-.search-icon {
-  stroke: var(--text-muted);
-  fill: none;
-  opacity: 0.5; /* Default opacity for light mode */
-  transition: all 0.2s ease;
-}
-
-@media (prefers-color-scheme: dark) {
-  .search-icon {
-    stroke: #e2e8f0; /* Much lighter visible stroke in dark mode */
-    fill: none;
-    opacity: 0.9; /* Higher opacity in dark mode */
-  }
-}
-
 /* Make sidebar text not searchable by Ctrl+F */
 .sidebar [data-text]::before {
   content: attr(data-text);
@@ -201,8 +196,8 @@ body {
 }
 
 .grammar-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  /* Removed transform: translateY(-2px) to fix scroll jitter perfectly */
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
 }
 
 .grammar-title {
@@ -232,96 +227,89 @@ body {
   border: 1px solid var(--card-border);
 }
 
-/* Railroad Diagram Light Mode Explicit Defaults (in case railroad.css is overridden badly elsewhere) */
+.example-box {
+  background: var(--example-bg);
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  border: 1px solid var(--card-border);
+}
+
+/* Railroad Diagram Overrides */
 .diagram-container svg.railroad-diagram {
   background-color: transparent;
 }
 
+.diagram-container svg.railroad-diagram path {
+  stroke: var(--railroad-path);
+  stroke-width: 2px;
+}
+
+.diagram-container svg.railroad-diagram rect {
+  stroke: var(--railroad-path);
+  fill: var(--background);
+  rx: 4;
+  ry: 4;
+}
+
+.diagram-container svg.railroad-diagram g.non-terminal rect {
+  fill: rgba(59, 130, 246, 0.05);
+  stroke: var(--accent);
+}
+
+.diagram-container svg.railroad-diagram text {
+  fill: var(--railroad-text);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
 @media (prefers-color-scheme: dark) {
-  /* Override default railroad.css styles for Dark Mode */
-  .diagram-container svg.railroad-diagram {
-    background-color: transparent;
-  }
-  
   .diagram-container svg.railroad-diagram path {
-    stroke: var(--railroad-path);
+    stroke: #475569;
   }
   
-  /* Themed blocks for Dark Mode (Terminal nodes) */
   .diagram-container svg.railroad-diagram rect {
-    stroke: #475569;
-    fill: rgba(16, 185, 129, 0.15); /* Emerald green tint */
+    stroke: #334155;
+    fill: #020617;
   }
 
-  /* Themed blocks for Dark Mode (Non-Terminal nodes) */
   .diagram-container svg.railroad-diagram g.non-terminal rect {
-    stroke: #475569;
-    fill: rgba(59, 130, 246, 0.15); /* Blue tint */
+    fill: rgba(59, 130, 246, 0.1);
+    stroke: #3b82f6;
   }
   
   .diagram-container svg.railroad-diagram text {
-    fill: var(--railroad-text);
+    fill: #e2e8f0;
   }
 
-  /* Override src/railroad.css LinkText which is unreadable in dark mode */
   .diagram-container svg.railroad-diagram g.non-terminal text {
-    fill: #93c5fd !important; /* Bright, legible blue for non-terminals */
-  }
-
-  .diagram-container svg.railroad-diagram path.diagram-text {
-    stroke: var(--railroad-path);
-    fill: var(--background);
-  }
-  
-  .diagram-container svg.railroad-diagram g.diagram-text:hover path.diagram-text {
-    fill: var(--card-bg);
+    fill: #93c5fd !important;
   }
 }
 
-.example-box {
-  background: #1e293b;
-  padding: 1.25rem;
-  border-radius: 8px;
-  margin-top: 1.5rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  .example-box {
-    background: #020617;
-  }
-}
-
-* {
-  box-sizing: border-box;
-}
-
+/* Scroll to top button */
 .scroll-top-btn {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 2.5rem;
+  right: 2.5rem;
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 50%;
-  background-color: #3b82f6;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
   color: white;
   border: none;
-  display: flex !important; /* Force flex to override any global button styles */
+  display: flex !important;
   align-items: center;
   justify-content: center;
-  padding: 0; /* Important for exact centering */
-  margin: 0;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 50;
-}
-
-.scroll-top-btn svg {
-  display: block;
-  margin: auto;
+  padding: 0;
 }
 
 .scroll-top-btn.visible {
@@ -331,24 +319,20 @@ body {
 }
 
 .scroll-top-btn:hover {
-  background-color: #2563eb;
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
 }
 
-.scroll-top-btn:active {
-  transform: translateY(0);
+.scroll-top-btn svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  transition: transform 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .scroll-top-btn {
-    background-color: #2563eb; /* Slightly darker/different shade for dark mode if desired */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-  }
-  .scroll-top-btn:hover {
-    background-color: #3b82f6;
-  }
-  .scroll-top-btn svg {
-    stroke: #ffffff; /* Ensure arrow is absolutely white in dark mode */
-  }
+.scroll-top-btn:hover svg {
+  transform: translateY(-2px);
+}
+
+* {
+  box-sizing: border-box;
 }
