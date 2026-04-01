@@ -168,6 +168,21 @@ body {
   display: none;
 }
 
+.search-icon {
+  stroke: var(--text-muted);
+  fill: none;
+  opacity: 0.5; /* Default opacity for light mode */
+  transition: all 0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-icon {
+    stroke: #e2e8f0; /* Much lighter visible stroke in dark mode */
+    fill: none;
+    opacity: 0.9; /* Higher opacity in dark mode */
+  }
+}
+
 /* Make sidebar text not searchable by Ctrl+F */
 .sidebar [data-text]::before {
   content: attr(data-text);
@@ -186,8 +201,8 @@ body {
 }
 
 .grammar-card:hover {
-  transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  /* Removed transform: translateY(-2px) to fix scroll jitter perfectly */
 }
 
 .grammar-title {
@@ -217,6 +232,52 @@ body {
   border: 1px solid var(--card-border);
 }
 
+/* Railroad Diagram Light Mode Explicit Defaults (in case railroad.css is overridden badly elsewhere) */
+.diagram-container svg.railroad-diagram {
+  background-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Override default railroad.css styles for Dark Mode */
+  .diagram-container svg.railroad-diagram {
+    background-color: transparent;
+  }
+  
+  .diagram-container svg.railroad-diagram path {
+    stroke: var(--railroad-path);
+  }
+  
+  /* Themed blocks for Dark Mode (Terminal nodes) */
+  .diagram-container svg.railroad-diagram rect {
+    stroke: #475569;
+    fill: rgba(16, 185, 129, 0.15); /* Emerald green tint */
+  }
+
+  /* Themed blocks for Dark Mode (Non-Terminal nodes) */
+  .diagram-container svg.railroad-diagram g.non-terminal rect {
+    stroke: #475569;
+    fill: rgba(59, 130, 246, 0.15); /* Blue tint */
+  }
+  
+  .diagram-container svg.railroad-diagram text {
+    fill: var(--railroad-text);
+  }
+
+  /* Override src/railroad.css LinkText which is unreadable in dark mode */
+  .diagram-container svg.railroad-diagram g.non-terminal text {
+    fill: #93c5fd !important; /* Bright, legible blue for non-terminals */
+  }
+
+  .diagram-container svg.railroad-diagram path.diagram-text {
+    stroke: var(--railroad-path);
+    fill: var(--background);
+  }
+  
+  .diagram-container svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+    fill: var(--card-bg);
+  }
+}
+
 .example-box {
   background: #1e293b;
   padding: 1.25rem;
@@ -232,4 +293,62 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+.scroll-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  display: flex !important; /* Force flex to override any global button styles */
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Important for exact centering */
+  margin: 0;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+}
+
+.scroll-top-btn svg {
+  display: block;
+  margin: auto;
+}
+
+.scroll-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+}
+
+.scroll-top-btn:active {
+  transform: translateY(0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .scroll-top-btn {
+    background-color: #2563eb; /* Slightly darker/different shade for dark mode if desired */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  }
+  .scroll-top-btn:hover {
+    background-color: #3b82f6;
+  }
+  .scroll-top-btn svg {
+    stroke: #ffffff; /* Ensure arrow is absolutely white in dark mode */
+  }
 }
