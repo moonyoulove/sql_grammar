@@ -227,9 +227,10 @@ export default function Page() {
             </aside>
 
             <main className="main-content">
-                <h1 style={{ textAlign: "left", marginBottom: "3rem", color: "var(--foreground)", fontSize: "2.5rem", fontWeight: 800 }}>
-                    SQL Grammar Reference
-                </h1>
+                <section className="hero-section">
+                    <h1 className="hero-title">SQL Reference</h1>
+                    <p className="hero-subtitle">針對 Apache Phoenix 語法的完整手冊與鐵路圖參考</p>
+                </section>
                 
                 {sectionOrder.map(sectionName => (
                     <div key={sectionName} style={{ marginBottom: "4rem" }}>

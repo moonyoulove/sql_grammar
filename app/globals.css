@@ -106,6 +106,30 @@ body {
 
 }
 
+.hero-section {
+  padding: 4rem 0;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  max-width: 600px;
+}
+
 .toc-section {
   margin-bottom: 1.5rem;
 }
